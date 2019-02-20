@@ -1,15 +1,20 @@
 import React from 'react'
 import { Text, View, Image, TextInput, StyleSheet } from 'react-native'
 import logo from '../../../assets/logo.png'
-import context from '../../tools/context-provider'
+import { withContext } from '../../context'
 
-@context(['user', 'achievements'], [])
+@withContext(['network_status'], ['fetchEntity'])
 class ConnectionView extends React.Component {
     state = {
         username: undefined,
         password: undefined
     }
+    componentDidMount() {
+        const { actions: { fetchEntity } } = this.props
+        fetchEntity('user', 'user')
+    }
     render() {
+        const { state: {network_status} } = this.props
         return (
             <View style={styles.container}>
                 <Image source={logo} style={styles.image}/>
@@ -27,7 +32,9 @@ class ConnectionView extends React.Component {
                         onChangeText={(password) => this.setState({password})}
                     />
                     <Text>
-                        {this.props.state.language}
+                        Network status: {(network_status === undefined) ? 
+                            'Waiting for network' 
+                            : network_status}
                     </Text>
                 </View>
             </View>
