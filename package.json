@@ -5,7 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "lint": "./node_modules/.bin/eslint src/"
+    "lint": "./node_modules/.bin/eslint src/ App.js",
+    "lint-fix": "./node_modules/.bin/eslint --fix src/ App.js"
   },
   "dependencies": {
     "expo": "^32.0.0",
