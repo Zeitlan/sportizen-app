@@ -1,8 +1,10 @@
 import React from 'react'
-import { View, Image, TextInput, StyleSheet } from 'react-native'
+import { Text, View, Image, TextInput, StyleSheet } from 'react-native'
 import logo from '../../../assets/logo.png'
+import context from '../../tools/context-provider'
 
-export default class ConnectionView extends React.Component {
+@context(['user', 'achievements'], [])
+class ConnectionView extends React.Component {
     state = {
         username: undefined,
         password: undefined
@@ -24,11 +26,16 @@ export default class ConnectionView extends React.Component {
                         textAlign={'center'}
                         onChangeText={(password) => this.setState({password})}
                     />
+                    <Text>
+                        {this.props.state.language}
+                    </Text>
                 </View>
             </View>
         )
     }
 }
+
+export default ConnectionView
     
 // CSS
 const styles = StyleSheet.create({
