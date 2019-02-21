@@ -6,7 +6,6 @@ export class ContextProvider extends React.PureComponent {
         user: undefined,
         language: 'Francais',
         achievements: undefined,
-        network_status: undefined,
         history: undefined,
         favorites: undefined,
         routes: undefined

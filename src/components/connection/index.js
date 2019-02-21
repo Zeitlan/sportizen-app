@@ -1,42 +1,47 @@
 import React from 'react'
-import { Text, View, Image, TextInput, StyleSheet } from 'react-native'
+import { Text, View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import logo from '../../../assets/logo.png'
-import { withContext } from '../../context'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import themeStyle from '../../styles/theme.style';
 
-@withContext(['network_status'], ['fetchEntity'])
+
 class ConnectionView extends React.Component {
     state = {
         username: undefined,
         password: undefined
     }
-    componentDidMount() {
-        const { actions: { fetchEntity } } = this.props
-        fetchEntity('user', 'user')
-    }
+    
     render() {
-        const { state: {network_status} } = this.props
         return (
             <View style={styles.container}>
-                <Image source={logo} style={styles.image}/>
-                <View style={styles.form}>
-                    <TextInput
-                        style={styles.text}
-                        placeholder="Nom d'utilisateur / Mail"
-                        textAlign={'center'}
-                        onChangeText={(username) => this.setState({username})}
-                    />
-                    <TextInput
-                        style={styles.text}
-                        placeholder='Mot de passe'
-                        textAlign={'center'}
-                        onChangeText={(password) => this.setState({password})}
-                    />
-                    <Text>
-                        Network status: {(network_status === undefined) ? 
-                            'Waiting for network' 
-                            : network_status}
-                    </Text>
-                </View>
+                <KeyboardAwareScrollView>
+
+                    <View style={styles.divider_img}>
+                        <Image source={logo} style={styles.image}/>
+                    </View>
+
+                    <View style={styles.form}>
+                        
+
+                            <View style={styles.divider}>
+                                <TextInput
+                                    style={styles.text}
+                                    placeholder="Nom d'utilisateur / Mail"
+                                    textAlign={'center'}
+                                    onChangeText={(username) => this.setState({username})}
+                                />
+                            </View>
+                            <View style={styles.divider}>
+                                <TextInput
+                                    style={styles.text}
+                                    placeholder='Mot de passe'
+                                    textAlign={'center'}
+                                    onChangeText={(password) => this.setState({password})}
+                                />
+                            </View>
+                    </View>
+                </KeyboardAwareScrollView>
+
             </View>
         )
     }
@@ -46,25 +51,34 @@ export default ConnectionView
     
 // CSS
 const styles = StyleSheet.create({
+    divider_img: {
+        flex: 1,
+        margin: 5,
+        marginTop: 150,
+        marginBottom: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     image: {
         flex: 1,
         resizeMode: 'contain',
-        margin: 5,
-        marginTop: 200,
-        marginBottom: 50
     },
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     form: {
         flex:3
     },
     text: {
-        height: 60,
-        fontSize: 20,
-        textAlign: 'center',
+        margin: 20,
+        height: 30,
+        fontSize: 15,
+        textAlign: 'center'
+    },
+
+    divider: {
+        backgroundColor: themeStyle.SECONDARY_COLOR,    
+        margin: 15
     }
 })
