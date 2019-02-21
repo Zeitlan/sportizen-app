@@ -3,15 +3,11 @@ import { Context } from './context'
 
 export class ContextProvider extends React.PureComponent {
     state = {
-        user: undefined,
-        achievements: undefined,
+        token: undefined,
         network_status: undefined,
         error_notifier: undefined,
         warning_notifier: undefined,
         info_notifier: undefined,
-        history: undefined,
-        favorites: undefined,
-        routes: undefined
     }
 
     actions = {
@@ -19,15 +15,14 @@ export class ContextProvider extends React.PureComponent {
             const { dispatch } = this.actions
             fetch('http://sportizen.ml/api/' + name)
                 .then((response) => {
-                    dispatch({network_status : response.status})
+                    dispatch({error_notifier : response.status})
                 }).catch((error) => {
-                    console.log('There has been a problem with your fetch operation: ' + error.message)
-                    dispatch({network_status: 'ERROR' + error.message})
+                    dispatch({error_notifier: 'ERROR' + error.message})
                 })
         },
 
         signUpUser: (mail, pwd) => {
-            const { dispatch } = this.actions
+            const { dispatch, loginUser } = this.actions
             fetch('https://sportizen.ml/signup', {
                 method: 'POST',
                 headers: {
@@ -38,23 +33,48 @@ export class ContextProvider extends React.PureComponent {
                     email: mail,
                     password: pwd,
                 })
-            }).then((response) => {
-                if (response.status === 200) {
-                    console.log('Signed up')
-                    return response.json()
-                } else if (response.status === 400) {
-                    console.log('Signed up error')
-                    return response.json()
-                } else {
-                    console.log('Other error, Status:' + response.status)
-                }
-                dispatch({network_status: response.status})
-            }).then((json) => {
-                console.log(json)
-            }).catch((error) => {
-                console.log('There has been a problem with your fetch operation: ' + error.message)
-                dispatch({network_status: 'ERROR' + error.message})
-            })
+            }).then((r) => r.json().then(json => ({status: r.status, json: json})))
+                .then(({status, json}) => {
+                    if (status === 200) {
+                        dispatch({info_notifier: 'User signed up'})
+                    } else if (status === 400) {
+                        dispatch({error_notifier: '[400] Signed up Error: ' + json.error.message})
+                    } else {
+                        dispatch({error_notifier: '[' + status + '] Other Error: ' + json.error})
+                    }
+                    loginUser(mail, pwd)
+                }).catch((error) => {
+                    dispatch({error_notifier: 'ERROR' + error.message})
+                })
+            
+        },
+        loginUser: (mail, pwd) => {
+            const { dispatch } = this.actions
+            fetch('https://sportizen.ml/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept' : 'application/json'
+                },
+                body: JSON.stringify({
+                    email: mail,
+                    password: pwd,
+                })
+            }).then((r) => r.json().then(json => ({status: r.status, json: json})))
+                .then(({status, json}) => {
+                    if (status === 200) {
+                        dispatch({
+                            info_notifier: 'User signed up',
+                            token: json.token
+                        })
+                    } else if (status === 400 || status === 401) {
+                        dispatch({error_notifier: '[' + status + '] Login Error: ' + json.error})
+                    } else {
+                        dispatch({error_notifier: '[' + status + '] Other Error: ' + json.error})
+                    }
+                }).catch((error) => {
+                    dispatch({error_notifier: 'ERROR' + error.message})
+                })
             
         },
 
