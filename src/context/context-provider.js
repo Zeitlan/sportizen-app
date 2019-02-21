@@ -82,6 +82,20 @@ export class ContextProvider extends React.PureComponent {
             
         },
 
+        logoutUser: () => {
+            const { dispatch } = this.actions
+            dispatch({
+                token: undefined
+            })
+            deviceStorage.removeItem('token')
+        },
+        
+        checkLoginUser: () => {
+            const { dispatch } = this.actions
+            deviceStorage.loadItem('token')
+                .then((token) => dispatch({token}))
+        },
+
         dispatch: (newState) => {
             this.setState({ ...newState })
         }
