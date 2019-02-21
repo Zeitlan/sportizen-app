@@ -15,16 +15,13 @@ class ConnectionView extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <KeyboardAwareScrollView>
-
+                <KeyboardAvoidingView style={{flex : 1}} enabled >
                     <View style={styles.divider_img}>
                         <Image source={logo} style={styles.image}/>
                     </View>
 
-                    <View style={styles.form}>
-                        
-
-                        <View style={styles.divider}>
+                    <View style={styles.form}>                
+                        <View style={[styles.divider]}>
                             <TextInput
                                 style={styles.text}
                                 placeholder="Nom d'utilisateur / Mail"
@@ -41,7 +38,7 @@ class ConnectionView extends React.Component {
                             />
                         </View>
                     </View>
-                </KeyboardAwareScrollView>
+                </KeyboardAvoidingView>
 
             </View>
         )
@@ -56,7 +53,7 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 5,
         marginTop: 150,
-        marginBottom: 50,
+        marginBottom: 40,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -75,11 +72,13 @@ const styles = StyleSheet.create({
         margin: 20,
         height: 30,
         fontSize: 15,
+        borderBottomWidth: 0.4,
+        borderBottomColor:'#D3D3D3',
         textAlign: 'center'
     },
 
     divider: {
-        backgroundColor: themeStyle.SECONDARY_COLOR,    
+        backgroundColor: '#EFEFEF',    
         margin: 15
     }
 })
