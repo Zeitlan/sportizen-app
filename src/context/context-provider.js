@@ -1,5 +1,6 @@
 import React from 'react'
 import { Context } from './context'
+import { deviceStorage } from '../storage/device-storage'
 
 export class ContextProvider extends React.PureComponent {
     state = {
@@ -48,6 +49,7 @@ export class ContextProvider extends React.PureComponent {
                 })
             
         },
+
         loginUser: (mail, pwd) => {
             const { dispatch } = this.actions
             fetch('https://sportizen.ml/login', {
@@ -67,6 +69,8 @@ export class ContextProvider extends React.PureComponent {
                             info_notifier: 'User signed up',
                             token: json.token
                         })
+                        console.log(deviceStorage)
+                        deviceStorage.saveItem('token', json.token)
                     } else if (status === 400 || status === 401) {
                         dispatch({error_notifier: '[' + status + '] Login Error: ' + json.error})
                     } else {
