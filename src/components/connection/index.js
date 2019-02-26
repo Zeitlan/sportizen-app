@@ -19,30 +19,31 @@ class ConnectionView extends React.Component {
                     </View>
 
                     <View style={styles.form}>                
-                            <View style={[styles.divider, styles.simple_margin]}>
-                                <TextInput
-                                    style={styles.text}
-                                    maxLength={13}
-                                    placeholder="Nom d'utilisateur / Mail"
-                                    textAlign={'left'}
-                                    scrollEnabled={true}
-                                    onChangeText={(username) => this.setState({username})}
-                                />
-                            </View>
-                            <View style={[styles.divider, styles.simple_margin]}>
-                                <TextInput
-                                    style={styles.text}
-                                    placeholder='Mot de passe'
-                                    textAlign={'left'}
-                                    onChangeText={(password) => this.setState({password})}
-                                />
-                            </View>
+                        <View style={[styles.divider, styles.simple_margin]}>
+                            <TextInput
+                                style={styles.text}
+                                maxLength={13}
+                                placeholder="Nom d'utilisateur / Mail"
+                                textAlign={'left'}
+                                scrollEnabled={true}
+                                onChangeText={(username) => this.setState({username})}
+                            />
+                        </View>
+                        <View style={[styles.divider, styles.simple_margin]}>
+                            <TextInput
+                                style={styles.text}
+                                placeholder='Mot de passe'
+                                textAlign={'left'}
+                                onChangeText={(password) => this.setState({password})}
+                            />
+                        </View>
 
-                            <View style={styles.ButtonView}>
-                                <Button
-                                    title="Save"
-                                />
-                            </View>
+                        <View style={styles.ButtonView}>
+                            <Button
+                                type="clear"
+                                title="Save"
+                            />
+                        </View>
                     </View>
                 </KeyboardAvoidingView>
 
@@ -73,6 +74,9 @@ const styles = StyleSheet.create({
     },
     form: {
         flex:3
+    },
+    color: {
+        backgroundColor: '#000'
     },
 
     simple_margin: {
