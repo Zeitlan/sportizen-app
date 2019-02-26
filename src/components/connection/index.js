@@ -1,6 +1,6 @@
 // Dependencies
 import React from 'react'
-import { Text, View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Button, Platform } from 'react-native'
 import logo from '../../../assets/logo.png'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import themeStyle from '../../styles/theme.style'
@@ -22,7 +22,6 @@ class ConnectionView extends React.Component {
 
                     <View style={styles.form}>                
                         <View style={[styles.divider, styles.simple_margin]}>
-                            <Image source={logo}  style={styles.icon}/>
                             <TextInput
                                 style={styles.text}
                                 maxLength={13}
@@ -32,13 +31,18 @@ class ConnectionView extends React.Component {
                                 onChangeText={(username) => this.setState({username})}
                             />
                         </View>
-                        <View style={styles.divider}>
-                            <Image source={logo}  style={styles.icon}/>
+                        <View style={[styles.divider, styles.simple_margin]}>
                             <TextInput
                                 style={styles.text}
                                 placeholder='Mot de passe'
                                 textAlign={'left'}
                                 onChangeText={(password) => this.setState({password})}
+                            />
+                        </View>
+
+                        <View style={styles.ButtonView}>
+                            <Button
+                                title="Save"
                             />
                         </View>
                     </View>
@@ -85,16 +89,15 @@ const styles = StyleSheet.create({
         borderBottomColor:'#D3D3D3'    },
 
     divider: {
-        flexDirection:'row',
         backgroundColor: '#EFEFEF',
         alignItems:'center',
-        justifyContent: 'center',    
+        justifyContent: 'center',
+        height: 50,
         margin: 15
     },
 
-    icon: {
-        margin: 5,
-        width: 15,
-        height: 15
+    ButtonView : {
+        marginTop: 10,
+        alignItems: 'center'
     }
 })
