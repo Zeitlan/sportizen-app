@@ -42,6 +42,7 @@ class ConnectionView extends React.Component {
 
                         <View style={styles.ButtonView}>
                             <Button
+                                type="clear"
                                 title="Save"
                             />
                         </View>
@@ -75,6 +76,9 @@ const styles = StyleSheet.create({
     },
     form: {
         flex:3
+    },
+    color: {
+        backgroundColor: '#000'
     },
 
     simple_margin: {
