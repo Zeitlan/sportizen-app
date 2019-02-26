@@ -1,32 +1,99 @@
 import React from 'react'
 import { Context } from './context'
+import { deviceStorage } from '../storage/device-storage'
 
 export class ContextProvider extends React.PureComponent {
     state = {
-        user: undefined,
-        language: 'Francais',
-        achievements: undefined,
+        token: undefined,
         network_status: undefined,
-        history: undefined,
-        favorites: undefined,
-        routes: undefined
+        error_notifier: undefined,
+        warning_notifier: undefined,
+        info_notifier: undefined,
     }
 
     actions = {
         fetchEntity: (name, stateName) => {
             const { dispatch } = this.actions
-            window.fetch('http://sportizen.ml/api/' + name, {
-                method: 'post',
+            fetch('http://sportizen.ml/api/' + name)
+                .then((response) => {
+                    dispatch({error_notifier : response.status})
+                }).catch((error) => {
+                    dispatch({error_notifier: 'ERROR' + error.message})
+                })
+        },
+
+        signUpUser: (mail, pwd) => {
+            const { dispatch, loginUser } = this.actions
+            fetch('https://sportizen.ml/signup', {
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept' : 'application/json'
                 },
-                body: JSON.stringify(this.getData)
-            }).then((response) => {
-                dispatch({network_status : response.status})
-            }).catch((error) => {
-                console.log('There has been a problem with your fetch operation: ' + error.message)
-                dispatch({network_status: 'ERROR' + error.message})
+                body: JSON.stringify({
+                    email: mail,
+                    password: pwd,
+                })
+            }).then((r) => r.json().then(json => ({status: r.status, json: json})))
+                .then(({status, json}) => {
+                    if (status === 200) {
+                        dispatch({info_notifier: 'User signed up'})
+                    } else if (status === 400) {
+                        dispatch({error_notifier: '[400] Signed up Error: ' + json.error.message})
+                    } else {
+                        dispatch({error_notifier: '[' + status + '] Other Error: ' + json.error})
+                    }
+                    loginUser(mail, pwd)
+                }).catch((error) => {
+                    dispatch({error_notifier: 'ERROR' + error.message})
+                })
+            
+        },
+
+        loginUser: (mail, pwd) => {
+            const { dispatch } = this.actions
+            fetch('https://sportizen.ml/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept' : 'application/json'
+                },
+                body: JSON.stringify({
+                    email: mail,
+                    password: pwd,
+                })
+            }).then((r) => r.json().then(json => ({status: r.status, json: json})))
+                .then(({status, json}) => {
+                    if (status === 200) {
+                        dispatch({
+                            info_notifier: 'User signed up',
+                            token: json.token
+                        })
+                        console.log(deviceStorage)
+                        deviceStorage.saveItem('token', json.token)
+                    } else if (status === 400 || status === 401) {
+                        dispatch({error_notifier: '[' + status + '] Login Error: ' + json.error})
+                    } else {
+                        dispatch({error_notifier: '[' + status + '] Other Error: ' + json.error})
+                    }
+                }).catch((error) => {
+                    dispatch({error_notifier: 'ERROR' + error.message})
+                })
+            
+        },
+
+        logoutUser: () => {
+            const { dispatch } = this.actions
+            dispatch({
+                token: undefined
             })
+            deviceStorage.removeItem('token')
+        },
+        
+        checkLoginUser: () => {
+            const { dispatch } = this.actions
+            deviceStorage.loadItem('token')
+                .then((token) => dispatch({token}))
         },
 
         dispatch: (newState) => {

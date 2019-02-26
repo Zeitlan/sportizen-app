@@ -1,17 +1,22 @@
+// Dependencies
 import React from 'react'
+
+// Components
 import { Text, View, Image, TextInput, StyleSheet } from 'react-native'
-import logo from '../../../assets/logo.png'
 import { withContext } from '../../context'
 
-@withContext(['network_status'], ['fetchEntity'])
+// Assets
+import logo from '../../../assets/logo.png'
+
+@withContext(['network_status'], ['signUpUser'])
 class ConnectionView extends React.Component {
     state = {
         username: undefined,
         password: undefined
     }
     componentDidMount() {
-        const { actions: { fetchEntity } } = this.props
-        fetchEntity('user', 'user')
+        const { actions: { signUpUser } } = this.props
+        signUpUser('test@test.fr', 'AntoineNul87')
     }
     render() {
         const { state: {network_status} } = this.props
