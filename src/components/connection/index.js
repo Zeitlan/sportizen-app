@@ -14,7 +14,7 @@ class ConnectionView extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <KeyboardAvoidingView style={{flex : 1}} enabled >
+                <KeyboardAvoidingView style={{flex : 1}}>
                     <View style={styles.divider_img}>
                         <Image source={logo} style={styles.image}/>
                     </View>
@@ -38,7 +38,7 @@ class ConnectionView extends React.Component {
                                 onChangeText={(password) => this.setState({password})}
                             />
                         </View>
-                        <DefaultButton button_text='Connect'/>
+                        <DefaultButton button_text='Connect' button_style={styles.button_style}/>
                     </View>
                 </KeyboardAvoidingView>
 
@@ -93,10 +93,12 @@ const styles = StyleSheet.create({
         margin: 15
     },
 
-    ButtonView : {
-        marginTop: 10,
+    button_style: {
+        marginTop: 20,
+        margin: 80,
+        backgroundColor: themeStyle.SECONDARY_COLOR,
+        height: 40,
         alignItems: 'center',
-        width: 100,
-        backgroundColor: '#000'
+        justifyContent: 'center'
     }
 })

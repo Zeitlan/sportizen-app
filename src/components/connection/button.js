@@ -3,9 +3,9 @@ import { Text, TouchableOpacity } from 'react-native'
 
 const DefaultButton = (props) => {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity style={props.button_style}>
             <Text>      
-                TExtœ
+                {props.button_text}
             </Text> 
         </TouchableOpacity>
     )
