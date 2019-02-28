@@ -1,6 +1,6 @@
 // Dependencies
 import React from 'react'
-import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView} from 'react-native'
+import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text} from 'react-native'
 import logo from '../../../assets/logo.png'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import themeStyle from '../../styles/theme.style'
@@ -41,6 +41,14 @@ class ConnectionView extends React.Component {
                             />
                         </View>
                         <DefaultButton button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
+                        <View style={styles.divider_suscribe_pass}>
+                            <View style={{alignItems:'flex-start', flex: 1, paddingStart: 20}}>
+                                <Text>Inscrivez vous</Text>
+                            </View>
+                            <View style={{alignItems: 'flex-end', flex: 1, paddingEnd: 20}}>
+                                <Text>mot de passe oublié</Text>
+                            </View>
+                        </View>
                     </View>
                 </View>
             </KeyboardAvoidingView>
@@ -67,7 +75,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#FFF',
     },
     form: {
         flex:3
@@ -98,6 +106,7 @@ const styles = StyleSheet.create({
     button_style: {
         marginTop: 20,
         margin: 100,
+        marginBottom: 5,
         backgroundColor: themeStyle.SECONDARY_COLOR,
         height: 40,
         borderRadius: 5,
@@ -107,5 +116,11 @@ const styles = StyleSheet.create({
 
     text_style: {
         color: '#FFF'
+    },
+
+    divider_suscribe_pass: {
+        marginTop: 15,
+        alignSelf: 'stretch',
+        flexDirection: 'row',
     }
 })
