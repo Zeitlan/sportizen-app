@@ -1,9 +1,10 @@
 // Dependencies
 import React from 'react'
-import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Button, Platform } from 'react-native'
+import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView} from 'react-native'
 import logo from '../../../assets/logo.png'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import themeStyle from '../../styles/theme.style'
+import DefaultButton from './button'
 
 
 class ConnectionView extends React.Component {
@@ -39,13 +40,7 @@ class ConnectionView extends React.Component {
                                 onChangeText={(password) => this.setState({password})}
                             />
                         </View>
-
-                        <View style={styles.ButtonView}>
-                            <Button
-                                type="clear"
-                                title="Save"
-                            />
-                        </View>
+                        <DefaultButton button_text='Connect'/>
                     </View>
                 </KeyboardAvoidingView>
 
@@ -102,6 +97,8 @@ const styles = StyleSheet.create({
 
     ButtonView : {
         marginTop: 10,
-        alignItems: 'center'
+        alignItems: 'center',
+        width: 100,
+        backgroundColor: '#000'
     }
 })
