@@ -40,15 +40,18 @@ class ConnectionView extends React.Component {
                                 onChangeText={(password) => this.setState({password})}
                             />
                         </View>
-                        <DefaultButton button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
+
                         <View style={styles.divider_suscribe_pass}>
                             <View style={{alignItems:'flex-start', flex: 1, paddingStart: 20}}>
-                                <Text>Inscrivez vous</Text>
+                                <Text style={{fontSize: 10}}>Inscrivez vous</Text>
                             </View>
                             <View style={{alignItems: 'flex-end', flex: 1, paddingEnd: 20}}>
-                                <Text>mot de passe oublié</Text>
+                                <Text style={{fontSize: 10}}>mot de passe oublié?</Text>
                             </View>
                         </View>
+
+                        <DefaultButton button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
+                       
                     </View>
                 </View>
             </KeyboardAvoidingView>
