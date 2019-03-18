@@ -4,11 +4,12 @@ import { deviceStorage } from '../storage/device-storage'
 
 export class ContextProvider extends React.PureComponent {
     state = {
-        token: undefined,
-        network_status: undefined,
-        error_notifier: undefined,
-        warning_notifier: undefined,
-        info_notifier: undefined,
+        user: undefined,
+        language: 'Francais',
+        achievements: undefined,
+        history: undefined,
+        favorites: undefined,
+        routes: undefined
     }
 
     actions = {

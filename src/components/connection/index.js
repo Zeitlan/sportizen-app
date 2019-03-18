@@ -1,48 +1,61 @@
 // Dependencies
 import React from 'react'
-
-// Components
-import { Text, View, Image, TextInput, StyleSheet } from 'react-native'
-import { withContext } from '../../context'
-
-// Assets
+import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text} from 'react-native'
 import logo from '../../../assets/logo.png'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import themeStyle from '../../styles/theme.style'
+import DefaultButton from './button'
 
-@withContext(['network_status'], ['signUpUser'])
+
 class ConnectionView extends React.Component {
     state = {
         username: undefined,
         password: undefined
     }
-    componentDidMount() {
-        const { actions: { signUpUser } } = this.props
-        signUpUser('test@test.fr', 'AntoineNul87')
-    }
+    
     render() {
-        const { state: {network_status} } = this.props
         return (
-            <View style={styles.container}>
-                <Image source={logo} style={styles.image}/>
-                <View style={styles.form}>
-                    <TextInput
-                        style={styles.text}
-                        placeholder="Nom d'utilisateur / Mail"
-                        textAlign={'center'}
-                        onChangeText={(username) => this.setState({username})}
-                    />
-                    <TextInput
-                        style={styles.text}
-                        placeholder='Mot de passe'
-                        textAlign={'center'}
-                        onChangeText={(password) => this.setState({password})}
-                    />
-                    <Text>
-                        Network status: {(network_status === undefined) ? 
-                            'Waiting for network' 
-                            : network_status}
-                    </Text>
+            <KeyboardAvoidingView style={{flex : 1}} behavior="padding" enabled>
+                <View style={styles.container}>
+                    <View style={styles.divider_img}>
+                        <Image source={logo} style={styles.image}/>
+                    </View>
+
+                    <View style={styles.form}>                
+                        <View style={[styles.divider, styles.simple_margin]}>
+                            <TextInput
+                                style={styles.text}
+                                maxLength={13}
+                                placeholder="Nom d'utilisateur / Mail"
+                                textAlign={'left'}
+                                scrollEnabled={true}
+                                onChangeText={(username) => this.setState({username})}
+                            />
+                        </View>
+                        <View style={[styles.divider, styles.simple_margin]}>
+                            <TextInput
+                                style={styles.text}
+                                placeholder='Mot de passe'
+                                textAlign={'left'}
+                                onChangeText={(password) => this.setState({password})}
+                            />
+                        </View>
+
+                        <View style={styles.divider_suscribe_pass}>
+                            <View style={{alignItems:'flex-start', flex: 1, paddingStart: 20}}>
+                                <Text style={{fontSize: 10}}>Inscrivez vous</Text>
+                            </View>
+                            <View style={{alignItems: 'flex-end', flex: 1, paddingEnd: 20}}>
+                                <Text style={{fontSize: 10}}>mot de passe oublié?</Text>
+                            </View>
+                        </View>
+
+                        <DefaultButton button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
+                       
+                    </View>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
+
         )
     }
 }
@@ -51,25 +64,66 @@ export default ConnectionView
     
 // CSS
 const styles = StyleSheet.create({
+    divider_img: {
+        flex: 1,
+        margin: 5,
+        marginTop: 150,
+        marginBottom: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     image: {
         flex: 1,
         resizeMode: 'contain',
-        margin: 5,
-        marginTop: 200,
-        marginBottom: 50
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: '#FFF',
     },
     form: {
         flex:3
     },
+    color: {
+        backgroundColor: '#000'
+    },
+
+    simple_margin: {
+        marginBottom: 5
+    },
+
     text: {
-        height: 60,
-        fontSize: 20,
-        textAlign: 'center',
+        margin: 20,
+        height: 30,
+        fontSize: 15,
+        borderBottomWidth: 1,
+        borderBottomColor:'#D3D3D3'    },
+
+    divider: {
+        backgroundColor: '#EFEFEF',
+        alignItems:'center',
+        justifyContent: 'center',
+        height: 50,
+        margin: 15
+    },
+
+    button_style: {
+        marginTop: 20,
+        margin: 100,
+        marginBottom: 5,
+        backgroundColor: themeStyle.SECONDARY_COLOR,
+        height: 40,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    text_style: {
+        color: '#FFF'
+    },
+
+    divider_suscribe_pass: {
+        marginTop: 15,
+        alignSelf: 'stretch',
+        flexDirection: 'row',
     }
 })
