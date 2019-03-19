@@ -2,26 +2,23 @@
 import React from 'react'
 import { View, StyleSheet, Text} from 'react-native'
 import MapView from 'react-native-maps'
+import { withContext } from '../../context'
 
+@withContext(['position', 'logs'],['watchUserPosition', 'clearUserPosition'])
 class CustomMapView extends React.Component {
 
-
-    state = {
-        position: undefined
+    componentDidMount() {
+        const { actions: { watchUserPosition } } = this.props
+        watchUserPosition()
     }
 
-    componentDidMount() {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                this.setState({ position })
-            },
-            error => Alert.alert(error.message),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-        )
+    componentWillUnmount() {
+        const { actions: { clearUserPosition }} = this.props
+        clearUserPosition()
     }
     
     render() {
-        const { position } = this.state
+        const { state: {position} } = this.props
         console.log(position)
         return (
             <View style={styles.container}>
@@ -30,13 +27,15 @@ class CustomMapView extends React.Component {
                     :
                     <MapView
                         style={styles.map}
+                        showsUserLocation={true}
                         initialRegion={{
                             latitude: position.coords.latitude,
                             longitude: position.coords.longitude,
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421,
                         }}
-                    />}
+                    >
+                    </MapView>}
             </View>
         )
     }
