@@ -2,18 +2,23 @@
 import React from 'react'
 import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text} from 'react-native'
 import logo from '../../../assets/logo.png'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import themeStyle from '../../styles/theme.style'
 import DefaultButton from './button'
+import { withContext } from '../../context'
 
-
+@withContext(['user', 'logs'],['loginUser'])
 class ConnectionView extends React.Component {
     state = {
         username: undefined,
         password: undefined
     }
+
+    componentDidMount() {
+    }
     
     render() {
+        const { state: {user, logs} } = this.props
+        const { actions: { loginUser } } = this.props
         return (
             <KeyboardAvoidingView style={{flex : 1}} behavior="padding" enabled>
                 <View style={styles.container}>
@@ -28,7 +33,6 @@ class ConnectionView extends React.Component {
                                 maxLength={13}
                                 placeholder="Nom d'utilisateur / Mail"
                                 textAlign={'left'}
-                                scrollEnabled={true}
                                 onChangeText={(username) => this.setState({username})}
                             />
                         </View>
@@ -49,9 +53,8 @@ class ConnectionView extends React.Component {
                                 <Text style={{fontSize: 10}}>mot de passe oublié?</Text>
                             </View>
                         </View>
-
+                        <Text>{user.token === undefined ? 'No token yet..' : user.token}</Text>
                         <DefaultButton button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
-                       
                     </View>
                 </View>
             </KeyboardAvoidingView>

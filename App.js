@@ -6,9 +6,9 @@ import { ContextProvider } from './src/context'
 export default class App extends React.Component {
     render() {
         return (
-            <View style={styles.container}>
+            <ContextProvider>
                 <ConnectionView/>
-            </View>
+            </ContextProvider>
         )
     }
 }
