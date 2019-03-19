@@ -34,9 +34,25 @@ export default class Meteo extends React.Component{
         console.log(this.longitude);
     }
 
+    getWeather(){
+
+        // Construct the API url to call
+        let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + this.state.latitude + '&lon=' + this.state.longitude + '&units=metric&appid=YOUR API KEY HERE';
+
+        // Call the API, and set the state of the weather forecast
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                this.setState((prevState, props) => ({
+                    forecast: data
+                }));
+            })
+    }
+
     render()
     {
-        <Text> salut </Text>
+
+        return null
     }
 }
 
