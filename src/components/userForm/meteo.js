@@ -30,14 +30,12 @@ export default class Meteo extends React.Component{
             (error) => this.setState({ forecast: error.message }),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
-        console.log(this.latitude);
-        console.log(this.longitude);
     }
 
     getWeather(){
 
         // Construct the API url to call
-        let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + this.state.latitude + '&lon=' + this.state.longitude + '&units=metric&appid=YOUR API KEY HERE';
+        let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + this.state.latitude + '&lon=' + this.state.longitude + '&units=metric&APPID=79d8299eaf52439691aa531853ba88d1';
 
         // Call the API, and set the state of the weather forecast
         fetch(url)
@@ -51,8 +49,10 @@ export default class Meteo extends React.Component{
 
     render()
     {
-
-        return null
+        console.log(this.state)
+        return(
+            <Text>test</Text>
+        )
     }
 }
 
