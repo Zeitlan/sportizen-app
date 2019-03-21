@@ -1,7 +1,7 @@
 // Dependencies
 import React from 'react'
 import { View, StyleSheet, Text, Image} from 'react-native'
-import MapView, { Marker, Callout } from 'react-native-maps'
+import MapView, { Marker, Callout, Polyline } from 'react-native-maps'
 import { withContext } from '../../context'
 
 @withContext(['position', 'logs'],['watchUserPosition', 'clearUserPosition'])
@@ -20,7 +20,7 @@ class CustomMapView extends React.Component {
     }
 
     componentWillUnmount() {
-        const { actions: { clearUserPosition }} = this.props
+        const { actions: { clearUserPosition } } = this.props
         clearUserPosition()
     }
 
@@ -51,6 +51,13 @@ class CustomMapView extends React.Component {
                         onPress = {this.onMapClickEvent}
                         onPoiClick	= {this.onMapClickEvent}
                     >
+                        <Polyline
+                            coordinates={[{ longitude: 2.362977, latitude: 48.815399 },
+                                { longitude: 2.362771, latitude: 48.815365 },
+                                { longitude: 2.360882, latitude: 48.815065 }
+                            ]}
+                            strokeWidth={1}
+                        />
                         {this.state.poi !== undefined && (
                             <Marker
                                 coordinate={this.state.poi.coordinate}>
