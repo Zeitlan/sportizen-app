@@ -123,7 +123,8 @@ export default class Meteo extends React.Component{
                     forecast: data,
                     api_called: true
                 }));
-            })
+                this.getStyleMeteo();
+            })    
     }
 
     getStyleMeteo(){
@@ -139,7 +140,7 @@ export default class Meteo extends React.Component{
         else if (value >= 802)
             this.setState({
                 backgroundColor: ColorCloud,
-                icon: ''});
+                icon: 'cloud_white'});
         else if (value >= 600 && value <= 622) 
             this.setState({
                 backgroundColor: ColorCloud,
