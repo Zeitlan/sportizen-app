@@ -1,6 +1,7 @@
 import React from 'react'
 import { Context } from './context'
 import { authActions } from './actions/authActions'
+import { geoActions } from './actions/geoActions'
 
 export class ContextProvider extends React.PureComponent {
     state = {
@@ -9,7 +10,7 @@ export class ContextProvider extends React.PureComponent {
             name: undefined,
             token: undefined
         },
-
+        position: undefined,
         achievements: undefined,
         history: undefined,
         favorites: undefined,
@@ -37,6 +38,7 @@ export class ContextProvider extends React.PureComponent {
             this.setState({ ...newState })
         },
         ...authActions(this),
+        ...geoActions(this)
     }
 
     render () {
