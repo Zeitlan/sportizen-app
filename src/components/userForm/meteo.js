@@ -56,8 +56,32 @@ export default class Meteo extends React.Component{
         var value = this.state.forecast.list[0].weather[0].id;
         if (value == 800)
             this.setState({
-                backgroundColor: '#FFFFFF',
+                backgroundColor: ColorSun,
+                icon: 'soleil_white'});
+        else if (value == 801)
+            this.setState({
+                backgroundColor: ColorSunCloud,
+                icon: 'nuage_white'}); 
+        else if (value >= 802)
+            this.setState({
+                backgroundColor: ColorCloud,
                 icon: ''});
+        else if (value >= 600 && value <= 622) 
+            this.setState({
+                backgroundColor: ColorCloud,
+                icon: 'snow_white'});
+        else if ((value >= 500 && value <= 531) || (value >= 300 && value <= 321))
+            this.setState({
+                backgroundColor: ColorRain,
+                icon: 'pluie_white'});
+        else if ((value >= 200 && value <= 232))
+            this.setState({
+                backgroundColor: ColorThunder,
+                icon: 'Thunder_Logo_white'});
+        else
+            this.setState({
+                backgroundColor: ColorSun,
+                icon: 'soleil_white'});                                        
           
     }
 
@@ -100,5 +124,7 @@ const styles = StyleSheet.create({
 })
 
 const ColorSun = '#e5c852';
+const ColorSunCloud = '#32bebd';
 const ColorCloud = '#999999';
 const ColorThunder='#FF0000';
+const ColorRain='#090084';
