@@ -1,6 +1,6 @@
 /* eslint-disable semi */
 import React from 'react'
-import { View, StyleSheet, Text} from 'react-native'
+import { View, StyleSheet, Text, Image} from 'react-native'
 
 export default class Meteo extends React.Component{
 
@@ -13,7 +13,7 @@ export default class Meteo extends React.Component{
             error: '',
             forecast: [],
             api_called: false,
-            icons: '',
+            icon: '',
             backgroundColor: ''
         };
         this.getLocation();
@@ -49,7 +49,8 @@ export default class Meteo extends React.Component{
                     forecast: data,
                     api_called: true
                 }));
-            })
+                this.getStyleMeteo();
+            })    
     }
 
     getStyleMeteo(){
@@ -65,7 +66,7 @@ export default class Meteo extends React.Component{
         else if (value >= 802)
             this.setState({
                 backgroundColor: ColorCloud,
-                icon: ''});
+                icon: 'cloud_white'});
         else if (value >= 600 && value <= 622) 
             this.setState({
                 backgroundColor: ColorCloud,
@@ -90,15 +91,17 @@ export default class Meteo extends React.Component{
     {
         if (this.state.error != '' || !this.state.api_called)
             return (<Text> loading</Text>)
-
-        else
-            console.log(this.state.date)    
+        var logo_meteo = '../../../assets/icons_meteo/' + this.state.icon
+        console.log(logo_meteo)
         return(
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: this.state.backgroundColor}}>
                 
                 <Text style={styles.cityName}>
                     {this.state.forecast.city.name}
                 </Text>
+
+                <View style={{flexDirection: 'row'}}>
+                </View>
 
                 <Text style={styles.cityName}>
                     {this.state.forecast.list[0].dt_txt}
@@ -120,8 +123,16 @@ const styles = StyleSheet.create({
         marginTop: 20,
         color: '#000000',
         fontSize: 20
+    },
+
+    logoMeteo: {
+        justifyContent: 'flex-start',
+        padding: 10,
+        width: 50,
+        height: 50
     }
 })
+
 
 const ColorSun = '#e5c852';
 const ColorSunCloud = '#32bebd';
