@@ -1,13 +1,13 @@
 import React from 'react'
 import { View, Image, TextInput, StyleSheet } from 'react-native'
-import ConnectionView from './src/components/connection'
+import CustomMapView from './src/components/map'
 import { ContextProvider } from './src/context'
 
 export default class App extends React.Component {
     render() {
         return (
             <ContextProvider>
-                <ConnectionView/>
+                <CustomMapView/>
             </ContextProvider>
         )
     }
