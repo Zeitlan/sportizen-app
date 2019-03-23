@@ -1,6 +1,6 @@
 /* eslint-disable semi */
 import React from 'react'
-import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text} from 'react-native'
+import { View, StyleSheet, Text} from 'react-native'
 
 export default class Meteo extends React.Component{
 
@@ -12,8 +12,9 @@ export default class Meteo extends React.Component{
             longitude: 0,
             error: '',
             forecast: [],
-            city: '',
-            api_called: false
+            api_called: false,
+            icons: '',
+            backgroundColor: ''
         };
         this.getLocation();
     }
@@ -51,6 +52,16 @@ export default class Meteo extends React.Component{
             })
     }
 
+    getStyleMeteo(){
+        var value = this.state.forecast.list[0].weather[0].id;
+        if (value == 800)
+            this.setState({
+                backgroundColor: '#FFFFFF',
+                icon: ''});
+          
+    }
+
+
     render()
     {
         if (this.state.error != '' || !this.state.api_called)
@@ -59,11 +70,16 @@ export default class Meteo extends React.Component{
         else
             console.log(this.state.date)    
         return(
-            <View>
-                <Text style={{marginTop: 20}}>
+            <View style={{flex: 1}}>
+                
+                <Text style={styles.cityName}>
+                    {this.state.forecast.city.name}
+                </Text>
+
+                <Text style={styles.cityName}>
                     {this.state.forecast.list[0].dt_txt}
                 </Text>
-                <View>
+                <View style={{flex: 1}}>
                     <Text>
                         {this.state.forecast.list[0].main.temp}
                     </Text>
@@ -73,3 +89,16 @@ export default class Meteo extends React.Component{
     }
 }
 
+const styles = StyleSheet.create({
+    cityName: {
+        flex: 1,
+        textAlign: 'center',
+        marginTop: 20,
+        color: '#000000',
+        fontSize: 20
+    }
+})
+
+const ColorSun = '#e5c852';
+const ColorCloud = '#999999';
+const ColorThunder='#FF0000';
