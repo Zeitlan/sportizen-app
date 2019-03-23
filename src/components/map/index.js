@@ -20,8 +20,6 @@ class CustomMapView extends React.Component {
     }
 
     componentWillUnmount() {
-        const { actions: { clearUserPosition } } = this.props
-        clearUserPosition()
     }
 
     onMapClickEvent(e) {
