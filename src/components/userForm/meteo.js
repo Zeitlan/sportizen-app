@@ -20,14 +20,9 @@ export default class Meteo extends React.Component{
             longitude: 0,
             error: '',
             forecast: [],
-<<<<<<< HEAD
             api_called: false,
             icon: 0,
             backgroundColor: ''
-=======
-            city: '',
-            api_called: false
->>>>>>> chore(meteo): finished icons + added general style + correct values from api in layout
         };
         this.getLocation();
     }
@@ -53,7 +48,6 @@ export default class Meteo extends React.Component{
 
         // Construct the API url to call
         let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + this.state.latitude + '&lon=' + this.state.longitude + '&units=metric&lang=fr&APPID=79d8299eaf52439691aa531853ba88d1';
-<<<<<<< HEAD
 
         // Call the API, and set the state of the weather forecast
         fetch(url)
@@ -120,8 +114,6 @@ export default class Meteo extends React.Component{
 
         // Construct the API url to call
         let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + this.state.latitude + '&lon=' + this.state.longitude + '&units=metric&APPID=79d8299eaf52439691aa531853ba88d1';
-=======
->>>>>>> chore(meteo): finished icons + added general style + correct values from api in layout
 
         // Call the API, and set the state of the weather forecast
         fetch(url)
@@ -134,9 +126,18 @@ export default class Meteo extends React.Component{
             })
     }
 
+    getStyleMeteo(){
+        var value = this.state.forecast.list[0].weather[0].id;
+        if (value == 800)
+            this.setState({
+                backgroundColor: '#FFFFFF',
+                icon: ''});
+          
+    }
+
+
     render()
     {
-<<<<<<< HEAD
         if (this.state.error != '')
             return (
                 <View style={{alignItems:'center', justifyContent: 'center', height: 50}}>
@@ -179,22 +180,6 @@ export default class Meteo extends React.Component{
                             <Text style={styles.date}>{hours}</Text>
                         </View>
                     </View>
-=======
-        if (this.state.error != '' || !this.state.api_called)
-            return (<Text> loading</Text>)
-
-        else
-            console.log(this.state.date)    
-        return(
-            <View>
-                <Text style={{marginTop: 20}}>
-                    {this.state.forecast.list[0].dt_txt}
-                </Text>
-                <View>
-                    <Text>
-                        {this.state.forecast.list[0].main.temp}
-                    </Text>
->>>>>>> chore(meteo): finished icons + added general style + correct values from api in layout
                 </View>
             </View>
         )
