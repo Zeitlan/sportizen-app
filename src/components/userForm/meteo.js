@@ -105,24 +105,20 @@ export default class Meteo extends React.Component{
         if (this.state.error != '' || !this.state.api_called)
             return (<Text> loading</Text>)
         return(
-            <View style={{flex: 1, backgroundColor: this.state.backgroundColor}}>
+            <View style={{backgroundColor: this.state.backgroundColor}}>
                 
                 <Text style={styles.cityName}>
                     {this.state.forecast.city.name}
                 </Text>
 
                 <View style={{flexDirection: 'row'}}>
-                    <Image styles={styles.logoMeteo} source={this.state.icon}></Image>
+                    <Image style={styles.logoMeteo} source={this.state.icon} resizeMode='contain'></Image>
+                    <Text style={styles.temperature}>{this.state.forecast.list[0].main.temp}°C</Text>
                 </View>
 
                 <Text style={styles.cityName}>
                     {this.state.forecast.list[0].dt_txt}
                 </Text>
-                <View style={{flex: 1}}>
-                    <Text>
-                        {this.state.forecast.list[0].main.temp}
-                    </Text>
-                </View>
             </View>
         )
     }
@@ -130,18 +126,30 @@ export default class Meteo extends React.Component{
 
 const styles = StyleSheet.create({
     cityName: {
-        flex: 1,
+        height: 30,
         textAlign: 'center',
-        marginTop: 20,
-        color: '#000000',
+        marginTop: 10,
+        color: '#FFFFFF',
         fontSize: 20
     },
 
+    temperature: {
+        textAlign: 'center',
+        fontSize: 10,
+        color: '#FFFFFF',
+        alignItems: 'center',
+        textAlignVertical: 'center',
+        fontSize: 30
+    },
+
     logoMeteo: {
-        justifyContent: 'flex-start',
-        padding: 10,
-        width: 25,
-        height: 25
+        margin: 10,
+        marginTop: 0,
+        marginBottom: 0,
+        alignItems:'center',
+        justifyContent:'flex-start',
+        width: 80,
+        height: 80
     }
 })
 
