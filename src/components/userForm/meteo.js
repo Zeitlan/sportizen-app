@@ -1,6 +1,7 @@
 /* eslint-disable semi */
 import React from 'react'
-import { View, StyleSheet, Text, Image} from 'react-native'
+import { View, StyleSheet, Text, Image, ActivityIndicator} from 'react-native'
+import themeStyle from '../../styles/theme.style'
 import pluie_white from '../../../assets/icons_meteo/pluie_white.png'
 import cloud_white from '../../../assets/icons_meteo/cloud_white.png'
 import nuage_white from '../../../assets/icons_meteo/nuage_white.png'
@@ -61,6 +62,7 @@ export default class Meteo extends React.Component{
 
     getStyleMeteo(){
         var value = this.state.forecast.list[0].weather[0].id;
+        
         if (value == 800)
             this.setState({
                 backgroundColor: ColorSun,
@@ -95,17 +97,38 @@ export default class Meteo extends React.Component{
             this.setState({
                 backgroundColor: ColorSun,
                 icon: soleil_white,
-                api_called: true});                                      
+                api_called: true});                               
           
     }
 
+    GetHoursMinute(){
+        let hours = new Date().getHours();
+        let minutes = new Date().getMinutes();
+        
+        let str_hours = (hours > 10)? '' + hours : '0' + hours;
+        let str_minutes = (minutes > 10)? '' + minutes : '0' + minutes;
+        return str_hours + ':' + str_minutes
+    }
 
     render()
     {
-        if (this.state.error != '' || !this.state.api_called)
-            return (<Text> loading</Text>)
-        var hours = new Date().getHours() + ':' + new Date().getMinutes()
-        console.log(hours)
+        if (this.state.error != '')
+            return (
+                <View style={{alignItems:'center', justifyContent: 'center', height: 50}}>
+                    <Text>Une erreur est survenue sur l'affichage de la météo: verifiez que vous avez bien activé vos données GPS </Text>
+                </View>
+            )
+
+        else if (!this.state.api_called)
+            return (
+                <View style={{alignItems: 'center', justifyContent: 'center', height: 50}}>
+                    <ActivityIndicator size='large' color = {themeStyle.PRIMARY_COLOR}/>
+                </View>
+            )
+
+        let hours = this.GetHoursMinute()
+        var description = this.state.forecast.list[0].weather[0].description
+       
         return(
             <View style={{backgroundColor: this.state.backgroundColor}}>  
                 <Text style={styles.cityName}>
@@ -114,12 +137,15 @@ export default class Meteo extends React.Component{
                 <View style={{borderBottomColor:'#FFFFFF', borderBottomWidth: 1, margin: 15, marginTop: 2, marginBottom: 5}}></View>
 
                 <View style={{flexDirection: 'row'}}>
-                    <View style={{flexDirection: 'row', flex: 1}}>
+                    <View style={{flexDirection: 'row', flex: 2.5}}>
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                             <Image style={styles.logoMeteo} source={this.state.icon} resizeMode='contain'></Image>
                         </View>
                         <View style={{flex: 1, justifyContent: 'center'}}>
                             <Text style={styles.temperature}>{this.state.forecast.list[0].main.temp}°C</Text>
+                        </View>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <Text style={styles.description}>{description}</Text>
                         </View>
                     </View>
                     <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'flex-end'}}>
@@ -145,7 +171,7 @@ const styles = StyleSheet.create({
 
     date: {
         color: '#FFFFFF',
-        fontSize: 10,
+        fontSize: 15,
         margin: 5,
         marginTop: 0,
         marginBottom: 0,
@@ -153,19 +179,22 @@ const styles = StyleSheet.create({
     },
 
     temperature: {
-        marginLeft: 3,
         textAlign: 'center',
         color: '#FFFFFF',
-        alignItems: 'center',
         fontSize: 25
     },
 
+    description: {
+        textAlign: 'center',
+        marginLeft: 5,
+        fontSize: 15,
+        color: '#FFFFFF'
+    },
+
     logoMeteo: {
-        margin: 10,
-        marginTop: 0,
-        marginBottom: 0,
-        width: 80,
-        height: 80
+        marginLeft: 5,
+        width: 60,
+        height: 60
     }
 })
 
@@ -174,4 +203,4 @@ const ColorSun = '#e5c852';
 const ColorSunCloud = '#32bebd';
 const ColorCloud = '#999999';
 const ColorThunder='#FF0000';
-const ColorRain='#090084';
+const ColorRain='#87CEEB';
