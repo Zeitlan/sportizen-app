@@ -39,7 +39,7 @@ export default class Meteo extends React.Component{
                         .getWeather() }
                 )
             },
-            (error) => this.setState({ forecast: error.message }),
+            (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
     }
@@ -115,7 +115,7 @@ export default class Meteo extends React.Component{
         if (this.state.error != '')
             return (
                 <View style={{alignItems:'center', justifyContent: 'center', height: 50}}>
-                    <Text>Une erreur est survenue sur l'affichage de la météo: verifiez que vous avez bien activé vos données GPS </Text>
+                    <Text style={{textAlign: 'center'}}>Une erreur est survenue sur l'affichage de la météo: verifiez que vous avez bien activé vos données GPS </Text>
                 </View>
             )
 
