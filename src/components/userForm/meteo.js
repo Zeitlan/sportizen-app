@@ -1,6 +1,13 @@
 /* eslint-disable semi */
 import React from 'react'
 import { View, StyleSheet, Text, Image} from 'react-native'
+import pluie_white from '../../../assets/icons_meteo/pluie_white.png'
+import cloud_white from '../../../assets/icons_meteo/cloud_white.png'
+import nuage_white from '../../../assets/icons_meteo/nuage_white.png'
+import snow_white from '../../../assets/icons_meteo/snow_white.png'
+import soleil_white from '../../../assets/icons_meteo/soleil_white.png'
+import Thunder_Logo_white from '../../../assets/icons_meteo/Thunder_Logo_white.png'
+
 
 export default class Meteo extends React.Component{
 
@@ -13,7 +20,7 @@ export default class Meteo extends React.Component{
             error: '',
             forecast: [],
             api_called: false,
-            icon: '',
+            icon: 0,
             backgroundColor: ''
         };
         this.getLocation();
@@ -47,7 +54,6 @@ export default class Meteo extends React.Component{
             .then(data => {
                 this.setState((prevState, props) => ({
                     forecast: data,
-                    api_called: true
                 }));
                 this.getStyleMeteo();
             })    
@@ -58,31 +64,38 @@ export default class Meteo extends React.Component{
         if (value == 800)
             this.setState({
                 backgroundColor: ColorSun,
-                icon: 'soleil_white'});
+                icon: soleil_white,
+                api_called: true});
         else if (value == 801)
             this.setState({
                 backgroundColor: ColorSunCloud,
-                icon: 'nuage_white'}); 
+                icon: nuage_white,
+                api_called: true}); 
         else if (value >= 802)
             this.setState({
                 backgroundColor: ColorCloud,
-                icon: 'cloud_white'});
+                icon: cloud_white,
+                api_called: true});
         else if (value >= 600 && value <= 622) 
             this.setState({
                 backgroundColor: ColorCloud,
-                icon: 'snow_white'});
+                icon: snow_white,
+                api_called: true});
         else if ((value >= 500 && value <= 531) || (value >= 300 && value <= 321))
             this.setState({
                 backgroundColor: ColorRain,
-                icon: 'pluie_white'});
+                icon: pluie_white,
+                api_called: true});
         else if ((value >= 200 && value <= 232))
             this.setState({
                 backgroundColor: ColorThunder,
-                icon: 'Thunder_Logo_white'});
+                icon: Thunder_Logo_white,
+                api_called: true});
         else
             this.setState({
                 backgroundColor: ColorSun,
-                icon: 'soleil_white'});                                        
+                icon: soleil_white,
+                api_called: true});                                      
           
     }
 
@@ -91,8 +104,6 @@ export default class Meteo extends React.Component{
     {
         if (this.state.error != '' || !this.state.api_called)
             return (<Text> loading</Text>)
-        var logo_meteo = '../../../assets/icons_meteo/' + this.state.icon
-        console.log(logo_meteo)
         return(
             <View style={{flex: 1, backgroundColor: this.state.backgroundColor}}>
                 
@@ -101,6 +112,7 @@ export default class Meteo extends React.Component{
                 </Text>
 
                 <View style={{flexDirection: 'row'}}>
+                    <Image styles={styles.logoMeteo} source={this.state.icon}></Image>
                 </View>
 
                 <Text style={styles.cityName}>
@@ -128,8 +140,8 @@ const styles = StyleSheet.create({
     logoMeteo: {
         justifyContent: 'flex-start',
         padding: 10,
-        width: 50,
-        height: 50
+        width: 25,
+        height: 25
     }
 })
 
