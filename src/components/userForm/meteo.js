@@ -104,21 +104,27 @@ export default class Meteo extends React.Component{
     {
         if (this.state.error != '' || !this.state.api_called)
             return (<Text> loading</Text>)
+        var hours = new Date().getHours() + ':' + new Date().getMinutes()
+        console.log(hours)
         return(
-            <View style={{backgroundColor: this.state.backgroundColor}}>
-                
+            <View style={{backgroundColor: this.state.backgroundColor}}>  
                 <Text style={styles.cityName}>
                     {this.state.forecast.city.name}
                 </Text>
+                <View style={{borderBottomColor:'#FFFFFF', borderBottomWidth: 1, margin: 15, marginTop: 2, marginBottom: 5}}></View>
 
                 <View style={{flexDirection: 'row'}}>
-                    <Image style={styles.logoMeteo} source={this.state.icon} resizeMode='contain'></Image>
-                    <Text style={styles.temperature}>{this.state.forecast.list[0].main.temp}°C</Text>
+                    <View style={{flexDirection: 'row', flex: 1}}>
+                        <Image style={styles.logoMeteo} source={this.state.icon} resizeMode='contain'></Image>
+                        <Text style={styles.temperature}>{this.state.forecast.list[0].main.temp}°C</Text>
+                    </View>
+                    <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'flex-end'}}>
+                        <View style={{height: 20, flexDirection: 'row', marginTop: 5}}>
+                            <Image style={{width: 20, height: 20}} source={require('../../../assets/icons_meteo/clock.png')}/>
+                            <Text style={styles.date}>{hours}</Text>
+                        </View>
+                    </View>
                 </View>
-
-                <Text style={styles.cityName}>
-                    {this.state.forecast.list[0].dt_txt}
-                </Text>
             </View>
         )
     }
@@ -131,6 +137,15 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: '#FFFFFF',
         fontSize: 20
+    },
+
+    date: {
+        color: '#FFFFFF',
+        fontSize: 10,
+        margin: 5,
+        marginTop: 0,
+        marginBottom: 0,
+        alignSelf: 'center'
     },
 
     temperature: {
