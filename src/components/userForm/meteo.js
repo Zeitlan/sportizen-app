@@ -115,8 +115,12 @@ export default class Meteo extends React.Component{
 
                 <View style={{flexDirection: 'row'}}>
                     <View style={{flexDirection: 'row', flex: 1}}>
-                        <Image style={styles.logoMeteo} source={this.state.icon} resizeMode='contain'></Image>
-                        <Text style={styles.temperature}>{this.state.forecast.list[0].main.temp}°C</Text>
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Image style={styles.logoMeteo} source={this.state.icon} resizeMode='contain'></Image>
+                        </View>
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <Text style={styles.temperature}>{this.state.forecast.list[0].main.temp}°C</Text>
+                        </View>
                     </View>
                     <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'flex-end'}}>
                         <View style={{height: 20, flexDirection: 'row', marginTop: 5}}>
@@ -149,20 +153,17 @@ const styles = StyleSheet.create({
     },
 
     temperature: {
+        marginLeft: 3,
         textAlign: 'center',
-        fontSize: 10,
         color: '#FFFFFF',
         alignItems: 'center',
-        textAlignVertical: 'center',
-        fontSize: 30
+        fontSize: 25
     },
 
     logoMeteo: {
         margin: 10,
         marginTop: 0,
         marginBottom: 0,
-        alignItems:'center',
-        justifyContent:'flex-start',
         width: 80,
         height: 80
     }
