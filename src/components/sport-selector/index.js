@@ -1,16 +1,42 @@
 // Dependencies
 import React from 'react'
-import { View, StyleSheet, Text, Image} from 'react-native'
-import MapView, { Marker, Callout, Polyline } from 'react-native-maps'
+import { View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native'
 import { withContext } from '../../context'
+import SportElement from './sport-element'
+import { tsImportEqualsDeclaration } from '@babel/types'
 
 @withContext([],[])
 class SportSelector extends React.Component {
 
+    constructor() {
+        super()
+        this._onChangeSelected = this._onChangeSelected.bind(this)
+        this.state = {
+            selected: undefined,
+            sports: {
+                running: {
+                    selected: require('../../../assets/sport/running-selected.png'),
+                    notSelected: require('../../../assets/sport/running.png'),
+                },
+                cycling: {
+                    selected: require('../../../assets/sport/bike-selected.png'),
+                    notSelected: require('../../../assets/sport/bike.png'),
+                }
+            }
+        }
+    }
+    
+
+    _onChangeSelected(selected){
+        this.setState({selected})
+    }
+
+    _onValidateSelected(selected){
+        // Here, handle redirection with sport selected (check selected !)
+    }
     
     render() {
-        const { state: {position} } = this.props
-        console.log(position)
+        const { selected, sports } = this.state
         return (
             <View style={styles.container}>
                 <View style={styles.form}>
@@ -18,13 +44,19 @@ class SportSelector extends React.Component {
                         <Text style={styles.title}>Quel sport souhaitez-vous pratiquer ?</Text>
                     </View>
                     <View style={styles.sportList}>
-                        <View style={styles.sportElm}>
-                            <Image style={styles.sportImg} source={require('../../../assets/sport/bike.png')} />
-                        </View>
-                        <View style={styles.sportElm}>
-                            <Image style={styles.sportImg} source={require('../../../assets/sport/running.png')} />
-                            <View style={styles.sportChose}></View>
-                        </View>
+                        <TouchableOpacity onPress={() => this._onChangeSelected(1)} underlayColor="white">
+                            <SportElement selected={selected === 1} imgPath={selected === 1 ? sports.cycling.selected : sports.cycling.notSelected} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._onChangeSelected(2)} underlayColor="white">
+                            <SportElement selected={selected === 2} imgPath={selected === 2 ? sports.running.selected : sports.running.notSelected} />
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity onPress={this._onValidateSelected} underlayColor="white">
+                            <View>
+                                <Text style={styles.buttonText}>Valider</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -40,11 +72,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F2F2F2',
     },
-    sportChose: {
-        paddingTop: 20,
-        borderBottomColor: 'black',
-        borderBottomWidth: 2,
-    },
     title: {
         fontSize:30,
         textAlign: 'center',
@@ -58,16 +85,8 @@ const styles = StyleSheet.create({
         flexDirection:'row', 
         justifyContent:'space-between',
     },
-    sportElm: {
-        margin: 40,
-        height:100,
-        width: 100,
-        marginTop: 60,
+    buttonText: {
+        fontSize: 20,
+        color: '#00AEEF',
     },
-    sportImg: {
-        flex: 1,
-        height:100,
-        width: 100,
-        resizeMode: 'contain',
-    }
 })
