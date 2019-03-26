@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable semi */
 import React from 'react'
 import { View, StyleSheet, Text, Image, ActivityIndicator} from 'react-native'
@@ -27,7 +28,6 @@ export default class Meteo extends React.Component{
         this.getLocation();
     }
     getLocation(){
-
         // Get the current position of the user
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -40,12 +40,11 @@ export default class Meteo extends React.Component{
                 )
             },
             (error) => this.setState({ error: error.message }),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+            {timeout: 20000},
         );
     }
 
     getWeather(){
-
         // Construct the API url to call
         let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + this.state.latitude + '&lon=' + this.state.longitude + '&units=metric&lang=fr&APPID=79d8299eaf52439691aa531853ba88d1';
 
@@ -176,7 +175,7 @@ export default class Meteo extends React.Component{
                     <Text style={{textAlign: 'center'}}>Une erreur est survenue sur l'affichage de la météo: verifiez que vous avez bien activé vos données GPS </Text>
                 </View>
             )
-
+            
         else if (!this.state.api_called)
             return (
                 <View style={{alignItems: 'center', justifyContent: 'center', height: 50}}>
@@ -186,7 +185,6 @@ export default class Meteo extends React.Component{
 
         let hours = this.GetHoursMinute()
         var description = this.state.forecast.list[0].weather[0].description
-       
         return(
             <View style={{backgroundColor: this.state.backgroundColor}}>  
                 <Text style={styles.cityName}>
