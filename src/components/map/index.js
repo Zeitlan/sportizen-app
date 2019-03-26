@@ -1,10 +1,10 @@
 // Dependencies
 import React from 'react'
-import { View, StyleSheet, Text, Image} from 'react-native'
+import { View, StyleSheet, Text, Image, PermissionsAndroid} from 'react-native'
 import MapView, { Marker, Callout, Polyline } from 'react-native-maps'
 import { withContext } from '../../context'
 
-@withContext(['position', 'logs'],['watchUserPosition', 'clearUserPosition'])
+@withContext(['position', 'permissions'],['watchUserPosition', 'clearUserPosition', 'requestPosPermission'])
 class CustomMapView extends React.Component {
 
     constructor(props) {
@@ -12,14 +12,12 @@ class CustomMapView extends React.Component {
         this.onMapClickEvent = this.onMapClickEvent.bind(this)
     }
     state = {
-        poi: undefined
-    }
-    componentDidMount() {
-        const { actions: { watchUserPosition } } = this.props
-        watchUserPosition()
+        poi: undefined,
     }
 
-    componentWillUnmount() {
+    componentDidMount() {
+        const { actions: { requestPosPermission, watchUserPosition } } = this.props
+        requestPosPermission().then(watchUserPosition())
     }
 
     onMapClickEvent(e) {
@@ -30,11 +28,10 @@ class CustomMapView extends React.Component {
     }
     
     render() {
-        const { state: {position} } = this.props
-        console.log(position)
+        const { state: { position, permissions } } = this.props
         return (
             <View style={styles.container}>
-                {(position === undefined || position.coords === undefined) ? 
+                {(!permissions.location || position === undefined || position.coords === undefined) ? 
                     <Text style={styles.map}> Waiting for location</Text>
                     :
                     <MapView

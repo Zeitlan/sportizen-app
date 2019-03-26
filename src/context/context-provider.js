@@ -16,6 +16,9 @@ export class ContextProvider extends React.PureComponent {
         favorites: undefined,
         routes: undefined,
         language: 'Francais',
+        permissions: {
+            location: undefined,
+        },
         logs: {
             error_notifier: undefined,
             warning_notifier: undefined,
