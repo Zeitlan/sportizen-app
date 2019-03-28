@@ -1,13 +1,13 @@
 import React from 'react'
 import { View, Image, TextInput, StyleSheet } from 'react-native'
-import CustomMapView from './src/components/map'
 import { ContextProvider } from './src/context'
+import Tabs   from './src/components/router'
 
 export default class App extends React.Component {
     render() {
         return (
             <ContextProvider>
-                <CustomMapView/>
+                <Tabs/>
             </ContextProvider>
         )
     }
