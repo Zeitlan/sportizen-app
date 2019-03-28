@@ -2,6 +2,7 @@ import React from 'react'
 import { Context } from './context'
 import { authActions } from './actions/authActions'
 import { geoActions } from './actions/geoActions'
+import { pathActions } from './actions/pathActions'
 
 export class ContextProvider extends React.PureComponent {
     state = {
@@ -41,7 +42,8 @@ export class ContextProvider extends React.PureComponent {
             this.setState({ ...newState })
         },
         ...authActions(this),
-        ...geoActions(this)
+        ...geoActions(this),
+        ...pathActions(this),
     }
 
     render () {
