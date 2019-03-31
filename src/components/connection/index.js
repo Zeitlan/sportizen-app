@@ -5,6 +5,8 @@ import logo from '../../../assets/logo.png'
 import themeStyle from '../../styles/theme.style'
 import DefaultButton from './button'
 import { withContext } from '../../context'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 @withContext(['user', 'logs'],['loginUser'])
 class ConnectionView extends React.Component {
@@ -20,7 +22,12 @@ class ConnectionView extends React.Component {
         const { state: {user, logs} } = this.props
         const { actions: { loginUser } } = this.props
         return (
-            <KeyboardAvoidingView style={{flex : 1}} behavior="padding" enabled>
+            <KeyboardAwareScrollView
+                innerRef={(ref) => { this.scroll = ref }}
+                style={{ backgroundColor: '#2896d3' }}
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                contentContainerStyle={styles.container}
+                scrollEnabled={true} >
                 <View style={styles.container}>
                     <View style={styles.divider_img}>
                         <Image source={logo} style={styles.image}/>
@@ -42,6 +49,7 @@ class ConnectionView extends React.Component {
                                 placeholder='Mot de passe'
                                 textAlign={'left'}
                                 onChangeText={(password) => this.setState({password})}
+                                secureTextEntry={true}
                             />
                         </View>
 
@@ -57,7 +65,7 @@ class ConnectionView extends React.Component {
                         <DefaultButton button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
                     </View>
                 </View>
-            </KeyboardAvoidingView>
+            </KeyboardAwareScrollView>
 
         )
     }
@@ -95,11 +103,12 @@ const styles = StyleSheet.create({
     },
 
     text: {
-        margin: 20,
-        height: 30,
-        fontSize: 15,
+        height: 42,
+        fontSize: 13,
         borderBottomWidth: 1,
-        borderBottomColor:'#D3D3D3'    },
+        borderBottomColor:'#D3D3D3',
+        paddingBottom: 2    
+    },
 
     divider: {
         backgroundColor: '#EFEFEF',
