@@ -1,12 +1,16 @@
 import React from 'react'
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
+import { createBottomTabNavigator, createAppContainer, createStackNavigator} from 'react-navigation'
 
 
 import CustomMapView from '../map'
 import SportSelector from '../sport-selector'
 import Meteo from '../userForm/meteo'
+import ConnectionView from '../connection'
 
-const Router = createBottomTabNavigator({
+const Router = createStackNavigator({
+    ConnectionView: {
+        screen: ConnectionView
+    },
     Meteo: {
         screen: Meteo
     },

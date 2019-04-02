@@ -1,26 +1,49 @@
 // Dependencies
 import React from 'react'
-import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text} from 'react-native'
+import { Alert, View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text} from 'react-native'
 import logo from '../../../assets/logo.png'
 import themeStyle from '../../styles/theme.style'
 import DefaultButton from './button'
 import { withContext } from '../../context'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { StackActions, NavigationActions } from 'react-navigation'
 
 
-@withContext(['user', 'logs'],['loginUser'])
+@withContext(['user', 'logs'],['loginUser', 'checkLoginUser'])
 class ConnectionView extends React.Component {
     state = {
-        username: undefined,
-        password: undefined
+        username: 'a@b.fr',
+        password: 'Testtes4',
+        connected: false
     }
 
+    navigateToNextPage = () => {
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'SportSelector' })],
+        })
+        this.props.navigation.dispatch(resetAction)
+    }
     componentDidMount() {
+        const { actions: {checkLoginUser} } = this.props
+        checkLoginUser().then((connected) => {
+            if (connected) {
+                this.navigateToNextPage()
+            }
+        })
+    }
+
+    loginUser = () => {
+        const { actions: { loginUser } } = this.props
+        const { username, password } = this.state
+        loginUser(username, password).then((connected) => {
+            if (connected) {
+                this.navigateToNextPage()
+            }
+        })
     }
     
     render() {
-        const { state: {user, logs} } = this.props
-        const { actions: { loginUser } } = this.props
         return (
             <KeyboardAwareScrollView
                 innerRef={(ref) => { this.scroll = ref }}
@@ -61,8 +84,7 @@ class ConnectionView extends React.Component {
                                 <Text style={{fontSize: 10}}>mot de passe oublié?</Text>
                             </View>
                         </View>
-                        <Text>{user.token === undefined ? 'No token yet..' : user.token}</Text>
-                        <DefaultButton button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
+                        <DefaultButton onPress={this.loginUser}button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
                     </View>
                 </View>
             </KeyboardAwareScrollView>

@@ -1,10 +1,10 @@
 // Dependencies
 import React from 'react'
-import { View, StyleSheet, Text, Image, PermissionsAndroid} from 'react-native'
+import { View, StyleSheet, Text, Image} from 'react-native'
 import MapView, { Marker, Callout, Polyline } from 'react-native-maps'
 import { withContext } from '../../context'
 
-@withContext(['position', 'permissions'],['watchUserPosition', 'clearUserPosition', 'requestPosPermission'])
+@withContext(['position', 'permissions', 'current_activity'],['watchUserPosition', 'clearUserPosition', 'requestPosPermission', 'getLoopPath', 'waitForFirstPosition'])
 class CustomMapView extends React.Component {
 
     constructor(props) {
@@ -13,11 +13,14 @@ class CustomMapView extends React.Component {
     }
     state = {
         poi: undefined,
+        get_path: false
     }
 
     componentDidMount() {
-        const { actions: { requestPosPermission, watchUserPosition } } = this.props
-        requestPosPermission().then(watchUserPosition())
+        const { actions: { requestPosPermission, watchUserPosition, getLoopPath } } = this.props
+        requestPosPermission().then(() => {
+            watchUserPosition()
+        })
     }
 
     onMapClickEvent(e) {
@@ -28,7 +31,12 @@ class CustomMapView extends React.Component {
     }
     
     render() {
-        const { state: { position, permissions } } = this.props
+        const { state: { position, permissions, current_activity }, actions: {getLoopPath}} = this.props
+        const {get_path} = this.state
+        if (position !== undefined && !get_path) {
+            this.setState({get_path: true})
+            getLoopPath(500)
+        }
         return (
             <View style={styles.container}>
                 {(!permissions.location || position === undefined || position.coords === undefined) ? 
@@ -47,10 +55,7 @@ class CustomMapView extends React.Component {
                         onPoiClick	= {this.onMapClickEvent}
                     >
                         <Polyline
-                            coordinates={[{ longitude: 2.362977, latitude: 48.815399 },
-                                { longitude: 2.362771, latitude: 48.815365 },
-                                { longitude: 2.360882, latitude: 48.815065 }
-                            ]}
+                            coordinates={current_activity.default_path ? current_activity.default_path : []}
                             strokeWidth={1}
                         />
                         {this.state.poi !== undefined && (

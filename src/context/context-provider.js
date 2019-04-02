@@ -1,8 +1,9 @@
 import React from 'react'
+import { AlertIOS } from 'react-native'
 import { Context } from './context'
 import { authActions } from './actions/authActions'
 import { geoActions } from './actions/geoActions'
-import { pathActions } from './actions/pathActions'
+import { activityActions } from './actions/activityActions'
 
 export class ContextProvider extends React.PureComponent {
     state = {
@@ -15,7 +16,11 @@ export class ContextProvider extends React.PureComponent {
         achievements: undefined,
         history: undefined,
         favorites: undefined,
-        routes: undefined,
+        current_activity: {
+            default_path: undefined,
+            user_path: undefined,
+            sport_choice: undefined
+        },
         language: 'Francais',
         permissions: {
             location: undefined,
@@ -43,7 +48,7 @@ export class ContextProvider extends React.PureComponent {
         },
         ...authActions(this),
         ...geoActions(this),
-        ...pathActions(this),
+        ...activityActions(this),
     }
 
     render () {
