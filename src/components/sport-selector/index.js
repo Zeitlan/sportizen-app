@@ -3,16 +3,16 @@ import React from 'react'
 import { View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native'
 import { withContext } from '../../context'
 import SportElement from './sport-element'
-import { tsImportEqualsDeclaration } from '@babel/types'
 
-@withContext([],[])
+@withContext([],['setCurrentSport'])
 class SportSelector extends React.Component {
 
     constructor() {
         super()
         this._onChangeSelected = this._onChangeSelected.bind(this)
+        this._onValidateSelected = this._onValidateSelected.bind(this)
         this.state = {
-            selected: undefined,
+            selected: 1,
             sports: {
                 running: {
                     selected: require('../../../assets/sport/running-selected.png'),
@@ -22,21 +22,22 @@ class SportSelector extends React.Component {
                     selected: require('../../../assets/sport/bike-selected.png'),
                     notSelected: require('../../../assets/sport/bike.png'),
                 }
-            }
+            },
         }
     }
-    
-
     _onChangeSelected(selected){
         this.setState({selected})
     }
 
-    _onValidateSelected(selected){
-        // Here, handle redirection with sport selected (check selected !)
+    _onValidateSelected(){
+        const { actions: {setCurrentSport}} = this.props
+        const { selected } = this.state
+        setCurrentSport(selected === 1 ? 'foot-walking' : 'cycling-road')
+        this.props.navigation.navigate('CustomMapView')
     }
     
     render() {
-        const { selected, sports } = this.state
+        const { selected, sports} = this.state
         return (
             <View style={styles.container}>
                 <View style={styles.form}>
