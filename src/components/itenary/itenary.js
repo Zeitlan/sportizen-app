@@ -13,6 +13,9 @@ export default class ItenaryView extends React.Component {
                     <Image style={styles.image} source={destination} />
                     <Image style={[styles.image, styles.simpleMargin]} source={distance} resizeMode='contain'/>
                 </View>
+                <View style={{marginTop: 10}}>
+                    
+                </View>
             </View>
         )
     }
