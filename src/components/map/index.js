@@ -1,8 +1,9 @@
 // Dependencies
 import React from 'react'
 import { View, StyleSheet, Text, Image} from 'react-native'
-import MapView, { Marker, Callout, Polyline } from 'react-native-maps'
+import MapView, { Polyline } from 'react-native-maps'
 import { withContext } from '../../context'
+import CustomMarker from './custom-marker'
 
 @withContext(['position', 'permissions', 'current_activity'],['watchUserPosition', 'clearUserPosition', 'requestPosPermission', 'getLoopPath', 'waitForFirstPosition'])
 class CustomMapView extends React.Component {
@@ -45,30 +46,23 @@ class CustomMapView extends React.Component {
                     <MapView
                         style={styles.map}
                         showsUserLocation={true}
+
                         initialRegion={{
                             latitude: position.coords.latitude,
                             longitude: position.coords.longitude,
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421,
                         }}
-                        onPress = {this.onMapClickEvent}
-                        onPoiClick	= {this.onMapClickEvent}
+                        onLongPress = {this.onMapClickEvent}
                     >
                         <Polyline
                             coordinates={current_activity.default_path ? current_activity.default_path : []}
                             strokeWidth={1}
                         />
                         {this.state.poi !== undefined && (
-                            <Marker
+                            <CustomMarker
                                 coordinate={this.state.poi.coordinate}>
-                                <Image source={require('../../../assets/pin2.png')} style={{height: 35, width:35 }} />
-                                <Callout>
-                                    <View style={styles.informations}>
-                                        <Text>Travaux</Text>
-                                        <Text>le 20 Mars 2019 à 21:30:20</Text>
-                                    </View>
-                                </Callout>
-                            </Marker> )
+                            </CustomMarker> )
                         }
                     </MapView>}
             </View>
@@ -95,13 +89,5 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-    },
-    pinImage: {
-        height: 40,
-        width: 40,
-        top: -20
-    },
-    informations: {
-        width: 200,
     }
 })
