@@ -1,9 +1,10 @@
 // Dependencies
 import React from 'react'
 import { View, StyleSheet, Text, Image} from 'react-native'
-import MapView, { Polyline } from 'react-native-maps'
+import MapView from 'react-native-maps'
 import { withContext } from '../../context'
 import CustomMarker from './custom-marker'
+import CustomPolyline from './custom-polyline'
 
 @withContext(['position', 'permissions', 'current_activity'],['watchUserPosition', 'clearUserPosition', 'requestPosPermission', 'getLoopPath', 'waitForFirstPosition'])
 class CustomMapView extends React.Component {
@@ -55,10 +56,7 @@ class CustomMapView extends React.Component {
                         }}
                         onLongPress = {this.onMapClickEvent}
                     >
-                        <Polyline
-                            coordinates={current_activity.default_path ? current_activity.default_path : []}
-                            strokeWidth={1}
-                        />
+                        <CustomPolyline/>
                         {this.state.poi !== undefined && (
                             <CustomMarker
                                 coordinate={this.state.poi.coordinate}>
