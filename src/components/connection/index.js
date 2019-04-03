@@ -44,6 +44,7 @@ class ConnectionView extends React.Component {
     }
     
     render() {
+        const {password, username} = this.state
         return (
             <KeyboardAwareScrollView
                 innerRef={(ref) => { this.scroll = ref }}
@@ -60,28 +61,29 @@ class ConnectionView extends React.Component {
                         <View style={[styles.divider, styles.simple_margin]}>
                             <TextInput
                                 style={styles.text}
-                                maxLength={13}
                                 placeholder="Nom d'utilisateur / Mail"
-                                textAlign={'left'}
                                 onChangeText={(username) => this.setState({username})}
+                                value={username}
+                                autoComplete={'email'}
+                                keyboardType={'email-address'}
                             />
                         </View>
                         <View style={[styles.divider, styles.simple_margin]}>
                             <TextInput
                                 style={styles.text}
                                 placeholder='Mot de passe'
-                                textAlign={'left'}
                                 onChangeText={(password) => this.setState({password})}
                                 secureTextEntry={true}
+                                value={password}
                             />
                         </View>
 
                         <View style={styles.divider_suscribe_pass}>
                             <View style={{alignItems:'flex-start', flex: 1, paddingStart: 20}}>
-                                <Text style={{fontSize: 10}}>Inscrivez vous</Text>
+                                <Text style={{fontSize: 10}}>Inscrivez-vous</Text>
                             </View>
                             <View style={{alignItems: 'flex-end', flex: 1, paddingEnd: 20}}>
-                                <Text style={{fontSize: 10}}>mot de passe oublié?</Text>
+                                <Text style={{fontSize: 10}}>Mot de passe oublié?</Text>
                             </View>
                         </View>
                         <DefaultButton onPress={this.loginUser}button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
@@ -125,11 +127,9 @@ const styles = StyleSheet.create({
     },
 
     text: {
-        height: 42,
-        fontSize: 13,
-        borderBottomWidth: 1,
-        borderBottomColor:'#D3D3D3',
-        paddingBottom: 2    
+        flex:1,
+        alignSelf: 'stretch',
+        textAlign: 'center'
     },
 
     divider: {
