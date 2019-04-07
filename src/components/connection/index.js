@@ -101,7 +101,7 @@ export default ConnectionView
 const styles = StyleSheet.create({
     divider_img: {
         flex: 1,
-        margin: 5,
+        margin: 30,
         marginTop: 150,
         marginBottom: 10,
         alignItems: 'center',
@@ -109,6 +109,8 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
+        width: '100%',
+        height: '100%',
         resizeMode: 'contain',
     },
     container: {
