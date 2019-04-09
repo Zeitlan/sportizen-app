@@ -34,7 +34,7 @@ export default MapButtons
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        top: '5%',
+        top: '10%',
         alignSelf: 'flex-end',
         paddingRight: 10
     },
