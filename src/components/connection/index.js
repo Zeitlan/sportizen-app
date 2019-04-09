@@ -9,7 +9,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { StackActions, NavigationActions } from 'react-navigation'
 
 
-@withContext(['user', 'logs'],['loginUser', 'checkLoginUser'])
+@withContext(['user', 'logs'],['loginUser', 'checkLoginUser', 'requestPosPermission', 'watchUserPosition'])
 class ConnectionView extends React.Component {
     state = {
         username: 'a@b.fr',
@@ -26,6 +26,11 @@ class ConnectionView extends React.Component {
     }
     componentDidMount() {
         const { actions: {checkLoginUser} } = this.props
+
+        const { actions: { requestPosPermission, watchUserPosition } } = this.props
+        requestPosPermission().then(() => {
+            watchUserPosition()
+        })
         checkLoginUser().then((connected) => {
             if (connected) {
                 this.navigateToNextPage()

@@ -50,5 +50,27 @@ export const geoActions = (object) => {
                 console.warn(err)
             }
         },
+
+        getSquarePos: (positions) => {
+            let minLong = positions[0].longitude
+            let minLat = positions[0].latitude
+            let maxLong = positions[0].longitude
+            let maxLat = positions[0].latitude
+            for (let position in positions) {
+                if (position.latitude > maxLat) {
+                    maxLat = position.latitude
+                }
+                else if (position.latitude < minLat) {
+                    minLat = position.latitude
+                }
+                if (position.longitude > maxLat) {
+                    maxLong = position.longitude
+                }
+                else if (position.longitude < minLat) {
+                    minLong = position.longitude
+                }
+            }
+            return {southWest: { latitude: minLat, longitude: minLong}, northEast: { latitude: maxLat, lognitude: maxLong}}
+        }
     }
 }

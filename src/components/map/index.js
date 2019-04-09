@@ -1,12 +1,12 @@
 // Dependencies
 import React from 'react'
-import { View, StyleSheet, Text, Image} from 'react-native'
+import { View, StyleSheet, Text, Alert} from 'react-native'
 import MapView from 'react-native-maps'
 import { withContext } from '../../context'
 import CustomMarker from './custom-marker'
 import CustomPolyline from './custom-polyline'
 
-@withContext(['position', 'permissions', 'current_activity'],['watchUserPosition', 'clearUserPosition', 'requestPosPermission', 'getLoopPath', 'waitForFirstPosition'])
+@withContext(['position', 'permissions', 'current_activity'],['getSquarePos'])
 class CustomMapView extends React.Component {
 
     constructor(props) {
@@ -15,30 +15,25 @@ class CustomMapView extends React.Component {
     }
     state = {
         poi: undefined,
-        get_path: false
+        map_view: undefined
     }
 
     componentDidMount() {
-        const { actions: { requestPosPermission, watchUserPosition, getLoopPath } } = this.props
-        requestPosPermission().then(() => {
-            watchUserPosition()
-        })
     }
 
     onMapClickEvent(e) {
-        console.log('Click click boom')
+        const { state:{current_activity}} = this.props
         this.setState({
             poi: e.nativeEvent
         })
+        if (this.state.map_view !== undefined && current_activity.default_path !== undefined)
+        {
+            this.state.map_view.fitToCoordinates(current_activity.default_path, 500)
+        }
     }
     
     render() {
-        const { state: { position, permissions, current_activity }, actions: {getLoopPath}} = this.props
-        const {get_path} = this.state
-        if (position !== undefined && !get_path) {
-            this.setState({get_path: true})
-            getLoopPath(5000)
-        }
+        const { state: { position, permissions, current_activity }} = this.props
         return (
             <View style={styles.container}>
                 {(!permissions.location || position === undefined || position.coords === undefined) ? 
@@ -47,7 +42,12 @@ class CustomMapView extends React.Component {
                     <MapView
                         style={styles.map}
                         showsUserLocation={true}
-
+                        ref={ref=> {
+                            if (this.state.map_view === undefined)
+                            {
+                                this.setState({map_view: ref})
+                            }
+                        }}
                         initialRegion={{
                             latitude: position.coords.latitude,
                             longitude: position.coords.longitude,

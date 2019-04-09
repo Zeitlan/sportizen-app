@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native'
 import { withContext } from '../../context'
 import SportElement from './sport-element'
 
-@withContext([],['setCurrentSport'])
+@withContext([],['setCurrentSport', 'getLoopPath'])
 class SportSelector extends React.Component {
 
     constructor() {
@@ -30,9 +30,11 @@ class SportSelector extends React.Component {
     }
 
     _onValidateSelected(){
-        const { actions: {setCurrentSport}} = this.props
+        const { actions: {setCurrentSport, getLoopPath}} = this.props
         const { selected } = this.state
-        setCurrentSport(selected === 1 ? 'foot-walking' : 'cycling-road')
+        const sportChoice = selected === 1 ? 'foot-walking' : 'cycling-road'
+        setCurrentSport(sportChoice)
+        getLoopPath(5000, sportChoice)
         this.props.navigation.navigate('CustomMapView')
     }
     
