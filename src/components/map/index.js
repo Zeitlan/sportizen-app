@@ -1,6 +1,6 @@
 // Dependencies
 import React from 'react'
-import { View, StyleSheet, Text, Alert} from 'react-native'
+import { View, StyleSheet, Text, Button} from 'react-native'
 import MapView from 'react-native-maps'
 import { withContext } from '../../context'
 import CustomMarker from './custom-marker'
@@ -11,23 +11,46 @@ class CustomMapView extends React.Component {
 
     constructor(props) {
         super()
-        this.onMapClickEvent = this.onMapClickEvent.bind(this)
+        this.onMapLongPress = this.onMapLongPress.bind(this)
+        this.onMapPress = this.onMapPress.bind(this)
+        this.setUserFollow = this.setUserFollow.bind(this)
+        this.zoomPath = this.zoomPath.bind(this)
     }
     state = {
         poi: undefined,
-        map_view: undefined
+        map_view: undefined,
+        user_focus: true
     }
 
     componentDidMount() {
     }
 
-    onMapClickEvent(e) {
-        const { state:{current_activity}} = this.props
+    onMapLongPress(e) {
         this.setState({
             poi: e.nativeEvent
         })
+    }
+
+    onMapPress(e) {
+        this.setState({user_focus: false})
+    }
+
+    setUserFollow() {
+        const { state: { position }} = this.props
+        this.setState({user_focus: !this.state.user_focus})
+
+        if (this.state.map_view !== undefined && position.coords !== undefined)
+        {
+            this.state.map_view.animateToCoordinate(position.coords, 500)
+        }
+    }
+
+    zoomPath() {
+        const { state: { current_activity }} = this.props
+
         if (this.state.map_view !== undefined && current_activity.default_path !== undefined)
         {
+            this.setState({user_focus: false})
             this.state.map_view.fitToCoordinates(current_activity.default_path, 500)
         }
     }
@@ -39,30 +62,51 @@ class CustomMapView extends React.Component {
                 {(!permissions.location || position === undefined || position.coords === undefined) ? 
                     <Text style={styles.map}> Waiting for location</Text>
                     :
-                    <MapView
-                        style={styles.map}
-                        showsUserLocation={true}
-                        ref={ref=> {
-                            if (this.state.map_view === undefined)
-                            {
-                                this.setState({map_view: ref})
+                    <View style={styles.container}>
+                        <MapView
+                            style={styles.map}
+                            showsUserLocation={true}
+                            ref={ref=> {
+                                if (this.state.map_view === undefined)
+                                {
+                                    this.setState({map_view: ref})
+                                }
+                            }}
+                            followsUserLocation={this.state.user_focus} 
+                            onPress={this.onMapPress}
+                            initialRegion={{
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421,
+                            }}
+                            onLongPress = {this.onMapLongPress}
+                        >
+                            <CustomPolyline coordinates={current_activity.default_path ? current_activity.default_path : []}/>
+                            {this.state.poi !== undefined && (
+                                <CustomMarker
+                                    coordinate={this.state.poi.coordinate}>
+                                </CustomMarker> )
                             }
-                        }}
-                        initialRegion={{
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
-                        }}
-                        onLongPress = {this.onMapClickEvent}
-                    >
-                        <CustomPolyline coordinates={current_activity.default_path ? current_activity.default_path : []}/>
-                        {this.state.poi !== undefined && (
-                            <CustomMarker
-                                coordinate={this.state.poi.coordinate}>
-                            </CustomMarker> )
-                        }
-                    </MapView>}
+                        </MapView>
+                        <View
+                            style={{
+                                position: 'absolute',//use absolute position to show button on top of the map
+                                top: '80%',
+                                alignSelf: 'flex-end'
+                            }}>
+                            <Button 
+                                onPress={this.setUserFollow}
+                                title='User'
+                                color='#841584'
+                            />
+                            <Button 
+                                onPress={this.zoomPath}
+                                title='Path'
+                                color='#841584'
+                            />
+                        </View>
+                    </View>}
             </View>
         )
     }
