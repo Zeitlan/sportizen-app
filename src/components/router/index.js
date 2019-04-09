@@ -15,7 +15,11 @@ const Router = createStackNavigator({
         screen: Meteo
     },
     CustomMapView: {
-        screen: CustomMapView
+        screen: CustomMapView,
+        navigationOptions: {
+            title: 'Map',
+            header: null //this will hide the header
+        },
     },
     SportSelector: {
         screen: SportSelector

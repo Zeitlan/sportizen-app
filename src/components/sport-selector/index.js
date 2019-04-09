@@ -92,4 +92,16 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#00AEEF',
     },
+    sportElm: {
+        margin: 40,
+        height:100,
+        width: 100,
+        marginTop: 60,
+    },
+    sportImg: {
+        flex: 1,
+        height:100,
+        width: 100,
+        resizeMode: 'contain',
+    }
 })

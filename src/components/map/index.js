@@ -1,6 +1,6 @@
 // Dependencies
 import React from 'react'
-import { View, StyleSheet, Text, Button} from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native'
 import MapView from 'react-native-maps'
 import { withContext } from '../../context'
 import CustomMarker from './custom-marker'
@@ -19,7 +19,11 @@ class CustomMapView extends React.Component {
     state = {
         poi: undefined,
         map_view: undefined,
-        user_focus: true
+        user_focus: true,
+        buttons: {
+            user: require('../../../assets/map/cursor.png'),
+            path: require('../../../assets/map/map.png')
+        }
     }
 
     componentDidMount() {
@@ -92,19 +96,18 @@ class CustomMapView extends React.Component {
                         <View
                             style={{
                                 position: 'absolute',//use absolute position to show button on top of the map
-                                top: '80%',
-                                alignSelf: 'flex-end'
+                                top: '5%',
+                                alignSelf: 'flex-end',
+                                paddingRight: 10
                             }}>
-                            <Button 
-                                onPress={this.setUserFollow}
-                                title='User'
-                                color='#841584'
-                            />
-                            <Button 
-                                onPress={this.zoomPath}
-                                title='Path'
-                                color='#841584'
-                            />
+
+                            <TouchableOpacity onPress={this.setUserFollow} underlayColor="white" style={styles.sportElm}>
+                                <Image style={styles.sportImg} source={this.state.buttons.user} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={this.zoomPath} underlayColor="white" style={styles.sportElm}>
+                                <Image style={styles.sportImg} source={this.state.buttons.path} />
+                            </TouchableOpacity>
                         </View>
                     </View>}
             </View>
@@ -131,5 +134,17 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
+    },
+    sportElm: {
+        margin: 5,
+        height:30,
+        width: 30,
+        marginTop: 10,
+    },
+    sportImg: {
+        flex: 1,
+        height:30,
+        width: 30,
+        resizeMode: 'contain',
     }
 })

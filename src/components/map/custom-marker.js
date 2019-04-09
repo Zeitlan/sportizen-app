@@ -9,7 +9,7 @@ class CustomMarker extends React.Component {
         const { coordinate } = this.props
         return (<Marker
             coordinate={coordinate}>
-            <Image source={require('../../../assets/pin2.png')} style={styles.pinImage} />
+            <Image source={require('../../../assets/map/pin2.png')} style={styles.pinImage} />
             <Callout>
                 <View style={styles.informations}>
                     <Text>Travaux</Text>
