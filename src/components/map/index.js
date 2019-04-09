@@ -37,7 +37,7 @@ class CustomMapView extends React.Component {
         const {get_path} = this.state
         if (position !== undefined && !get_path) {
             this.setState({get_path: true})
-            getLoopPath(500)
+            getLoopPath(5000)
         }
         return (
             <View style={styles.container}>
@@ -56,7 +56,7 @@ class CustomMapView extends React.Component {
                         }}
                         onLongPress = {this.onMapClickEvent}
                     >
-                        <CustomPolyline/>
+                        <CustomPolyline coordinates={current_activity.default_path ? current_activity.default_path : []}/>
                         {this.state.poi !== undefined && (
                             <CustomMarker
                                 coordinate={this.state.poi.coordinate}>
