@@ -4,7 +4,14 @@ import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text, FlatLis
 
 class FlatListItem extends React.Component {
     render() {
-        return <Text>{this.props.index} </Text>
+        data = this.props.item
+        full_address = data['address']['houseNumber'] + ', ' + data['address']['street'] + ', ' +
+            data['address']['postalCode'] + ', ' + data['address']['city'] + ', ' + data['address']['country']
+        return( 
+            <View style={{justifyContent:'center', alignSelf: 'baseline', height: 40}}>
+                <Text style={{paddingLeft: 10, fontSize: 13, fontWeight: '500'}}>{ full_address} </Text>
+            </View>
+        )
     }
 }
 
