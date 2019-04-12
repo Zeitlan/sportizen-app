@@ -13,8 +13,6 @@ export function ListViews()
 
 export default class AutoCompleteInput extends React.Component{
 
-   
-
     constructor(props)
     {
         super(props)
@@ -22,15 +20,20 @@ export default class AutoCompleteInput extends React.Component{
             textDepart: '',
             textArrivee: '',
             textDepartFocus: false,
-            textArriveeFocus: false,
-            dat: []
+            textArriveeFocus: false, // if the text is focus = true
+            dataCompletion: undefined // data for auto completion
         }
         this.secondTextInput = React.createRef()
+    }
+
+    componentDidMount()
+    {
         this.getAutoCompleteData()
     }
 
     getAutoCompleteData()
     {
+        console.log('ter')
         const url = 'http://autocomplete.geocoder.api.here.com/6.2/suggest.json?' + 
         'app_id=gfirui7ZmAzXhfP0XBOz' + 
         '&app_code=rjN9gEq6jCDEcbPc1DJfvA' + 
@@ -41,11 +44,11 @@ export default class AutoCompleteInput extends React.Component{
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                test = data['suggestions']
-                console.log(test)
+                dataJson = JSON.parse(JSON.stringify(data))    
+                this.setState(() => ({
+                    dataCompletion : dataJson['suggestions']
+                }), () => console.log(this.state))
             })
-        console.log('done')    
-
     }
 
     render()
@@ -64,8 +67,9 @@ export default class AutoCompleteInput extends React.Component{
                     placeholder = "Arrivée"
                     onFocus={() => {this.setState(this.textArriveeFocus = true)}}
                     onBlur={() => {this.setState(this.textArriveeFocus = false)}} />
-        
 
+                <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, margin: 15, marginTop: 2, marginBottom: 5}}></View>
+    
             </View> )
     }
 }
