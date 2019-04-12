@@ -1,16 +1,20 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
-import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text, FlatList} from 'react-native'
+import { View, Image, TextInput, Text, FlatList, TouchableWithoutFeedback, TouchableOpacity} from 'react-native'
+import themeStyle from '../../styles/theme.style'
 
 class FlatListItem extends React.Component {
     render() {
         data = this.props.item
         full_address = data['address']['houseNumber'] + ', ' + data['address']['street'] + ', ' +
             data['address']['postalCode'] + ', ' + data['address']['city'] + ', ' + data['address']['country']
+        full_address = (full_address.includes('undefined'))? data['label'] : full_address    
         return( 
-            <View style={{justifyContent:'center', alignSelf: 'baseline', height: 40}}>
-                <Text style={{paddingLeft: 10, fontSize: 13, fontWeight: '500'}}>{ full_address} </Text>
-            </View>
+            <TouchableOpacity onPress={() => console.log('clicked')}>
+                <View style={{justifyContent:'center', height: 40}}>
+                    <Text style={{paddingLeft: 10, fontSize: 13, fontWeight: '500'}}>{full_address} </Text>
+                </View>
+            </TouchableOpacity>
         )
     }
 }
@@ -28,6 +32,14 @@ export default class AutoCompleteInput extends React.Component{
             dataCompletion: [] // data for auto completion
         }
         this.secondTextInput = React.createRef()
+    }
+
+    fill_textinput(text)
+    {
+        if (textDepartFocus)
+            this.setState({textDepart : text})
+        else if (textArriveeFocus)
+            this.setState({textArrivee : text})    
     }
 
     getAutoCompleteData(adress)
@@ -53,20 +65,23 @@ export default class AutoCompleteInput extends React.Component{
     {
         return (
             <View>
-                <TextInput placeholder = "Départ"
+                <TextInput 
+                    placeholder = "Départ"
                     returnKeyType = { 'next' }
                     onSubmitEditing={() => { this.secondTextInput.focus() }}
                     blurOnSubmit={false}
                     onChangeText={(text) => this.setState({textDepart : text}, () => {this.getAutoCompleteData(text)})}
+                    value={this.state.textDepart}
                     onFocus={() => this.setState({textDepartFocus : true})}
-                    onBlur={() => this.setState({textDepartFocus : false})}/>
-
+                    onBlur={() => this.setState({textDepartFocus : false, dataCompletion : []})}/>
+               
                 <TextInput
                     ref={(input) => { this.secondTextInput = input }}
                     placeholder = "Arrivée"
-                    onChangeText={(text) => this.setState({textArrivee : text})}
+                    onChangeText={(text) => this.setState({textArrivee : text}, () => {this.getAutoCompleteData(text)})}
+                    value={this.state.textArrivee}
                     onFocus={() => {this.setState({textArriveeFocus : true})}}
-                    onBlur={() => {this.setState({textArriveeFocus : false})}} />
+                    onBlur={() => {this.setState({textArriveeFocus : false, dataCompletion : []})}} />
 
                 <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, margin: 15, marginTop: 2, marginBottom: 5}}></View>
 
@@ -74,7 +89,7 @@ export default class AutoCompleteInput extends React.Component{
                     data = {this.state.dataCompletion}
                     renderItem={({item, index}) => {
                         return (
-                            <FlatListItem item={item} index={index}>
+                            <FlatListItem item={item} index={index} textCallback={this.fill_textinput.bind(this)}>
                             </FlatListItem>
                         )
                     }}
