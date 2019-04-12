@@ -30,18 +30,12 @@ export default class AutoCompleteInput extends React.Component{
         this.secondTextInput = React.createRef()
     }
 
-    componentDidMount()
+    getAutoCompleteData(adress)
     {
-        this.getAutoCompleteData()
-    }
-
-    getAutoCompleteData()
-    {
-        console.log('ter')
         const url = 'http://autocomplete.geocoder.api.here.com/6.2/suggest.json?' + 
         'app_id=gfirui7ZmAzXhfP0XBOz' + 
         '&app_code=rjN9gEq6jCDEcbPc1DJfvA' + 
-        '&query=1 allée' +
+        '&query=' + adress +
         '&beginHighlight=&endHighlight=' +
         '&language=fr' // call api to get suggestions for street/adress
 
@@ -63,14 +57,16 @@ export default class AutoCompleteInput extends React.Component{
                     returnKeyType = { 'next' }
                     onSubmitEditing={() => { this.secondTextInput.focus() }}
                     blurOnSubmit={false}
-                    onFocus={() => {this.setState(this.textDepartFocus = true)}}
-                    onBlur={() => {this.setState(this.textDepartFocus = false)}}/>
+                    onChangeText={(text) => this.setState({textDepart : text}, () => {this.getAutoCompleteData(text)})}
+                    onFocus={() => this.setState({textDepartFocus : true})}
+                    onBlur={() => this.setState({textDepartFocus : false})}/>
 
                 <TextInput
                     ref={(input) => { this.secondTextInput = input }}
                     placeholder = "Arrivée"
-                    onFocus={() => {this.setState(this.textArriveeFocus = true)}}
-                    onBlur={() => {this.setState(this.textArriveeFocus = false)}} />
+                    onChangeText={(text) => this.setState({textArrivee : text})}
+                    onFocus={() => {this.setState({textArriveeFocus : true})}}
+                    onBlur={() => {this.setState({textArriveeFocus : false})}} />
 
                 <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, margin: 15, marginTop: 2, marginBottom: 5}}></View>
 
