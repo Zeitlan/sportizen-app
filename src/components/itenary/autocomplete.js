@@ -1,14 +1,11 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
-import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text} from 'react-native'
+import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text, FlatList} from 'react-native'
 
-export function ListViews()
-{
-    return (
-        <View style={{flex : 1, justifyContent: 'center'}}>
-            <Text> test </Text>
-        </View>
-    )
+class FlatListItem extends React.Component {
+    render() {
+        return <Text>{this.props.index} </Text>
+    }
 }
 
 export default class AutoCompleteInput extends React.Component{
@@ -21,7 +18,7 @@ export default class AutoCompleteInput extends React.Component{
             textArrivee: '',
             textDepartFocus: false,
             textArriveeFocus: false, // if the text is focus = true
-            dataCompletion: undefined // data for auto completion
+            dataCompletion: [] // data for auto completion
         }
         this.secondTextInput = React.createRef()
     }
@@ -69,7 +66,17 @@ export default class AutoCompleteInput extends React.Component{
                     onBlur={() => {this.setState(this.textArriveeFocus = false)}} />
 
                 <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, margin: 15, marginTop: 2, marginBottom: 5}}></View>
-    
-            </View> )
+
+                <FlatList 
+                    data = {this.state.dataCompletion}
+                    renderItem={({item, index}) => {
+                        return (
+                            <FlatListItem item={item} index={index}>
+                            </FlatListItem>
+                        )
+                    }}
+                    keyExtractor={(item, index) => index.toString()}/>
+            </View> 
+        )
     }
 }
