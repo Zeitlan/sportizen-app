@@ -3,6 +3,7 @@ import React from 'react'
 import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text} from 'react-native'
 import destination from '../../../assets/itenary/destination.png'
 import distance from '../../../assets/itenary/distance.png'
+import AutoCompleteInput from './autocomplete'
 
 export default class ItenaryView extends React.Component {
     render()
@@ -13,9 +14,8 @@ export default class ItenaryView extends React.Component {
                     <Image style={styles.image} source={destination} />
                     <Image style={[styles.image, styles.simpleMargin]} source={distance} resizeMode='contain'/>
                 </View>
-                <View style={{marginTop: 10}}>
-                    
-                </View>
+                <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, marginTop: 10, marginBottom: 15}}></View>
+                <AutoCompleteInput></AutoCompleteInput>
             </View>
         )
     }
