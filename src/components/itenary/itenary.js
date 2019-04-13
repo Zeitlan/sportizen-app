@@ -11,8 +11,12 @@ export default class ItenaryView extends React.Component {
         return (
             <View style={{flex : 1, marginTop: 20}}>
                 <View style={{paddingTop : 30, flexDirection: 'row', justifyContent: 'center'}}>
-                    <Image style={styles.image} source={destination} />
-                    <Image style={[styles.image, styles.simpleMargin]} source={distance} resizeMode='contain'/>
+                    <View style={{borderRadius: 10, borderWidth: 1, borderColor: '#000000', height: 70, justifyContent: 'center'}}>
+                        <Image style={styles.image} source={destination} />
+                    </View>
+                    <View style={{borderRadius: 10, borderWidth: 1, borderColor: '#000000', height: 70, justifyContent: 'center', marginLeft: 8}}>
+                        <Image style={styles.image} source={distance} resizeMode='contain'/>
+                    </View>
                 </View>
                 <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, marginTop: 10, marginBottom: 15}}></View>
                 <AutoCompleteInput></AutoCompleteInput>
