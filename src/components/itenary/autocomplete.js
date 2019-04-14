@@ -1,7 +1,6 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
-import { View, Image, TextInput, Text, FlatList, TouchableWithoutFeedback, TouchableOpacity} from 'react-native'
-import themeStyle from '../../styles/theme.style'
+import { View, TextInput, Text, FlatList, TouchableWithoutFeedback, TouchableOpacity} from 'react-native'
 
 class FlatListItem extends React.Component {
     render() {

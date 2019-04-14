@@ -6,6 +6,7 @@ import destination_selected from '../../../assets/itenary/destination_selected.p
 import distance from '../../../assets/itenary/distance.png'
 import distance_selected from '../../../assets/itenary/distance_selected.png'
 import AutoCompleteInput from './autocomplete'
+import DistanceInput from './distance'
 
 export default class ItenaryView extends React.Component {
 
@@ -30,30 +31,7 @@ export default class ItenaryView extends React.Component {
     }
 
     Render_page() {
-        console.log(this.state.selected_mode)
-        if (this.state.selected_mode == undefined)
-        {
-            return (
-                <View style={{flex : 1, marginTop: 20}}>
-                    <Text style={{alignSelf: 'center', fontSize: 20}}>Choisissez un mode</Text>
-                    <View style={{marginTop : 30, flexDirection: 'row', justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={() => {this.setState({selected_mode : 1}), this.launch_animation()}}>
-                            <View style={{borderRadius: 10, borderWidth: 1, borderColor: '#000000', height: 70, justifyContent: 'center'}}>
-                                <Image style={styles.image} source={destination} />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {this.setState({selected_mode : 2})}}>
-                            <View style={{borderRadius: 10, borderWidth: 1, borderColor: '#000000', height: 70, justifyContent: 'center', marginLeft: 8}}>
-                                <Image style={styles.image} source={distance} resizeMode='contain'/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, marginTop: 10, marginBottom: 15}}></View>
-                </View>
-            )
-        }
-
-        else if (this.state.selected_mode == 1) // adress
+        if (this.state.selected_mode == 1) // adress
         {
             return (
                 <View style={{flex : 1, marginTop: 20}}>
@@ -64,7 +42,7 @@ export default class ItenaryView extends React.Component {
                                 <Image style={styles.image} source={destination_selected} />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {this.setState({selected_mode : 2})}}>
+                        <TouchableOpacity onPress={() => {this.setState({selected_mode : 2}), this.launch_animation()}}>
                             <View style={{borderRadius: 10, borderWidth: 1, borderColor: '#000000', height: 70, justifyContent: 'center', marginLeft: 8}}>
                                 <Image style={styles.image} source={distance} resizeMode='contain'/>
                             </View>
@@ -77,15 +55,61 @@ export default class ItenaryView extends React.Component {
                 </View>
             )
         }
-        return <Text> test </Text>
+
+        else if (this.state.selected_mode == 2)
+        {
+            return (
+                <View style={{flex : 1, marginTop: 20}}>
+                    <Text style={{alignSelf: 'center', fontSize: 20}}>Choisissez un mode</Text>
+                    <View style={{marginTop : 30, flexDirection: 'row', justifyContent: 'center'}}>
+                        <TouchableOpacity onPress={() => {this.setState({selected_mode : 1}), this.launch_animation()}}>
+                            <View style={{borderRadius: 10, borderWidth: 1, borderColor: '#000000', height: 70, justifyContent: 'center'}}>
+                                <Image style={styles.image} source={destination} />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {this.setState({selected_mode : 2})}}>
+                            <View style={{borderRadius: 10, borderWidth: 1, borderColor: '#02a0e1', height: 70, justifyContent: 'center', marginLeft: 8}}>
+                                <Image style={styles.image} source={distance_selected} resizeMode='contain'/>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, marginTop: 10, marginBottom: 15}}></View>
+                    <Animated.View style={{opacity: this.state.fadeAnim}}>
+                        <DistanceInput></DistanceInput>
+                    </Animated.View>
+                </View>
+            )
+        }
+        return <Text> Une erreur est survenue </Text>
     }
 
     render()
     {   
-        console.log(this.state)
-        return (
-            <this.Render_page/>
-        )
+        if (this.state.selected_mode == undefined) // if no mode selected
+        {
+            return (
+                <View style={{flex : 1, marginTop: 20}}>
+                    <Text style={{alignSelf: 'center', fontSize: 20}}>Choisissez un mode</Text>
+                    <View style={{marginTop : 30, flexDirection: 'row', justifyContent: 'center'}}>
+                        <TouchableOpacity onPress={() => {this.setState({selected_mode : 1}), this.launch_animation()}}>
+                            <View style={{borderRadius: 10, borderWidth: 1, borderColor: '#000000', height: 70, justifyContent: 'center'}}>
+                                <Image style={styles.image} source={destination} />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {this.setState({selected_mode : 2}), this.launch_animation()}}>
+                            <View style={{borderRadius: 10, borderWidth: 1, borderColor: '#000000', height: 70, justifyContent: 'center', marginLeft: 8}}>
+                                <Image style={styles.image} source={distance} resizeMode='contain'/>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, marginTop: 10, marginBottom: 15}}></View>
+                </View>
+            )
+        }
+        else // if a mode selected
+            return (
+                <this.Render_page/>
+            )
     }
 }
 
