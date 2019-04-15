@@ -45,7 +45,7 @@ class SignUpView extends React.Component {
         return (
             <KeyboardAwareScrollView
                 innerRef={(ref) => { this.scroll = ref }}
-                style={{ backgroundColor: '#2896d3' }}
+                style={{ backgroundColor: '#F2F2F2' }}
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={styles.container}
                 scrollEnabled={true} >
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: '#F2F2F2',
     },
     form: {
         flex:3

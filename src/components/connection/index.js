@@ -54,7 +54,7 @@ class ConnectionView extends React.Component {
         return (
             <KeyboardAwareScrollView
                 innerRef={(ref) => { this.scroll = ref }}
-                style={{ backgroundColor: '#2896d3' }}
+                style={{ backgroundColor: '#F2F2F2' }}
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={styles.container}
                 scrollEnabled={true} >
@@ -91,7 +91,7 @@ class ConnectionView extends React.Component {
                                 <Text style={{fontSize: 12}}>Mot de passe oublié?</Text>
                             </View>
                         </View>
-                        <DefaultButton onPress={this.loginUser}button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
+                        <DefaultButton onPress={this.loginUser}button_text='Se connecter' button_style={styles.button_style} text_style={styles.text_style}/>
                     </View>
                 </View>
             </KeyboardAwareScrollView>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: '#F2F2F2',
     },
     form: {
         flex:3
