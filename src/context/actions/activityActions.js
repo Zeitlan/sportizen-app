@@ -3,7 +3,7 @@ import { Alert } from 'react-native'
 
 export const activityActions = (object) => {
     return {
-        getLoopPath: (range) => {
+        getLoopPath: async (range, sport_choice) => {
             const { dispatch } = object.actions
             const { user: { token }, position, current_activity} =  object.state
             const url = 'https://sportizen.ml/api/routes/loop'
@@ -15,7 +15,7 @@ export const activityActions = (object) => {
                     'x-access-token': token
                 },
                 body: JSON.stringify({
-                    profile_type: current_activity.sport_choice,
+                    profile_type: sport_choice,
                     location: {longitude: position.coords.longitude, latitude: position.coords.latitude},
                     range: range,
                     range_type: 'distance'
@@ -29,9 +29,9 @@ export const activityActions = (object) => {
                 })
         },
 
-        getPathPoints: (pointA, pointB) => {
+        getPathPoints: (pointA, pointB, sport_choice) => {
             const { dispatch } = object.actions
-            const { user: { token }} =  object.state
+            const { user: { token }, current_activity} =  object.state
             const url = 'https://sportizen.ml/api/routes/loop'
             fetch(url, {
                 method: 'POST',
@@ -46,7 +46,7 @@ export const activityActions = (object) => {
                 })
             }).then((response) => response.json())
                 .then(json => {
-                    dispatch({current_activity: {default_path: json.path}})
+                    dispatch({...current_activity, current_activity: {default_path: json.path}})
                 })
                 .catch((error) => {
                     console.log(error)

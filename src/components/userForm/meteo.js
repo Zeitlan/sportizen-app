@@ -186,7 +186,7 @@ export default class Meteo extends React.Component{
         let hours = this.GetHoursMinute()
         var description = this.state.forecast.list[0].weather[0].description
         return(
-            <View style={{backgroundColor: this.state.backgroundColor}}>  
+            <View style={{backgroundColor: this.state.backgroundColor, paddingTop: 10}}>  
                 <Text style={styles.cityName}>
                     {this.state.forecast.city.name}
                 </Text>

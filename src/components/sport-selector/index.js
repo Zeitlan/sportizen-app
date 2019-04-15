@@ -3,8 +3,9 @@ import React from 'react'
 import { View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native'
 import { withContext } from '../../context'
 import SportElement from './sport-element'
+import Meteo from '../userForm/meteo'
 
-@withContext([],['setCurrentSport'])
+@withContext([],['setCurrentSport', 'getLoopPath'])
 class SportSelector extends React.Component {
 
     constructor() {
@@ -30,9 +31,11 @@ class SportSelector extends React.Component {
     }
 
     _onValidateSelected(){
-        const { actions: {setCurrentSport}} = this.props
+        const { actions: {setCurrentSport, getLoopPath}} = this.props
         const { selected } = this.state
-        setCurrentSport(selected === 1 ? 'foot-walking' : 'cycling-road')
+        const sportChoice = selected === 1 ? 'foot-walking' : 'cycling-road'
+        setCurrentSport(sportChoice)
+        getLoopPath(5000, sportChoice)
         this.props.navigation.navigate('CustomMapView')
     }
     
@@ -40,6 +43,9 @@ class SportSelector extends React.Component {
         const { selected, sports} = this.state
         return (
             <View style={styles.container}>
+                <View>
+                    <Meteo/>
+                </View>
                 <View style={styles.form}>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>Quel sport souhaitez-vous pratiquer ?</Text>
@@ -90,4 +96,16 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#00AEEF',
     },
+    sportElm: {
+        margin: 40,
+        height:100,
+        width: 100,
+        marginTop: 60,
+    },
+    sportImg: {
+        flex: 1,
+        height:100,
+        width: 100,
+        resizeMode: 'contain',
+    }
 })

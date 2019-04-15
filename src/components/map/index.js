@@ -1,76 +1,97 @@
 // Dependencies
 import React from 'react'
-import { View, StyleSheet, Text, Image} from 'react-native'
-import MapView, { Marker, Callout, Polyline } from 'react-native-maps'
+import { View, StyleSheet, Text} from 'react-native'
+import MapView from 'react-native-maps'
 import { withContext } from '../../context'
+import CustomMarker from './custom-marker'
+import CustomPolyline from './custom-polyline'
+import MapButtons from './map-buttons'
 
-@withContext(['position', 'permissions', 'current_activity'],['watchUserPosition', 'clearUserPosition', 'requestPosPermission', 'getLoopPath', 'waitForFirstPosition'])
+@withContext(['position', 'permissions', 'current_activity'],['getSquarePos'])
 class CustomMapView extends React.Component {
 
     constructor(props) {
         super()
-        this.onMapClickEvent = this.onMapClickEvent.bind(this)
+        this.onMapLongPress = this.onMapLongPress.bind(this)
+        this.onMapPress = this.onMapPress.bind(this)
+        this.setUserFollow = this.setUserFollow.bind(this)
+        this.zoomPath = this.zoomPath.bind(this)
     }
     state = {
         poi: undefined,
-        get_path: false
+        map_view: undefined,
+        user_focus: true
     }
 
     componentDidMount() {
-        const { actions: { requestPosPermission, watchUserPosition, getLoopPath } } = this.props
-        requestPosPermission().then(() => {
-            watchUserPosition()
-        })
     }
 
-    onMapClickEvent(e) {
-        console.log('Click click boom')
+    onMapLongPress(e) {
         this.setState({
             poi: e.nativeEvent
         })
     }
+
+    onMapPress(e) {
+        this.setState({user_focus: false})
+    }
+
+    setUserFollow() {
+        const { state: { position }} = this.props
+        this.setState({user_focus: !this.state.user_focus})
+
+        if (this.state.map_view !== undefined && position.coords !== undefined)
+        {
+            this.state.map_view.animateToCoordinate(position.coords, 500)
+        }
+    }
+
+    zoomPath() {
+        const { state: { current_activity }} = this.props
+
+        if (this.state.map_view !== undefined && current_activity.default_path !== undefined)
+        {
+            this.setState({user_focus: false})
+            this.state.map_view.fitToCoordinates(current_activity.default_path, 500)
+        }
+    }
     
     render() {
-        const { state: { position, permissions, current_activity }, actions: {getLoopPath}} = this.props
-        const {get_path} = this.state
-        if (position !== undefined && !get_path) {
-            this.setState({get_path: true})
-            getLoopPath(500)
-        }
+        const { state: { position, permissions, current_activity }} = this.props
         return (
             <View style={styles.container}>
                 {(!permissions.location || position === undefined || position.coords === undefined) ? 
                     <Text style={styles.map}> Waiting for location</Text>
                     :
-                    <MapView
-                        style={styles.map}
-                        showsUserLocation={true}
-                        initialRegion={{
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
-                        }}
-                        onPress = {this.onMapClickEvent}
-                        onPoiClick	= {this.onMapClickEvent}
-                    >
-                        <Polyline
-                            coordinates={current_activity.default_path ? current_activity.default_path : []}
-                            strokeWidth={1}
-                        />
-                        {this.state.poi !== undefined && (
-                            <Marker
-                                coordinate={this.state.poi.coordinate}>
-                                <Image source={require('../../../assets/pin2.png')} style={{height: 35, width:35 }} />
-                                <Callout>
-                                    <View style={styles.informations}>
-                                        <Text>Travaux</Text>
-                                        <Text>le 20 Mars 2019 à 21:30:20</Text>
-                                    </View>
-                                </Callout>
-                            </Marker> )
-                        }
-                    </MapView>}
+                    <View style={styles.container}>
+                        <MapView
+                            style={styles.map}
+                            showsUserLocation={true}
+                            ref={ref=> {
+                                if (this.state.map_view === undefined)
+                                {
+                                    this.setState({map_view: ref})
+                                }
+                            }}
+                            followsUserLocation={this.state.user_focus} 
+                            onPress={this.onMapPress}
+                            initialRegion={{
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421,
+                            }}
+                            onLongPress = {this.onMapLongPress}
+                        >
+                            <CustomPolyline coordinates={current_activity.default_path ? current_activity.default_path : []}/>
+                            {this.state.poi !== undefined && (
+                                <CustomMarker
+                                    coordinate={this.state.poi.coordinate}>
+                                </CustomMarker> )
+                            }
+                        </MapView>
+                        <MapButtons setUserFollow={this.setUserFollow} zoomPath={this.zoomPath}/>
+                    </View>}
             </View>
         )
     }
@@ -95,13 +116,5 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-    },
-    pinImage: {
-        height: 40,
-        width: 40,
-        top: -20
-    },
-    informations: {
-        width: 200,
     }
 })
