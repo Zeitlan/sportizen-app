@@ -9,7 +9,7 @@ class FlatListItem extends React.Component {
             data['address']['postalCode'] + ', ' + data['address']['city'] + ', ' + data['address']['country']
         full_address = (full_address.includes('undefined'))? data['label'] : full_address    
         return(
-            <TouchableWithoutFeedback onPress={() => {console.log('clicked'); this.props.textCallback(full_address)}}>
+            <TouchableWithoutFeedback onPress={() => {this.props.textCallback(full_address)}}>
                 <View style={{justifyContent:'center', height: 40}}>
                     <Text style={{paddingLeft: 10, fontSize: 13, fontWeight: '500'}}>{full_address} </Text>
                 </View>
@@ -36,14 +36,8 @@ export default class AutoCompleteInput extends React.Component{
 
     fill_textinput(text)
     {
-        console.log('call fill ' + text)
-        console.log(this.state)
-        console.log(this.textDepartFocus)
         if (this.state.textDepartFocus)
-        {
-            console.log('call fill')
             this.setState({textDepart : text, dataCompletion : []})
-        }
         else if (this.state.textArriveeFocus)
             this.setState({textArrivee : text, dataCompletion : []}) 
     }
@@ -80,7 +74,7 @@ export default class AutoCompleteInput extends React.Component{
                         blurOnSubmit={false}
                         onChangeText={(text) => this.setState({textDepart : text}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textDepart}
-                        onFocus={() => this.setState({textDepartFocus : true, dataCompletion : []})}
+                        onFocus={() => this.setState({textDepartFocus : true, textArriveeFocus : false, dataCompletion : []})}
                         selectionColor='#B0C4DE'
                         underlineColorAndroid={(this.state.textDepartFocus == true)? '#B0C4DE' : '#A9A9A9'}/>
                 </View>    
@@ -91,19 +85,19 @@ export default class AutoCompleteInput extends React.Component{
                         placeholder = "Arrivée"
                         onChangeText={(text) => this.setState({textArrivee : text}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textArrivee}
-                        onFocus={() => {this.setState({textArriveeFocus : true, dataCompletion : []})}}
-                        onBlur={() => {this.setState({textArriveeFocus : false})}}
+                        onFocus={() => {this.setState({textArriveeFocus : true, textDepartFocus: false, dataCompletion : []})}}
                         selectionColor='#B0C4DE'
                         underlineColorAndroid={(this.state.textArriveeFocus == true)? '#B0C4DE' : '#A9A9A9'} />
                 </View>
 
                 <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, margin: 15, marginTop: 8, marginBottom: 5}}></View>
                     
-                <FlatList 
+                <FlatList
+                    keyboardShouldPersistTaps={'always'}
                     data = {this.state.dataCompletion}
                     renderItem={({item, index}) => {
                         return (
-                            <FlatListItem item={item} index={index} textCallback={this.fill_textinput.bind(this)}>
+                            <FlatListItem item={item} index={index} textCallback={this.fill_textinput}>
                             </FlatListItem>
                         )
                     }}
