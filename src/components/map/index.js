@@ -75,6 +75,7 @@ class CustomMapView extends React.Component {
                             }}
                             followsUserLocation={this.state.user_focus} 
                             onPress={this.onMapPress}
+                            onPanDrag={this.onMapPress}
                             initialRegion={{
                                 latitude: position.coords.latitude,
                                 longitude: position.coords.longitude,

@@ -3,54 +3,45 @@ import React from 'react'
 import { Alert, View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text} from 'react-native'
 import logo from '../../../assets/logo.png'
 import themeStyle from '../../styles/theme.style'
-import DefaultButton from './button'
+import DefaultButton from '../connection/button'
 import { withContext } from '../../context'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { StackActions, NavigationActions } from 'react-navigation'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 
-@withContext(['user', 'logs'],['loginUser', 'checkLoginUser', 'requestPosPermission', 'watchUserPosition'])
-class ConnectionView extends React.Component {
+@withContext([],['signUpUser'])
+class SignUpView extends React.Component {
     state = {
-        username: 'a@b.fr',
-        password: 'Testtes4',
-        connected: false
+        email: '',
+        username: '',
+        password: '',
+        validatepassword: '',
+        signedUp: false
     }
 
     navigateToNextPage = () => {
         const resetAction = StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'SportSelector' })],
+            actions: [NavigationActions.navigate({ routeName: 'ConnectionView' })],
         })
         this.props.navigation.dispatch(resetAction)
     }
-    componentDidMount() {
-        const { actions: {checkLoginUser} } = this.props
 
-        const { actions: { requestPosPermission, watchUserPosition } } = this.props
-        requestPosPermission().then(() => {
-            watchUserPosition()
-        })
-        checkLoginUser().then((connected) => {
-            if (connected) {
-                this.navigateToNextPage()
-            }
-        })
-    }
-
-    loginUser = () => {
-        const { actions: { loginUser } } = this.props
-        const { username, password } = this.state
-        loginUser(username, password).then((connected) => {
-            if (connected) {
+    signUpUser = () => {
+        const { actions: { signUpUser } } = this.props
+        const { email, username, password, validatepassword } = this.state
+        if (validatepassword !== password) {
+            Alert.alert('Les mots de passes ne sont pas identique.')
+        }
+        signUpUser(email, password, username).then((signedUp) => {
+            if (signedUp) {
                 this.navigateToNextPage()
             }
         })
     }
     
     render() {
-        const {password, username} = this.state
+        const {validatepassword, password, username, email} = this.state
         return (
             <KeyboardAwareScrollView
                 innerRef={(ref) => { this.scroll = ref }}
@@ -67,9 +58,17 @@ class ConnectionView extends React.Component {
                         <View style={[styles.divider, styles.simple_margin]}>
                             <TextInput
                                 style={styles.text}
-                                placeholder="Nom d'utilisateur / Mail"
+                                placeholder="Nom d'utilisateur"
                                 onChangeText={(username) => this.setState({username})}
                                 value={username}
+                            />
+                        </View>
+                        <View style={[styles.divider, styles.simple_margin]}>
+                            <TextInput
+                                style={styles.text}
+                                placeholder="Mail"
+                                onChangeText={(email) => this.setState({email})}
+                                value={email}
                                 keyboardType={'email-address'}
                             />
                         </View>
@@ -82,16 +81,16 @@ class ConnectionView extends React.Component {
                                 value={password}
                             />
                         </View>
-
-                        <View style={styles.divider_suscribe_pass}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUpView')} style={{alignItems:'flex-start', flex: 1, paddingStart: 20}}>
-                                <Text style={{fontSize: 12}}>Inscrivez-vous</Text>
-                            </TouchableOpacity>
-                            <View style={{alignItems: 'flex-end', flex: 1, paddingEnd: 20}}>
-                                <Text style={{fontSize: 12}}>Mot de passe oublié?</Text>
-                            </View>
+                        <View style={[styles.divider, styles.simple_margin]}>
+                            <TextInput
+                                style={styles.text}
+                                placeholder='Confirmez le Mot de passe'
+                                onChangeText={(validatepassword) => this.setState({validatepassword})}
+                                secureTextEntry={true}
+                                value={validatepassword}
+                            />
                         </View>
-                        <DefaultButton onPress={this.loginUser}button_text='Se connecter' button_style={styles.button_style} text_style={styles.text_style}/>
+                        <DefaultButton onPress={this.signUpUser}button_text="S'inscrire" button_style={styles.button_style} text_style={styles.text_style}/>
                     </View>
                 </View>
             </KeyboardAwareScrollView>
@@ -100,7 +99,7 @@ class ConnectionView extends React.Component {
     }
 }
 
-export default ConnectionView
+export default SignUpView
     
 // CSS
 const styles = StyleSheet.create({
