@@ -3,6 +3,7 @@ import React from 'react'
 import { View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native'
 import { withContext } from '../../context'
 import SportElement from './sport-element'
+import Meteo from '../userForm/meteo'
 
 @withContext([],['setCurrentSport', 'getLoopPath'])
 class SportSelector extends React.Component {
@@ -42,6 +43,9 @@ class SportSelector extends React.Component {
         const { selected, sports} = this.state
         return (
             <View style={styles.container}>
+                <View>
+                    <Meteo/>
+                </View>
                 <View style={styles.form}>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>Quel sport souhaitez-vous pratiquer ?</Text>
