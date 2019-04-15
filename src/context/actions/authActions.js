@@ -22,7 +22,7 @@ export const authActions = (object) => {
                 const status = request.status
                 if (status === 200) {
                     dispatch({logs: {info_notifier: 'User signed up'}})
-                    return await loginUser(mail, pwd)
+                    return true
                 } else if (status === 400) {
                     dispatch({logs: {error_notifier: '[400] Signed up Error: ' + json.error.message}})
                 } else {
@@ -32,6 +32,7 @@ export const authActions = (object) => {
             catch(error) {
                 dispatch({logs: {error_notifier: 'ERROR: ' + error.message}})
             }
+            return false
         },
 
         loginUser: async (mail, pwd) => {
