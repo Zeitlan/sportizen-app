@@ -85,10 +85,10 @@ class ConnectionView extends React.Component {
 
                         <View style={styles.divider_suscribe_pass}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUpView')} style={{alignItems:'flex-start', flex: 1, paddingStart: 20}}>
-                                <Text style={{fontSize: 10}}>Inscrivez-vous</Text>
+                                <Text style={{fontSize: 12}}>Inscrivez-vous</Text>
                             </TouchableOpacity>
                             <View style={{alignItems: 'flex-end', flex: 1, paddingEnd: 20}}>
-                                <Text style={{fontSize: 10}}>Mot de passe oublié?</Text>
+                                <Text style={{fontSize: 12}}>Mot de passe oublié?</Text>
                             </View>
                         </View>
                         <DefaultButton onPress={this.loginUser}button_text='Connect' button_style={styles.button_style} text_style={styles.text_style}/>
