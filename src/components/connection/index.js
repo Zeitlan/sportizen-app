@@ -7,6 +7,7 @@ import DefaultButton from './button'
 import { withContext } from '../../context'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { StackActions, NavigationActions } from 'react-navigation'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 @withContext(['user', 'logs'],['loginUser', 'checkLoginUser', 'requestPosPermission', 'watchUserPosition'])
@@ -69,7 +70,6 @@ class ConnectionView extends React.Component {
                                 placeholder="Nom d'utilisateur / Mail"
                                 onChangeText={(username) => this.setState({username})}
                                 value={username}
-                                autoComplete={'email'}
                                 keyboardType={'email-address'}
                             />
                         </View>
@@ -84,9 +84,9 @@ class ConnectionView extends React.Component {
                         </View>
 
                         <View style={styles.divider_suscribe_pass}>
-                            <View style={{alignItems:'flex-start', flex: 1, paddingStart: 20}}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUpView')} style={{alignItems:'flex-start', flex: 1, paddingStart: 20}}>
                                 <Text style={{fontSize: 10}}>Inscrivez-vous</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={{alignItems: 'flex-end', flex: 1, paddingEnd: 20}}>
                                 <Text style={{fontSize: 10}}>Mot de passe oublié?</Text>
                             </View>
