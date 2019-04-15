@@ -3,13 +3,19 @@ import React from 'react'
 import { View, TextInput, Text, FlatList, TouchableWithoutFeedback, TouchableOpacity} from 'react-native'
 
 class FlatListItem extends React.Component {
-    render() {
-        data = this.props.item
+    
+    getAdress(data)
+    {
         full_address = data['address']['houseNumber'] + ', ' + data['address']['street'] + ', ' +
             data['address']['postalCode'] + ', ' + data['address']['city'] + ', ' + data['address']['country']
-        full_address = (full_address.includes('undefined'))? data['label'] : full_address    
+        return (full_address.includes('undefined'))? data['label'] : full_address
+    }
+
+    render() {
+        data = this.props.item
+        full_address = this.getAdress(data) // get the adress which we're going to display for autocompletion
         return(
-            <TouchableWithoutFeedback onPress={() => {this.props.textCallback(full_address)}}>
+            <TouchableWithoutFeedback onPress={() => {this.props.textCallback(this.getAdress(this.props.item))}}>
                 <View style={{justifyContent:'center', height: 40}}>
                     <Text style={{paddingLeft: 10, fontSize: 13, fontWeight: '500'}}>{full_address} </Text>
                 </View>
@@ -63,7 +69,6 @@ export default class AutoCompleteInput extends React.Component{
 
     render()
     {
-        console.log('rendered')
         return (
             <View>
                 <View style={{marginLeft: 10, marginRight: 10, backgroundColor:'#E8E8E8'}}>
