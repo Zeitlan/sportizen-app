@@ -7,7 +7,7 @@ import DefaultButton from './button'
 import { withContext } from '../../context'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { StackActions, NavigationActions } from 'react-navigation'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 
 @withContext(['user', 'logs'],['loginUser', 'checkLoginUser', 'requestPosPermission', 'watchUserPosition'])
