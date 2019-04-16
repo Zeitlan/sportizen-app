@@ -1,6 +1,7 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
-import { View, TextInput, Text, FlatList, TouchableWithoutFeedback, TouchableOpacity} from 'react-native'
+import { View, TextInput, Text, FlatList, TouchableWithoutFeedback, ActivityIndicator} from 'react-native'
+import themeStyle from '../../styles/theme.style'
 
 class FlatListItem extends React.Component {
     
@@ -34,9 +35,11 @@ export default class AutoCompleteInput extends React.Component{
             textArrivee: '',
             textDepartFocus: false,
             textArriveeFocus: false, // if the text is focus = true
-            dataCompletion: [] // data for auto completion
+            dataCompletion: [], // data for auto completion
+            loading: false // if api is being called, loading = true
         }
         this.secondTextInput = React.createRef()
+        this.AutoCompleteView = this.AutoCompleteView.bind(this)
         this.fill_textinput = this.fill_textinput.bind(this)
     }
 
@@ -62,9 +65,35 @@ export default class AutoCompleteInput extends React.Component{
             .then(data => {
                 dataJson = JSON.parse(JSON.stringify(data))    
                 this.setState(() => ({
-                    dataCompletion : dataJson['suggestions']
+                    dataCompletion : dataJson['suggestions'],
+                    loading: false
                 }), () => console.log(this.state))
             })
+    }
+
+    AutoCompleteView()
+    {
+        if (!this.state.loading) // means api was called
+        {
+            return(
+                <FlatList
+                    keyboardShouldPersistTaps={'always'}
+                    data = {this.state.dataCompletion}
+                    renderItem={({item, index}) => {
+                        return (
+                            <FlatListItem item={item} index={index} textCallback={this.fill_textinput}>
+                            </FlatListItem>
+                        )
+                    }}
+                    keyExtractor={(item, index) => index.toString()}/>
+            )
+        }
+
+        return(
+            <View style={{alignItems: 'center', justifyContent: 'center', height: 50}}>
+                <ActivityIndicator size='large' color = {themeStyle.PRIMARY_COLOR}/>
+            </View>
+        )
     }
 
     render()
@@ -77,7 +106,7 @@ export default class AutoCompleteInput extends React.Component{
                         returnKeyType = { 'next' }
                         onSubmitEditing={() => { this.secondTextInput.focus() }}
                         blurOnSubmit={false}
-                        onChangeText={(text) => this.setState({textDepart : text}, () => {this.getAutoCompleteData(text)})}
+                        onChangeText={(text) => this.setState({textDepart : text, loading : true}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textDepart}
                         onFocus={() => this.setState({textDepartFocus : true, textArriveeFocus : false, dataCompletion : []})}
                         selectionColor='#B0C4DE'
@@ -88,7 +117,7 @@ export default class AutoCompleteInput extends React.Component{
                     <TextInput
                         ref={(input) => { this.secondTextInput = input }}
                         placeholder = "Arrivée"
-                        onChangeText={(text) => this.setState({textArrivee : text}, () => {this.getAutoCompleteData(text)})}
+                        onChangeText={(text) => this.setState({textArrivee : text, loading : true}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textArrivee}
                         onFocus={() => {this.setState({textArriveeFocus : true, textDepartFocus: false, dataCompletion : []})}}
                         selectionColor='#B0C4DE'
@@ -97,16 +126,7 @@ export default class AutoCompleteInput extends React.Component{
 
                 <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, margin: 15, marginTop: 8, marginBottom: 5}}></View>
                     
-                <FlatList
-                    keyboardShouldPersistTaps={'always'}
-                    data = {this.state.dataCompletion}
-                    renderItem={({item, index}) => {
-                        return (
-                            <FlatListItem item={item} index={index} textCallback={this.fill_textinput}>
-                            </FlatListItem>
-                        )
-                    }}
-                    keyExtractor={(item, index) => index.toString()}/>
+                <this.AutoCompleteView/>
             </View> 
         )
     }
