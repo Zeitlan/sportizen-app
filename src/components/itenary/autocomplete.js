@@ -1,7 +1,8 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
-import { View, TextInput, Text, FlatList, TouchableWithoutFeedback, ActivityIndicator} from 'react-native'
+import { Image, View, TextInput, Text, FlatList, StyleSheet, TouchableWithoutFeedback, ActivityIndicator, TouchableOpacity} from 'react-native'
 import themeStyle from '../../styles/theme.style'
+
 
 class FlatListItem extends React.Component {
     
@@ -124,6 +125,13 @@ export default class AutoCompleteInput extends React.Component{
                         underlineColorAndroid={(this.state.textArriveeFocus == true)? '#B0C4DE' : '#A9A9A9'} />
                 </View>
 
+                <TouchableOpacity>
+                    <View style={styles.button_validation}>
+                        <Image style={{width: 15, height: 15}} source={require('../../../assets/itenary/search.png')}></Image>
+                        <Text style={{marginLeft: 8}}>Rechercher</Text>
+                    </View>
+                </TouchableOpacity>
+
                 <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, margin: 15, marginTop: 8, marginBottom: 5}}></View>
                     
                 <this.AutoCompleteView/>
@@ -131,3 +139,17 @@ export default class AutoCompleteInput extends React.Component{
         )
     }
 }
+
+const styles = StyleSheet.create({
+    button_validation: {
+        flexDirection: 'row',
+        height: 40,
+        borderRadius: 20,
+        marginTop: 12, 
+        marginLeft: 50, 
+        marginRight: 50, 
+        backgroundColor: '#D8D8D8', 
+        justifyContent: 'center', 
+        alignItems: 'center'
+    }
+})
