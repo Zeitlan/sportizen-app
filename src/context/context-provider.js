@@ -4,6 +4,7 @@ import { Context } from './context'
 import { authActions } from './actions/authActions'
 import { geoActions } from './actions/geoActions'
 import { activityActions } from './actions/activityActions'
+import { weatherActions } from './actions/weatherActions'
 
 export class ContextProvider extends React.PureComponent {
     state = {
@@ -16,6 +17,7 @@ export class ContextProvider extends React.PureComponent {
         achievements: undefined,
         history: undefined,
         favorites: undefined,
+        weather: undefined,
         current_activity: {
             default_path: undefined,
             user_path: undefined,
@@ -49,6 +51,7 @@ export class ContextProvider extends React.PureComponent {
         ...authActions(this),
         ...geoActions(this),
         ...activityActions(this),
+        ...weatherActions(this),
     }
 
     render () {

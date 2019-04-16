@@ -1,7 +1,8 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable semi */
 import React from 'react'
-import { View, StyleSheet, Text, Image, ActivityIndicator} from 'react-native'
+import { withContext } from '../../context'
+import { View, StyleSheet, Text, Image, ActivityIndicator, Alert} from 'react-native'
 import themeStyle from '../../styles/theme.style'
 import pluie_white from '../../../assets/icons_meteo/pluie_white.png'
 import cloud_white from '../../../assets/icons_meteo/cloud_white.png'
@@ -10,8 +11,8 @@ import snow_white from '../../../assets/icons_meteo/snow_white.png'
 import soleil_white from '../../../assets/icons_meteo/soleil_white.png'
 import Thunder_Logo_white from '../../../assets/icons_meteo/Thunder_Logo_white.png'
 
-
-export default class Meteo extends React.Component{
+@withContext(['position', 'weather'],['getWeather'])
+class Meteo extends React.Component{
 
     constructor(props)
     {
@@ -20,47 +21,15 @@ export default class Meteo extends React.Component{
             latitude: 0,
             longitude: 0,
             error: '',
-            forecast: [],
-            api_called: false,
             icon: 0,
             backgroundColor: ''
         };
-        this.getLocation();
-    }
-    getLocation(){
-        // Get the current position of the user
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                this.setState(
-                    (prevState) => ({
-                        latitude: position.coords.latitude, 
-                        longitude: position.coords.longitude
-                    }), () => { this
-                        .getWeather() }
-                )
-            },
-            (error) => this.setState({ error: error.message }),
-            {timeout: 20000},
-        );
-    }
-
-    getWeather(){
-        // Construct the API url to call
-        let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + this.state.latitude + '&lon=' + this.state.longitude + '&units=metric&lang=fr&APPID=79d8299eaf52439691aa531853ba88d1';
-
-        // Call the API, and set the state of the weather forecast
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                this.setState((prevState, props) => ({
-                    forecast: data,
-                }));
-                this.getStyleMeteo();
-            })    
+        this.mountWeather = this.mountWeather.bind(this)
     }
 
     getStyleMeteo(){
-        var value = this.state.forecast.list[0].weather[0].id;
+        const { state: { weather } } = this.props
+        const value = weather.list[0].weather[0].id;
         
         if (value == 800)
             this.setState({
@@ -109,96 +78,52 @@ export default class Meteo extends React.Component{
         return str_hours + ':' + str_minutes
     }
 
-    getWeather(){
-
-        // Construct the API url to call
-        let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + this.state.latitude + '&lon=' + this.state.longitude + '&units=metric&APPID=79d8299eaf52439691aa531853ba88d1';
-
-        // Call the API, and set the state of the weather forecast
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                this.setState((prevState, props) => ({
-                    forecast: data,
-                    api_called: true
-                }));
-                this.getStyleMeteo();
-            })    
+    async mountWeather() {
+        const { actions: { getWeather } } = this.props
+        this.setState({api_called: true})
+        await getWeather()
+        this.getStyleMeteo()
     }
 
-    getStyleMeteo(){
-        var value = this.state.forecast.list[0].weather[0].id;
-        if (value == 800)
-            this.setState({
-                backgroundColor: ColorSun,
-                icon: soleil_white,
-                api_called: true});
-        else if (value == 801)
-            this.setState({
-                backgroundColor: ColorSunCloud,
-                icon: nuage_white,
-                api_called: true}); 
-        else if (value >= 802)
-            this.setState({
-                backgroundColor: ColorCloud,
-                icon: cloud_white,
-                api_called: true});
-        else if (value >= 600 && value <= 622) 
-            this.setState({
-                backgroundColor: ColorCloud,
-                icon: snow_white,
-                api_called: true});
-        else if ((value >= 500 && value <= 531) || (value >= 300 && value <= 321))
-            this.setState({
-                backgroundColor: ColorRain,
-                icon: pluie_white,
-                api_called: true});
-        else if ((value >= 200 && value <= 232))
-            this.setState({
-                backgroundColor: ColorThunder,
-                icon: Thunder_Logo_white,
-                api_called: true});
-        else
-            this.setState({
-                backgroundColor: ColorSun,
-                icon: soleil_white,
-                api_called: true});                                      
-          
+    componentDidMount() {
+        this.mountWeather()
     }
 
 
     render()
     {
-        if (this.state.error != '')
+        const { state: { weather } } = this.props
+        const { error, backgroundColor, icon} = this.state
+        if (error != '')
             return (
                 <View style={{alignItems:'center', justifyContent: 'center', height: 50}}>
                     <Text style={{textAlign: 'center'}}>Une erreur est survenue sur l'affichage de la météo: verifiez que vous avez bien activé vos données GPS </Text>
                 </View>
             )
             
-        else if (!this.state.api_called)
+        else if (weather === undefined)
             return (
                 <View style={{alignItems: 'center', justifyContent: 'center', height: 50}}>
                     <ActivityIndicator size='large' color = {themeStyle.PRIMARY_COLOR}/>
                 </View>
             )
-
+        
         let hours = this.GetHoursMinute()
-        var description = this.state.forecast.list[0].weather[0].description
+        var description = weather.list[0].weather[0].description
         return(
-            <View style={{backgroundColor: this.state.backgroundColor, paddingTop: 10}}>  
+            <View style={{backgroundColor: backgroundColor, paddingTop: 10}}>  
                 <Text style={styles.cityName}>
-                    {this.state.forecast.city.name}
+                    {weather.city.name}
                 </Text>
                 <View style={{borderBottomColor:'#FFFFFF', borderBottomWidth: 1, margin: 15, marginTop: 2, marginBottom: 5}}></View>
 
                 <View style={{flexDirection: 'row'}}>
                     <View style={{flexDirection: 'row', flex: 2.5}}>
                         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Image style={styles.logoMeteo} source={this.state.icon} resizeMode='contain'></Image>
+                            <Image style={styles.logoMeteo} source={icon} resizeMode='contain'></Image>
                         </View>
                         <View style={{flex: 1, justifyContent: 'center'}}>
-                            <Text style={styles.temperature}>{this.state.forecast.list[0].main.temp}°C</Text>
+                            <Text style={styles.temperature}>{weather.list[0].main.temp}°C</Text>
                         </View>
                         <View style={{flex: 1, justifyContent: 'center'}}>
                             <Text style={styles.description}>{description}</Text>
@@ -215,6 +140,8 @@ export default class Meteo extends React.Component{
         )
     }
 }
+
+export default Meteo
 
 const styles = StyleSheet.create({
     cityName: {
