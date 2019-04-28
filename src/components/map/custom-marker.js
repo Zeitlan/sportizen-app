@@ -2,7 +2,7 @@
 import React from 'react'
 import { View, StyleSheet, Text, Image} from 'react-native'
 import { Marker, Callout } from 'react-native-maps'
-import { ReportView } from './report'
+import ReportView from './report/report-view'
 
 class CustomMarker extends React.Component {
     
