@@ -6,6 +6,7 @@ import { withContext } from '../../context'
 import CustomMarker from './custom-marker'
 import CustomPolyline from './custom-polyline'
 import MapButtons from './map-buttons'
+import ReportForm from './report/report-form'
 
 @withContext(['position', 'permissions', 'current_activity'],['getSquarePos'])
 class CustomMapView extends React.Component {
@@ -20,15 +21,21 @@ class CustomMapView extends React.Component {
     state = {
         poi: undefined,
         map_view: undefined,
-        user_focus: true
+        user_focus: true,
+        report_modal: false
     }
 
     componentDidMount() {
     }
 
+    closeModal = () => {
+        this.setState({report_modal: false})
+    }
+
     onMapLongPress(e) {
         this.setState({
-            poi: e.nativeEvent
+            poi: e.nativeEvent,
+            report_modal: true
         })
     }
 
@@ -60,6 +67,7 @@ class CustomMapView extends React.Component {
         const { state: { position, permissions, current_activity }} = this.props
         return (
             <View style={styles.container}>
+                <ReportForm modalVisible={this.state.report_modal} closeModal={this.closeModal}/>
                 {(!permissions.location || position === undefined || position.coords === undefined) ? 
                     <Text style={styles.map}> Waiting for location</Text>
                     :
