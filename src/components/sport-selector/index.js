@@ -33,10 +33,10 @@ class SportSelector extends React.Component {
     _onValidateSelected(){
         const { actions: {setCurrentSport, getLoopPath}} = this.props
         const { selected } = this.state
-        const sportChoice = selected === 1 ? 'foot-walking' : 'cycling-road'
+        const sportChoice = selected === 2 ? 'foot-walking' : 'cycling-road'
         setCurrentSport(sportChoice)
         getLoopPath(5000, sportChoice)
-        this.props.navigation.navigate('CustomMapView')
+        this.props.navigation.navigate('ItenaryView')
     }
     
     render() {

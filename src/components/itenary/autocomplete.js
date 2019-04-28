@@ -42,6 +42,7 @@ export default class AutoCompleteInput extends React.Component{
         this.secondTextInput = React.createRef()
         this.AutoCompleteView = this.AutoCompleteView.bind(this)
         this.fill_textinput = this.fill_textinput.bind(this)
+        this._onValidateSelected = this._onValidateSelected.bind(this)
     }
 
     fill_textinput(text)
@@ -97,6 +98,11 @@ export default class AutoCompleteInput extends React.Component{
         )
     }
 
+
+    _onValidateSelected(){
+        this.props.navigation.navigate('CustomMapView')
+    }
+
     render()
     {
         return (
@@ -125,7 +131,7 @@ export default class AutoCompleteInput extends React.Component{
                         underlineColorAndroid={(this.state.textArriveeFocus == true)? '#B0C4DE' : '#A9A9A9'} />
                 </View>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this._onValidateSelected}>
                     <View style={styles.button_validation}>
                         <Image style={{width: 15, height: 15}} source={require('../../../assets/itenary/search.png')}></Image>
                         <Text style={{marginLeft: 8}}>Rechercher</Text>

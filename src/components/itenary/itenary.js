@@ -50,7 +50,7 @@ export default class ItenaryView extends React.Component {
                     </View>
                     <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, marginTop: 10, marginBottom: 15}}></View>
                     <Animated.View style={{opacity: this.state.fadeAnim}}>
-                        <AutoCompleteInput></AutoCompleteInput>
+                        <AutoCompleteInput navigation={this.props.navigation}/>
                     </Animated.View>
                 </View>
             )
@@ -75,7 +75,7 @@ export default class ItenaryView extends React.Component {
                     </View>
                     <View style={{borderBottomColor:'#D3D3D3', borderBottomWidth: 1, marginTop: 10, marginBottom: 15}}></View>
                     <Animated.View style={{opacity: this.state.fadeAnim}}>
-                        <DistanceInput></DistanceInput>
+                        <DistanceInput navigation={this.props.navigation}/>
                     </Animated.View>
                 </View>
             )
