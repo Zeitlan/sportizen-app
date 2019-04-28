@@ -2,6 +2,7 @@
 import React from 'react'
 import { View, StyleSheet, Text, Image} from 'react-native'
 import { Marker, Callout } from 'react-native-maps'
+import { ReportView } from './report'
 
 class CustomMarker extends React.Component {
     
@@ -11,10 +12,7 @@ class CustomMarker extends React.Component {
             coordinate={coordinate}>
             <Image source={require('../../../assets/map/pin2.png')} style={styles.pinImage} />
             <Callout>
-                <View style={styles.informations}>
-                    <Text>Travaux</Text>
-                    <Text>le 20 Mars 2019 à 21:30:20</Text>
-                </View>
+                <ReportView/>
             </Callout>
         </Marker>)
     }
