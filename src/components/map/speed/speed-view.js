@@ -8,10 +8,12 @@ class SpeedView extends React.Component {
     
     render() {
         const { state: {position} } = this.props
+        speed = Math.round(position.coords.speed)
+        speed = speed < 0 ? 0 : speed
         return (
             <View
                 style={styles.container}>
-                <Text style={styles.speedText}>{Math.round(position.coords.speed)}</Text>
+                <Text style={styles.speedText}>{speed}</Text>
                 <Text style={styles.annotText}>km/h</Text>
             </View>)
     }
@@ -29,7 +31,8 @@ const styles = StyleSheet.create({
     speedText: {
         color: '#F2F2F2',
         fontSize: 30,
-        textAlign: 'center'
+        textAlign: 'center',
+        paddingRight: 5
     },
     annotText: {
         color: '#F2F2F2',

@@ -5,7 +5,6 @@ import MapView from 'react-native-maps'
 import { withContext } from '../../context'
 import CustomMarker from './custom-marker'
 import CustomPolyline from './custom-polyline'
-import MapButtons from './map-buttons'
 import ReportForm from './report/report-form'
 import MapMenu from './menu'
 
@@ -101,7 +100,6 @@ class CustomMapView extends React.Component {
                                 </CustomMarker> )
                             }
                         </MapView>
-                        <MapButtons setUserFollow={this.setUserFollow} zoomPath={this.zoomPath}/>
                         <MapMenu/>
                     </View>}
             </View>
