@@ -7,7 +7,7 @@ import CustomMarker from './custom-marker'
 import CustomPolyline from './custom-polyline'
 import MapButtons from './map-buttons'
 import ReportForm from './report/report-form'
-import BottomMenu from './bottom-menu'
+import MapMenu from './menu'
 
 @withContext(['position', 'permissions', 'current_activity'],[])
 class CustomMapView extends React.Component {
@@ -102,7 +102,7 @@ class CustomMapView extends React.Component {
                             }
                         </MapView>
                         <MapButtons setUserFollow={this.setUserFollow} zoomPath={this.zoomPath}/>
-                        <BottomMenu/>
+                        <MapMenu/>
                     </View>}
             </View>
         )

@@ -3,7 +3,7 @@ import React from 'react'
 import { View, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import SpeedView from '../speed/speed-view'
 
-class BottomMenu extends React.Component {
+class MapMenu extends React.Component {
     
     state = {
         buttons: {
@@ -30,7 +30,7 @@ class BottomMenu extends React.Component {
     }
 }
 
-export default BottomMenu
+export default MapMenu
     
 // CSS
 const styles = StyleSheet.create({
