@@ -1,20 +1,19 @@
 // Dependencies
 import React from 'react'
-import { View, StyleSheet, Text, Image} from 'react-native'
+import { Platform, StyleSheet, Text, Image} from 'react-native'
 import { Marker, Callout } from 'react-native-maps'
+import ReportView from './report/report-view'
 
 class CustomMarker extends React.Component {
     
     render() {
         const { coordinate } = this.props
         return (<Marker
-            coordinate={coordinate}>
+            coordinate={coordinate}
+            style={styles.maker}>
             <Image source={require('../../../assets/map/pin2.png')} style={styles.pinImage} />
             <Callout>
-                <View style={styles.informations}>
-                    <Text>Travaux</Text>
-                    <Text>le 20 Mars 2019 à 21:30:20</Text>
-                </View>
+                <ReportView/>
             </Callout>
         </Marker>)
     }
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
     pinImage: {
         height: 40,
         width: 40,
-        top: -20
+        top: Platform.OS === 'ios' ? -20 : 0,
     },
     informations: {
         width: 200,

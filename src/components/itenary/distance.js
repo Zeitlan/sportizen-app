@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
-import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native'
 
 export default class DistanceInput extends React.Component{
 
@@ -10,8 +10,13 @@ export default class DistanceInput extends React.Component{
         this.state={
             km: undefined
         }
-
+        this._onValidateSelected = this._onValidateSelected.bind(this)
     }
+
+    _onValidateSelected(){
+        this.props.navigation.navigate('CustomMapView')
+    }
+
 
     render()
     {
@@ -27,7 +32,7 @@ export default class DistanceInput extends React.Component{
                         keyboardType='numeric' />
                 </View>
 
-                <TouchableOpacity style={{marginTop: 10}}>
+                <TouchableOpacity style={{marginTop: 10}} onPress={this._onValidateSelected}>
                     <View style={styles.button_validation}>
                         <Image style={{width: 15, height: 15}} source={require('../../../assets/itenary/search.png')}></Image>
                         <Text style={{marginLeft: 8}}>Rechercher</Text>
