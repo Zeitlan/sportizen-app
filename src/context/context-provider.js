@@ -20,8 +20,8 @@ export class ContextProvider extends React.PureComponent {
         weather: undefined,
         current_activity: {
             default_path: undefined,
-            user_path: undefined,
-            sport_choice: undefined
+            user_path: [],
+            sport_choice: undefined,
         },
         language: 'Francais',
         permissions: {
@@ -31,7 +31,7 @@ export class ContextProvider extends React.PureComponent {
             error_notifier: undefined,
             warning_notifier: undefined,
             info_notifier: undefined
-        }
+        },
     }
 
     actions = {

@@ -16,14 +16,6 @@ class MapButtons extends React.Component {
         return (
             <View
                 style={styles.container}>
-
-                <TouchableOpacity onPress={this.props.setUserFollow} underlayColor="white" style={styles.buttonElm}>
-                    <Image style={styles.buttonImg} source={this.state.buttons.user} />
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={this.props.zoomPath} underlayColor="white" style={styles.buttonElm}>
-                    <Image style={styles.buttonImg} source={this.state.buttons.path} />
-                </TouchableOpacity>
             </View>)
     }
 }

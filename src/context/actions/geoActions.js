@@ -4,14 +4,12 @@ import { Platform, Alert, PermissionsAndroid } from 'react-native'
 export const geoActions = (object) => {
     return {
         watchUserPosition: () => {
-            const { dispatch } = object.actions
+            const { dispatch, handlePosition } = object.actions
             const { currentWatchId } = object.state
             if (currentWatchId === undefined) {
                 console.log('Watch position')
                 watchId = navigator.geolocation.watchPosition(
-                    position => {
-                        dispatch({position: position})
-                    },
+                    position => handlePosition(position),
                     error => Alert.alert(error.message),
                     { timeout: 20000 }
                 )
@@ -19,6 +17,21 @@ export const geoActions = (object) => {
                 console.log(watchId)
                 dispatch({currentWatchId: watchId})
             }
+        },
+
+        handlePosition: (position) => {
+            const { dispatch } = object.actions
+            const { current_activity } = object.state
+            console.log(object.state)
+            current_activity.user_path.push({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                timestamp: position.timestamp
+            })
+            dispatch({
+                position: position, 
+                current_activity,
+            })
         },
         clearUserPosition: () => {
             const { dispatch } = object.actions

@@ -22,7 +22,8 @@ export const activityActions = (object) => {
                 })
             }).then((response) => response.json())
                 .then(json => {
-                    dispatch({...current_activity, current_activity: {default_path: json.path}})
+                    current_activity.default_path = json.path
+                    dispatch({current_activity})
                 })
                 .catch((error) => {
                     console.log(error)
@@ -46,7 +47,8 @@ export const activityActions = (object) => {
                 })
             }).then((response) => response.json())
                 .then(json => {
-                    dispatch({...current_activity, current_activity: {default_path: json.path}})
+                    current_activity.default_path = json.path
+                    dispatch({current_activity})
                 })
                 .catch((error) => {
                     console.log(error)
