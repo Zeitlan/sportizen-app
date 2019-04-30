@@ -5,10 +5,10 @@ import MapView from 'react-native-maps'
 import { withContext } from '../../context'
 import CustomMarker from './custom-marker'
 import CustomPolyline from './custom-polyline'
-import MapButtons from './map-buttons'
 import ReportForm from './report/report-form'
+import MapMenu from './menu'
 
-@withContext(['position', 'permissions', 'current_activity'],['getSquarePos'])
+@withContext(['position', 'permissions', 'current_activity'],[])
 class CustomMapView extends React.Component {
 
     constructor(props) {
@@ -65,6 +65,7 @@ class CustomMapView extends React.Component {
     
     render() {
         const { state: { position, permissions, current_activity }} = this.props
+        console.log(position)
         return (
             <View style={styles.container}>
                 <ReportForm modalVisible={this.state.report_modal} closeModal={this.closeModal}/>
@@ -99,7 +100,7 @@ class CustomMapView extends React.Component {
                                 </CustomMarker> )
                             }
                         </MapView>
-                        <MapButtons setUserFollow={this.setUserFollow} zoomPath={this.zoomPath}/>
+                        <MapMenu/>
                     </View>}
             </View>
         )
