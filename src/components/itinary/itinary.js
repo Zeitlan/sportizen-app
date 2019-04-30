@@ -1,14 +1,14 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
 import { View, Image, TextInput, StyleSheet, KeyboardAvoidingView, Text, Animated, TouchableOpacity} from 'react-native'
-import destination from '../../../assets/itenary/destination.png'
-import destination_selected from '../../../assets/itenary/destination_selected.png'
-import distance from '../../../assets/itenary/distance.png'
-import distance_selected from '../../../assets/itenary/distance_selected.png'
+import destination from '../../../assets/itinary/destination.png'
+import destination_selected from '../../../assets/itinary/destination_selected.png'
+import distance from '../../../assets/itinary/distance.png'
+import distance_selected from '../../../assets/itinary/distance_selected.png'
 import AutoCompleteInput from './autocomplete'
 import DistanceInput from './distance'
 
-export default class ItenaryView extends React.Component {
+export default class ItinaryView extends React.Component {
 
     constructor(props)
     {

@@ -24,7 +24,7 @@ export default class DistanceInput extends React.Component{
             <View>
                 <View style={{marginLeft: 10, marginRight: 10, marginTop: 12, backgroundColor: '#E8E8E8'}}> 
                     <TextInput
-                        style={{textAlign: 'center', fontSize: 18}}
+                        style={styles.inputs}
                         placeholder = "Choisissez une distance à parcourir (km)"
                         onChangeText={(text) => this.setState({km : text})}
                         maxLength={4}
@@ -34,7 +34,7 @@ export default class DistanceInput extends React.Component{
 
                 <TouchableOpacity style={{marginTop: 10}} onPress={this._onValidateSelected}>
                     <View style={styles.button_validation}>
-                        <Image style={{width: 15, height: 15}} source={require('../../../assets/itenary/search.png')}></Image>
+                        <Image style={{width: 15, height: 15}} source={require('../../../assets/itinary/search.png')}></Image>
                         <Text style={{marginLeft: 8}}>Rechercher</Text>
                     </View>
                 </TouchableOpacity>        
@@ -54,5 +54,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#D8D8D8', 
         justifyContent: 'center', 
         alignItems: 'center'
+    },
+    inputs: {
+        fontSize: 18,
+        padding: 10,
+        textAlign: 'center'
     }
 })
