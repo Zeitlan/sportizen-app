@@ -113,6 +113,7 @@ export default class AutoCompleteInput extends React.Component{
                         returnKeyType = { 'next' }
                         onSubmitEditing={() => { this.secondTextInput.focus() }}
                         blurOnSubmit={false}
+                        style={styles.inputs}
                         onChangeText={(text) => this.setState({textDepart : text, loading : true}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textDepart}
                         onFocus={() => this.setState({textDepartFocus : true, textArriveeFocus : false, dataCompletion : []})}
@@ -124,6 +125,7 @@ export default class AutoCompleteInput extends React.Component{
                     <TextInput
                         ref={(input) => { this.secondTextInput = input }}
                         placeholder = "Arrivée"
+                        style={styles.inputs}
                         onChangeText={(text) => this.setState({textArrivee : text, loading : true}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textArrivee}
                         onFocus={() => {this.setState({textArriveeFocus : true, textDepartFocus: false, dataCompletion : []})}}
@@ -133,7 +135,7 @@ export default class AutoCompleteInput extends React.Component{
 
                 <TouchableOpacity onPress={this._onValidateSelected}>
                     <View style={styles.button_validation}>
-                        <Image style={{width: 15, height: 15}} source={require('../../../assets/itenary/search.png')}></Image>
+                        <Image style={{width: 15, height: 15}} source={require('../../../assets/itinary/search.png')}></Image>
                         <Text style={{marginLeft: 8}}>Rechercher</Text>
                     </View>
                 </TouchableOpacity>
@@ -157,5 +159,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#D8D8D8', 
         justifyContent: 'center', 
         alignItems: 'center'
+    },
+    inputs: {
+        fontSize: 18,
+        padding: 10,
     }
 })

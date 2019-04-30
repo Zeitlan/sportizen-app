@@ -36,7 +36,7 @@ class SportSelector extends React.Component {
         const sportChoice = selected === 2 ? 'foot-walking' : 'cycling-road'
         setCurrentSport(sportChoice)
         getLoopPath(5000, sportChoice)
-        this.props.navigation.navigate('ItenaryView')
+        this.props.navigation.navigate('ItinaryView')
     }
     
     render() {

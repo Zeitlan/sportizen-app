@@ -7,7 +7,7 @@ import SportSelector from '../sport-selector'
 import Meteo from '../userForm/meteo'
 import ConnectionView from '../connection'
 import SignUpView from '../signup'
-import ItenaryView from '../itenary/itenary'
+import ItinaryView from '../itinary/itinary'
 
 const Router = createStackNavigator({
     ConnectionView: {
@@ -34,10 +34,10 @@ const Router = createStackNavigator({
             header: null //this will hide the header
         },
     },
-    ItenaryView: {
-        screen: ItenaryView,
+    ItinaryView: {
+        screen: ItinaryView,
         navigationOptions: {
-            title: 'Itenary View',
+            title: 'Itinary View',
             header: null //this will hide the header
         },
     },
