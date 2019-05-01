@@ -2,6 +2,7 @@
 import React from 'react'
 import { Image, View, TextInput, Text, FlatList, StyleSheet, TouchableWithoutFeedback, ActivityIndicator, TouchableOpacity} from 'react-native'
 import themeStyle from '../../styles/theme.style'
+import getCoordinates from './getCoordinates'
 
 
 class FlatListItem extends React.Component {
@@ -133,7 +134,7 @@ export default class AutoCompleteInput extends React.Component{
                         underlineColorAndroid={(this.state.textArriveeFocus == true)? '#B0C4DE' : '#A9A9A9'} />
                 </View>
 
-                <TouchableOpacity onPress={this._onValidateSelected}>
+                <TouchableOpacity onPress={() =>  {getCoordinates(this.state.textDepart)}}>
                     <View style={styles.button_validation}>
                         <Image style={{width: 15, height: 15}} source={require('../../../assets/itinary/search.png')}></Image>
                         <Text style={{marginLeft: 8}}>Rechercher</Text>
