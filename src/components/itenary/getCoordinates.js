@@ -3,15 +3,11 @@
 /* return the latitude and longitude position of user input */
 
 export default getCoordinates = (textInput) => {
-    console.log(textInput)
-    if (textInput == undefined || textInput == null || textInput.trim() == '')
-        return {error: 'Tous les champs ne sont pas renseignés, Veuillez remplir tous les champs puis réessayer'}
     let url = 'https://api.opencagedata.com/geocode/v1/geojson?q=' + textInput + '&key=ee0f54e8730e40f6ba7736ca09a0d808&language=fr&limit=1'
-    fetch(url)
+    return fetch(url)
         .then(response => response.json())
         .then(data => {
             dataJson = JSON.parse(JSON.stringify(data))
-            console.log(dataJson)
             if (dataJson['status']['code'] != 200) // an error occured
                 return {error: 'Une erreur est survenue'}
             else if (dataJson['features']['length'] === 0) // means no result found
