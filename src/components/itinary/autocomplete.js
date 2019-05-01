@@ -135,30 +135,32 @@ export default class AutoCompleteInput extends React.Component{
      */
 
     async ValidateData(){
-        if (this.state.textDepart.trim() == '' || this.state.textDepart.trim() == '') // all fields not completed
+        if (this.state.textDepart.trim() == '' || this.state.textArrivee.trim() == '') // all fields not completed
             this.setState({error: 'Tous les champs ne sont pas renseignés, Veuillez remplir tous les champs puis réessayer'})
         else{
             let is_error = false
             let position_depart = undefined
             let position_arrivee = undefined
 
-            await getCoordinates(this.state.textDepart).then((data) => { // get coordinates of text départ
+            await getCoordinates(this.state.textDepart, 0).then((data) => { // get coordinates of text départ
                 let error_ = data.error
                 if (error_ != '') // means an error has occured
                     throw error_
                 position_depart = {latitude: data.latitude, longitude: data.longitude}  // no error  
             }).catch((error_) => {
                 this.setState({error : error_})
-                is_error = true  }) // error occured
+                is_error = true }) // error occured
 
-            await getCoordinates(this.state.textArrivee).then((data) => { // get coordinates of text arrivée
+            await getCoordinates(this.state.textArrivee, 1).then((data) => { // get coordinates of text arrivée
                 let error_ = data.error
                 if (error_ != '') // means an error has occured
                     throw error_
                 position_arrivee = {latitude: data.latitude, longitude: data.longitude}    
-            }).catch((error_) => {this.setState({error : error_})
-                is_error = true  }) // error occured
-            if (is_error == false){
+            }).catch((error_) => {
+                this.setState({error : error_})
+                is_error = true }) // error occured
+
+            if (is_error == false){ // means no errors have occured, we got all coordinates values
                 console.log('position départ ', position_depart) // FIXME ADD NAVIGATION THERE
                 console.log('position arrivée ', position_arrivee)
             }
