@@ -4,6 +4,9 @@ import { Image, View, TextInput, Text, FlatList, StyleSheet, TouchableWithoutFee
 import themeStyle from '../../styles/theme.style'
 import getCoordinates from './getCoordinates'
 
+/**
+ * The FlatList data corresponding to the Auto Complete View
+ */
 
 class FlatListItem extends React.Component {
     
@@ -38,13 +41,20 @@ export default class AutoCompleteInput extends React.Component{
             textDepartFocus: false,
             textArriveeFocus: false, // if the text is focus = true
             dataCompletion: [], // data for auto completion
-            loading: false // if api is being called, loading = true
+            loading: false, // if api is being called, loading = true
+            error: null
         }
         this.secondTextInput = React.createRef()
         this.AutoCompleteView = this.AutoCompleteView.bind(this)
         this.fill_textinput = this.fill_textinput.bind(this)
         this._onValidateSelected = this._onValidateSelected.bind(this)
+        this.ValidateData.bind(this)
     }
+
+    /**
+     *  when user clicks on autocomplete data, fill the text input which was focused
+     * @param {*} text the new text of the text input
+     */
 
     fill_textinput(text)
     {
@@ -53,6 +63,11 @@ export default class AutoCompleteInput extends React.Component{
         else if (this.state.textArriveeFocus)
             this.setState({textArrivee : text, dataCompletion : []}) 
     }
+
+    /**
+     * Call the api for autoComplete data 
+     * @param {*} adress adress typed by the user
+     */
 
     getAutoCompleteData(adress)
     {
@@ -73,6 +88,10 @@ export default class AutoCompleteInput extends React.Component{
                 }), () => console.log(this.state))
             })
     }
+
+    /**
+     * Auto Complete data
+     */
 
     AutoCompleteView()
     {
@@ -103,9 +122,33 @@ export default class AutoCompleteInput extends React.Component{
     _onValidateSelected(){
         this.props.navigation.navigate('CustomMapView')
     }
+    /**
+     * if there is an error, renders this function
+     */
+
+    Render_error(){
+        return (this.state.error === null)? (null) : <Text style={{color: 'red', margin: 2, textAlign: 'center'}}> {this.state.error} </Text> 
+    }
+    
+    /**
+     * When user Clicks on Button 'Research', get the coordinates to launch the running traject, check before is there is error
+     */
+
+    ValidateData(){
+        let valueTextDepart = getCoordinates(this.state.textDepart)
+        console.log(valueTextDepart)
+       
+        if (valueTextDepart.error !== '') // means an error occured, set the error state with its value
+            this.setState({error : valueTextDepart.error})
+        else if (valueTextArrivee.error !== '')
+            this.setState({error : valueTextArrivee.error})
+        else
+            return // FIXME, need to put the navigation    
+    }
 
     render()
     {
+        const render_error = this.Render_error.bind(this)
         return (
             <View>
                 <View style={{marginLeft: 10, marginRight: 10, backgroundColor:'#E8E8E8'}}>
@@ -134,7 +177,9 @@ export default class AutoCompleteInput extends React.Component{
                         underlineColorAndroid={(this.state.textArriveeFocus == true)? '#B0C4DE' : '#A9A9A9'} />
                 </View>
 
-                <TouchableOpacity onPress={() =>  {getCoordinates(this.state.textDepart)}}>
+                {render_error()}
+
+                <TouchableOpacity onPress={() =>  {this.ValidateData()}}>
                     <View style={styles.button_validation}>
                         <Image style={{width: 15, height: 15}} source={require('../../../assets/itinary/search.png')}></Image>
                         <Text style={{marginLeft: 8}}>Rechercher</Text>
