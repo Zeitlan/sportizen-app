@@ -10,16 +10,19 @@ import getCoordinates from './getCoordinates'
 
 class FlatListItem extends React.Component {
     
-    getAdress(data)
+    getAdress(data, index)
     {
+        if (index == 0) // ma position
+            return data // return ma position
         full_address = data['address']['houseNumber'] + ', ' + data['address']['street'] + ', ' +
             data['address']['postalCode'] + ', ' + data['address']['city'] + ', ' + data['address']['country']
         return (full_address.includes('undefined'))? data['label'] : full_address
     }
 
     render() {
+        index = this.props.index
         data = this.props.item
-        full_address = this.getAdress(data) // get the adress which we're going to display for autocompletion
+        full_address = this.getAdress(data, index) // get the adress which we're going to display for autocompletion
         return(
             <TouchableWithoutFeedback onPress={() => {this.props.textCallback(this.getAdress(this.props.item))}}>
                 <View style={{justifyContent:'center', height: 40}}>
@@ -71,22 +74,30 @@ export default class AutoCompleteInput extends React.Component{
 
     getAutoCompleteData(adress)
     {
-        const url = 'http://autocomplete.geocoder.api.here.com/6.2/suggest.json?' + 
-        'app_id=gfirui7ZmAzXhfP0XBOz' + 
-        '&app_code=rjN9gEq6jCDEcbPc1DJfvA' + 
-        '&query=' + adress +
-        '&beginHighlight=&endHighlight=' +
-        '&language=fr' // call api to get suggestions for street/adress
+        if (adress.trim() == '') // if no adress set, avoid call an api
+            this.setState({
+                dataCompletion : ['ma position'],
+                loading: false})
+        else
+        {    
+            const url = 'http://autocomplete.geocoder.api.here.com/6.2/suggest.json?' + 
+                        'app_id=gfirui7ZmAzXhfP0XBOz' + 
+                        '&app_code=rjN9gEq6jCDEcbPc1DJfvA' + 
+                        '&query=' + adress +
+                        '&beginHighlight=&endHighlight=' +
+                        '&language=fr' // call api to get suggestions for street/adress
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                dataJson = JSON.parse(JSON.stringify(data))    
-                this.setState(() => ({
-                    dataCompletion : dataJson['suggestions'],
-                    loading: false
-                }), () => console.log(this.state))
-            })
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    dataJson = JSON.parse(JSON.stringify(data))
+                    this.setState(() => ({
+                        dataCompletion : ['ma position', ...dataJson['suggestions']],
+                        loading: false
+                    }), () => console.log(this.state))
+                })
+        }
+                
     }
 
     /**
@@ -181,7 +192,7 @@ export default class AutoCompleteInput extends React.Component{
                         style={styles.inputs}
                         onChangeText={(text) => this.setState({textDepart : text, loading : true}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textDepart}
-                        onFocus={() => this.setState({textDepartFocus : true, textArriveeFocus : false, dataCompletion : []})}
+                        onFocus={() => this.setState({textDepartFocus : true, textArriveeFocus : false, dataCompletion : ['ma position']})}
                         selectionColor='#B0C4DE'
                         underlineColorAndroid={(this.state.textDepartFocus == true)? '#B0C4DE' : '#A9A9A9'}/>
                 </View>    
@@ -193,7 +204,7 @@ export default class AutoCompleteInput extends React.Component{
                         style={styles.inputs}
                         onChangeText={(text) => this.setState({textArrivee : text, loading : true}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textArrivee}
-                        onFocus={() => {this.setState({textArriveeFocus : true, textDepartFocus: false, dataCompletion : []})}}
+                        onFocus={() => {this.setState({textArriveeFocus : true, textDepartFocus: false, dataCompletion : ['ma position']})}}
                         selectionColor='#B0C4DE'
                         underlineColorAndroid={(this.state.textArriveeFocus == true)? '#B0C4DE' : '#A9A9A9'} />
                 </View>
