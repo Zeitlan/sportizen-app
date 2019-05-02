@@ -1,9 +1,8 @@
-import React from 'react'
 import { Alert } from 'react-native'
 
 export const activityActions = (object) => {
     return {
-        getLoopPath: async (range, sport_choice) => {
+        getLoopPath: async (range) => {
             const { dispatch } = object.actions
             const { user: { token }, position, current_activity} =  object.state
             const url = 'https://sportizen.ml/api/routes/loop'
@@ -15,7 +14,7 @@ export const activityActions = (object) => {
                     'x-access-token': token
                 },
                 body: JSON.stringify({
-                    profile_type: sport_choice,
+                    profile_type: object.state.current_activity.sport_choice,
                     location: {longitude: position.coords.longitude, latitude: position.coords.latitude},
                     range: range,
                     range_type: 'distance'
@@ -30,7 +29,7 @@ export const activityActions = (object) => {
                 })
         },
 
-        getPathPoints: (pointA, pointB, sport_choice) => {
+        getPathPoints: (pointA, pointB) => {
             const { dispatch } = object.actions
             const { user: { token }, current_activity} =  object.state
             const url = 'https://sportizen.ml/api/routes/loop'
@@ -57,7 +56,9 @@ export const activityActions = (object) => {
 
         setCurrentSport: (sport) => {
             const { dispatch } = object.actions
-            dispatch({current_activity: {sport_choice: sport}})
+            const { current_activity } = object.state
+            current_activity.sport_choice = sport
+            dispatch({current_activity})
         }
     }
 }

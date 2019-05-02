@@ -8,6 +8,7 @@ import Meteo from '../userForm/meteo'
 import ConnectionView from '../connection'
 import SignUpView from '../signup'
 import ItinaryView from '../itinary/itinary'
+import LoadingItinary from '../map/loading-itinary'
 
 const Router = createStackNavigator({
     ConnectionView: {
@@ -26,6 +27,13 @@ const Router = createStackNavigator({
     },
     Meteo: {
         screen: Meteo
+    },
+    LoadingItinary: {
+        screen: LoadingItinary,
+        navigationOptions: {
+            title: 'LoadingItinary',
+            header: null //this will hide the header
+        },
     },
     CustomMapView: {
         screen: CustomMapView,

@@ -3,6 +3,7 @@ import React from 'react'
 import { Image, View, TextInput, Text, FlatList, StyleSheet, TouchableWithoutFeedback, ActivityIndicator, TouchableOpacity} from 'react-native'
 import themeStyle from '../../styles/theme.style'
 import getCoordinates from './getCoordinates'
+import { withContext } from '../../context'
 
 /**
  * The FlatList data corresponding to the Auto Complete View
@@ -51,7 +52,8 @@ class FlatListItem extends React.Component {
     }
 }
 
-export default class AutoCompleteInput extends React.Component{
+@withContext([],['getPathPoints'])
+class AutoCompleteInput extends React.Component{
 
     constructor(props)
     {
@@ -190,8 +192,12 @@ export default class AutoCompleteInput extends React.Component{
                 is_error = true }) // error occured
 
             if (is_error == false){ // means no errors have occured, we got all coordinates values
-                console.log('position départ ', position_depart) // FIXME ADD NAVIGATION THERE
+                console.log('position départ ', position_depart) // FIXME: ADD NAVIGATION THERE
                 console.log('position arrivée ', position_arrivee)
+
+                const { actions: { getPathPoints } } = this.props
+                getPathPoints(position_depart, position_arrivee)
+                this.props.navigation.navigate('LoadingItinary')
             }
         }
     }
@@ -243,6 +249,7 @@ export default class AutoCompleteInput extends React.Component{
         )
     }
 }
+export default AutoCompleteInput
 
 const styles = StyleSheet.create({
     button_validation: {

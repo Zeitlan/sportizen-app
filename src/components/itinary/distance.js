@@ -1,8 +1,10 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
 import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native'
+import { withContext } from '../../context'
 
-export default class DistanceInput extends React.Component{
+@withContext([],['getLoopPath'])
+class DistanceInput extends React.Component{
 
     constructor(props)
     {
@@ -13,8 +15,10 @@ export default class DistanceInput extends React.Component{
         this._onValidateSelected = this._onValidateSelected.bind(this)
     }
 
-    _onValidateSelected(){
-        this.props.navigation.navigate('CustomMapView')
+    _onValidateSelected = () => {
+        const { actions: { getLoopPath } } = this.props
+        getLoopPath(this.state.km * 1000)
+        this.props.navigation.navigate('LoadingItinary')
     }
 
 
@@ -42,6 +46,8 @@ export default class DistanceInput extends React.Component{
         )
     }
 }
+
+export default DistanceInput
 
 const styles = StyleSheet.create({
     button_validation: {
