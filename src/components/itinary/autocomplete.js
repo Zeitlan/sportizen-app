@@ -10,6 +10,23 @@ import getCoordinates from './getCoordinates'
 
 class FlatListItem extends React.Component {
     
+    RenderingData(address){ // return the data view from autoComplete fetch
+        return (
+            <View style={{justifyContent:'center', height: 40}}>
+                <Text style={{paddingLeft: 10, fontSize: 13, fontWeight: '500'}}>{address} </Text>
+            </View>
+        )
+    }
+
+    RenderingMaPosition(address){ // return the view for 'ma position' which is supposed to be into index 0
+        return (
+            <View style={{textAlign: 'center', justifyContent:'center', height: 40, flexDirection:'row'}}>
+                <Image style={{width: 20, height: 20}} source={require('../../../assets/itinary/placeholder.png')}/>
+                <Text style={{marginLeft: 10, fontSize: 15, fontWeight: '500'}}>{address} </Text>
+            </View>
+        )
+    }
+
     getAdress(data, index)
     {
         if (index == 0) // ma position
@@ -23,11 +40,12 @@ class FlatListItem extends React.Component {
         index = this.props.index
         data = this.props.item
         full_address = this.getAdress(data, index) // get the adress which we're going to display for autocompletion
+        const render_position = (index == 0)? this.RenderingMaPosition.bind(this) : this.RenderingData.bind(this) // if index == 0, 
+        // then display the view for 'ma position', otherwise display the view for data fetch for auto complete
+
         return(
-            <TouchableWithoutFeedback onPress={() => {this.props.textCallback(this.getAdress(this.props.item))}}>
-                <View style={{justifyContent:'center', height: 40}}>
-                    <Text style={{paddingLeft: 10, fontSize: 13, fontWeight: '500'}}>{full_address} </Text>
-                </View>
+            <TouchableWithoutFeedback onPress={() => {this.props.textCallback(this.getAdress(this.props.item, this.props.index))}}>
+                {render_position(full_address)}
             </TouchableWithoutFeedback>
         )
     }
