@@ -10,7 +10,7 @@ import { StackActions, NavigationActions } from 'react-navigation'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 
-@withContext(['user', 'logs'],['loginUser', 'checkLoginUser', 'requestPosPermission', 'watchUserPosition'])
+@withContext(['user', 'logs'],['loginUser', 'getWeather', 'checkLoginUser', 'requestPosPermission', 'watchUserPosition'])
 class ConnectionView extends React.Component {
     state = {
         username: 'a@b.fr',
@@ -28,7 +28,9 @@ class ConnectionView extends React.Component {
     componentDidMount() {
         const { actions: {checkLoginUser} } = this.props
 
+        const { actions: { getWeather } } = this.props
         const { actions: { requestPosPermission, watchUserPosition } } = this.props
+        getWeather()
         requestPosPermission().then(() => {
             watchUserPosition()
         })
