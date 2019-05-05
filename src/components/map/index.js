@@ -7,6 +7,7 @@ import CustomMarker from './custom-marker'
 import CustomPolyline from './custom-polyline'
 import ReportForm from './report/report-form'
 import MapMenu from './menu'
+import LoadingItinary from './loading-itinary'
 
 @withContext(['position', 'permissions', 'current_activity'],[])
 class CustomMapView extends React.Component {
@@ -44,8 +45,8 @@ class CustomMapView extends React.Component {
     }
 
     setUserFollow() {
-        const { state: { position }} = this.props
-        this.setState({user_focus: !this.state.user_focus})
+        const { state: { position } } = this.props
+        this.setState({ user_focus: !this.state.user_focus })
 
         if (this.state.map_view !== undefined && position.coords !== undefined)
         {
@@ -65,7 +66,8 @@ class CustomMapView extends React.Component {
     
     render() {
         const { state: { position, permissions, current_activity }} = this.props
-        console.log(position)
+        console.log('MAP RENDER')
+        console.log(current_activity)
         return (
             <View style={styles.container}>
                 <ReportForm modalVisible={this.state.report_modal} closeModal={this.closeModal}/>

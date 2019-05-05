@@ -5,7 +5,7 @@ export const activityActions = (object) => {
         getLoopPath: async (range) => {
             const { dispatch } = object.actions
             const { user: { token }, position, current_activity} =  object.state
-            const url = 'https://sportizen.ml/api/routes/loop'
+            const url = 'https://sportizen.ml/api/routes/loopV2'
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -22,6 +22,7 @@ export const activityActions = (object) => {
             }).then((response) => response.json())
                 .then(json => {
                     current_activity.default_path = json.path
+                    console.log(current_activity)
                     dispatch({current_activity})
                 })
                 .catch((error) => {
@@ -32,7 +33,7 @@ export const activityActions = (object) => {
         getPathPoints: (pointA, pointB) => {
             const { dispatch } = object.actions
             const { user: { token }, current_activity} =  object.state
-            const url = 'https://sportizen.ml/api/routes/loop'
+            const url = 'https://sportizen.ml/api/routes/generate'
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -47,6 +48,8 @@ export const activityActions = (object) => {
             }).then((response) => response.json())
                 .then(json => {
                     current_activity.default_path = json.path
+                    console.log('CURRENT ACTIVITY')
+                    console.log(current_activity)
                     dispatch({current_activity})
                 })
                 .catch((error) => {

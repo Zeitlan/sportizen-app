@@ -18,7 +18,7 @@ class DistanceInput extends React.Component{
     _onValidateSelected = () => {
         const { actions: { getLoopPath } } = this.props
         getLoopPath(this.state.km * 1000)
-        this.props.navigation.navigate('LoadingItinary')
+        this.props.navigation.navigate('CustomMapView')
     }
 
 

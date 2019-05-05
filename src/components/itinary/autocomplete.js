@@ -197,7 +197,7 @@ class AutoCompleteInput extends React.Component{
 
                 const { actions: { getPathPoints } } = this.props
                 getPathPoints(position_depart, position_arrivee)
-                this.props.navigation.navigate('LoadingItinary')
+                this.props.navigation.navigate('CustomMapView')
             }
         }
     }
