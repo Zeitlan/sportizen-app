@@ -6,7 +6,7 @@ import { geoActions } from './actions/geoActions'
 import { activityActions } from './actions/activityActions'
 import { weatherActions } from './actions/weatherActions'
 
-export class ContextProvider extends React.PureComponent {
+export class ContextProvider extends React.Component {
     state = {
         user: {
             mail: undefined,
@@ -32,6 +32,7 @@ export class ContextProvider extends React.PureComponent {
             warning_notifier: undefined,
             info_notifier: undefined
         },
+        map: undefined
     }
 
     actions = {
@@ -43,6 +44,15 @@ export class ContextProvider extends React.PureComponent {
                 }).catch((error) => {
                     dispatch({ logs : {error_notifier: 'ERROR: ' + error.message}})
                 })
+        },
+
+        setMap: (map) => {
+            const { dispatch } = this.actions
+            dispatch(map)
+        },
+        updateMap: () => {
+            const { map } = this.state
+            map.forceUpdate()
         },
 
         dispatch: (newState) => {
