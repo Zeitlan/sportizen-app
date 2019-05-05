@@ -63,7 +63,7 @@ class CustomMapView extends React.Component {
             this.state.map_view.fitToCoordinates(current_activity.default_path, 500)
         }
     }
-    
+
     render() {
         const { state: { position, permissions, current_activity }} = this.props
         console.log('MAP RENDER')
@@ -102,7 +102,7 @@ class CustomMapView extends React.Component {
                                 </CustomMarker> )
                             }
                         </MapView>
-                        <MapMenu/>
+                        <MapMenu setUserFollow={this.setUserFollow} zoomPath={this.zoomPath}/>
                     </View>}
             </View>
         )
