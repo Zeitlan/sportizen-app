@@ -7,13 +7,13 @@ import ReportView from './report/report-view'
 class CustomMarker extends React.Component {
     
     render() {
-        const { coordinate } = this.props
+        const { report } = this.props
         return (<Marker
-            coordinate={coordinate}
+            coordinate={report.position}
             style={styles.maker}>
             <Image source={require('../../../assets/map/pin2.png')} style={styles.pinImage} />
             <Callout>
-                <ReportView/>
+                <ReportView report={report}/>
             </Callout>
         </Marker>)
     }

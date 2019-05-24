@@ -19,7 +19,7 @@ class FlatListItem extends React.Component {
         )
     }
 
-    RenderingMaPosition(address){ // return the view for 'ma position' which is supposed to be into index 0
+    RenderingMaPosition(address){ // return the view for 'Ma position' which is supposed to be into index 0
         return (
             <View style={{textAlign: 'center', justifyContent:'center', height: 40, flexDirection:'row'}}>
                 <Image style={{width: 20, height: 20}} source={require('../../../assets/itinary/placeholder.png')}/>
@@ -30,8 +30,8 @@ class FlatListItem extends React.Component {
 
     getAdress(data, index)
     {
-        if (index == 0) // ma position
-            return data // return ma position
+        if (index == 0) // Ma position
+            return data // return Ma position
         full_address = data['address']['houseNumber'] + ', ' + data['address']['street'] + ', ' +
             data['address']['postalCode'] + ', ' + data['address']['city'] + ', ' + data['address']['country']
         return (full_address.includes('undefined'))? data['label'] : full_address
@@ -42,7 +42,7 @@ class FlatListItem extends React.Component {
         data = this.props.item
         full_address = this.getAdress(data, index) // get the adress which we're going to display for autocompletion
         const render_position = (index == 0)? this.RenderingMaPosition.bind(this) : this.RenderingData.bind(this) // if index == 0, 
-        // then display the view for 'ma position', otherwise display the view for data fetch for auto complete
+        // then display the view for 'Ma position', otherwise display the view for data fetch for auto complete
 
         return(
             <TouchableWithoutFeedback onPress={() => {this.props.textCallback(this.getAdress(this.props.item, this.props.index))}}>
@@ -52,7 +52,7 @@ class FlatListItem extends React.Component {
     }
 }
 
-@withContext([],['getPathPoints'])
+@withContext(['position'],['getPathPoints'])
 class AutoCompleteInput extends React.Component{
 
     constructor(props)
@@ -96,7 +96,7 @@ class AutoCompleteInput extends React.Component{
     {
         if (adress.trim() == '') // if no adress set, avoid call an api
             this.setState({
-                dataCompletion : ['ma position'],
+                dataCompletion : ['Ma position'],
                 loading: false})
         else
         {    
@@ -112,7 +112,7 @@ class AutoCompleteInput extends React.Component{
                 .then(data => {
                     dataJson = JSON.parse(JSON.stringify(data))
                     this.setState(() => ({
-                        dataCompletion : ['ma position', ...dataJson['suggestions']],
+                        dataCompletion : ['Ma position', ...dataJson['suggestions']],
                         loading: false
                     }), () => console.log(this.state))
                 })
@@ -166,30 +166,44 @@ class AutoCompleteInput extends React.Component{
      */
 
     async ValidateData(){
+
+        const { state: { position }} = this.props
         if (this.state.textDepart.trim() == '' || this.state.textArrivee.trim() == '') // all fields not completed
             this.setState({error: 'Tous les champs ne sont pas renseignés, Veuillez remplir tous les champs puis réessayer'})
         else{
             let is_error = false
             let position_depart = undefined
             let position_arrivee = undefined
-
-            await getCoordinates(this.state.textDepart, 0).then((data) => { // get coordinates of text départ
-                let error_ = data.error
-                if (error_ != '') // means an error has occured
-                    throw error_
-                position_depart = {latitude: data.latitude, longitude: data.longitude}  // no error  
-            }).catch((error_) => {
-                this.setState({error : error_})
-                is_error = true }) // error occured
-
-            await getCoordinates(this.state.textArrivee, 1).then((data) => { // get coordinates of text arrivée
-                let error_ = data.error
-                if (error_ != '') // means an error has occured
-                    throw error_
-                position_arrivee = {latitude: data.latitude, longitude: data.longitude}    
-            }).catch((error_) => {
-                this.setState({error : error_})
-                is_error = true }) // error occured
+            if (this.state.textDepart === 'Ma position') {
+                position_depart = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                }
+            } else {
+                await getCoordinates(this.state.textDepart, 0).then((data) => { // get coordinates of text départ
+                    let error_ = data.error
+                    if (error_ != '') // means an error has occured
+                        throw error_
+                    position_depart = {latitude: data.latitude, longitude: data.longitude}  // no error  
+                }).catch((error_) => {
+                    this.setState({error : error_})
+                    is_error = true }) // error occured
+            }
+            if (this.state.textArrivee === 'Ma position') {
+                position_arrivee = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                }
+            } else {
+                await getCoordinates(this.state.textArrivee, 1).then((data) => { // get coordinates of text arrivée
+                    let error_ = data.error
+                    if (error_ != '') // means an error has occured
+                        throw error_
+                    position_arrivee = {latitude: data.latitude, longitude: data.longitude}    
+                }).catch((error_) => {
+                    this.setState({error : error_})
+                    is_error = true }) // error occured
+            }
 
             if (is_error == false){ // means no errors have occured, we got all coordinates values
                 console.log('position départ ', position_depart) // FIXME: ADD NAVIGATION THERE
@@ -216,7 +230,7 @@ class AutoCompleteInput extends React.Component{
                         style={styles.inputs}
                         onChangeText={(text) => this.setState({textDepart : text, loading : true}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textDepart}
-                        onFocus={() => this.setState({textDepartFocus : true, textArriveeFocus : false, dataCompletion : ['ma position']})}
+                        onFocus={() => this.setState({textDepartFocus : true, textArriveeFocus : false, dataCompletion : ['Ma position']})}
                         selectionColor='#B0C4DE'
                         underlineColorAndroid={(this.state.textDepartFocus == true)? '#B0C4DE' : '#A9A9A9'}/>
                 </View>    
@@ -228,7 +242,7 @@ class AutoCompleteInput extends React.Component{
                         style={styles.inputs}
                         onChangeText={(text) => this.setState({textArrivee : text, loading : true}, () => {this.getAutoCompleteData(text)})}
                         value={this.state.textArrivee}
-                        onFocus={() => {this.setState({textArriveeFocus : true, textDepartFocus: false, dataCompletion : ['ma position']})}}
+                        onFocus={() => {this.setState({textArriveeFocus : true, textDepartFocus: false, dataCompletion : ['Ma position']})}}
                         selectionColor='#B0C4DE'
                         underlineColorAndroid={(this.state.textArriveeFocus == true)? '#B0C4DE' : '#A9A9A9'} />
                 </View>

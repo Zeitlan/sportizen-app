@@ -1,6 +1,6 @@
 // Dependencies
 import React from 'react'
-import { View, StyleSheet, Text} from 'react-native'
+import { View, StyleSheet, Text, Alert} from 'react-native'
 import MapView from 'react-native-maps'
 import { withContext } from '../../context'
 import CustomMarker from './custom-marker'
@@ -9,7 +9,7 @@ import ReportForm from './report/report-form'
 import MapMenu from './menu'
 import LoadingItinary from './loading-itinary'
 
-@withContext(['position', 'permissions', 'current_activity'],[])
+@withContext(['position', 'permissions', 'current_activity', 'reports'],['getReports'])
 class CustomMapView extends React.Component {
 
     constructor(props) {
@@ -20,7 +20,7 @@ class CustomMapView extends React.Component {
         this.zoomPath = this.zoomPath.bind(this)
     }
     state = {
-        poi: undefined,
+        longPressPos: undefined,
         map_view: undefined,
         user_focus: true,
         report_modal: false
@@ -35,13 +35,15 @@ class CustomMapView extends React.Component {
 
     onMapLongPress(e) {
         this.setState({
-            poi: e.nativeEvent,
+            longPressPos: e.nativeEvent.coordinate,
             report_modal: true
         })
     }
 
     onMapPress(e) {
         this.setState({user_focus: false})
+        const { actions : { getReports }} = this.props
+        getReports(500)
     }
 
     setUserFollow() {
@@ -64,13 +66,17 @@ class CustomMapView extends React.Component {
         }
     }
 
+    componentWillMount() {
+        const { actions : { getReports }} = this.props
+        getReports(500)
+    }
+
     render() {
-        const { state: { position, permissions, current_activity }} = this.props
-        console.log('MAP RENDER')
-        console.log(current_activity)
+        const { state: { position, permissions, current_activity, reports }} = this.props
+        const { longPressPos } = this.state
         return (
             <View style={styles.container}>
-                <ReportForm modalVisible={this.state.report_modal} closeModal={this.closeModal}/>
+                <ReportForm modalVisible={this.state.report_modal} closeModal={this.closeModal} position={longPressPos}/>
                 {(!permissions.location || position === undefined || position.coords === undefined) ? 
                     <Text style={styles.map}> Waiting for location</Text>
                     :
@@ -96,11 +102,7 @@ class CustomMapView extends React.Component {
                             onLongPress = {this.onMapLongPress}
                         >
                             <CustomPolyline coordinates={current_activity.default_path ? current_activity.default_path : []}/>
-                            {this.state.poi !== undefined && (
-                                <CustomMarker
-                                    coordinate={this.state.poi.coordinate}>
-                                </CustomMarker> )
-                            }
+                            {reports.map(report => <CustomMarker report={report} />)}
                         </MapView>
                         <MapMenu setUserFollow={this.setUserFollow} zoomPath={this.zoomPath}/>
                     </View>}
