@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
         flexDirection:'row',
     },
     speedText: {
-        color: '#F2F2F2',
+        color: '#00AEEF',
         fontSize: 30,
         textAlign: 'center',
         paddingRight: 5
     },
     annotText: {
-        color: '#F2F2F2',
+        color: '#00AEEF',
         fontSize: 15,
         textAlign: 'center'
     }

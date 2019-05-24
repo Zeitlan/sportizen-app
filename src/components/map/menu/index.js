@@ -45,7 +45,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection:'row',
         justifyContent: 'space-between',
-        backgroundColor: 'rgba(0, 174, 239, 0.8)',
+        backgroundColor: '#F2F2F2',
+        borderBottomColor: '#CCCCCC',
+        borderBottomWidth: 1,
+        
     },
 
     buttonElm: {
