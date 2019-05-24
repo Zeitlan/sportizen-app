@@ -24,13 +24,25 @@ class ReportView extends React.Component {
             return <Image style={styles.reportImg} source={imgs.level_3} />
         }
     }
+
+    componentWillMount() {
+        const { report } = this.props
+        let level = 3
+        if (report.severity === 'slowing') {
+            level = 1
+        } else if (report.severity === 'annoying') {
+            level = 2
+        }
+        this.setState({level})
+    }
     render() {
+        const { report } = this.props
         return (
             <View style={styles.informations}>
                 {this.getImgFromLevel()}
                 <View style={styles.content}>
-                    <Text style={styles.date}>{this.state.date}</Text>
-                    <Text style={styles.commentary}>{this.state.commentary}</Text>
+                    <Text style={styles.date}>{report.created_at}</Text>
+                    <Text style={styles.commentary}>{report.description}</Text>
                 </View>
             </View>)
     }

@@ -3,6 +3,9 @@ import React from 'react'
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
 import Modal from 'react-native-modal'
 import ReportElement from './report-element'
+import { withContext } from '../../../context'
+
+@withContext([], ['addReport'])
 class ReportForm extends React.Component {
     
     state = {
@@ -24,8 +27,22 @@ class ReportForm extends React.Component {
         },
     }
 
+    _resetForm = () => {
+        this.setState({
+            selected: 1,
+            commentary: '',
+        })
+    }
     _onChangeSelected = (selected) => {
         this.setState({selected})
+    }
+
+    _onValidateSelected = () => {
+        const { actions: { addReport }, position } = this.props
+        const { selected, commentary} = this.state
+        addReport(selected, commentary, position)
+        this._resetForm()
+        this.props.closeModal()
     }
 
     render() {
