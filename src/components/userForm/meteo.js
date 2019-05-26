@@ -73,8 +73,10 @@ class Meteo extends React.Component{
         let hours = new Date().getHours();
         let minutes = new Date().getMinutes();
         
-        let str_hours = (hours > 10)? '' + hours : '0' + hours;
-        let str_minutes = (minutes > 10)? '' + minutes : '0' + minutes;
+        let str_hours = (hours >= 10)? '' + hours : '0' + hours;
+        let str_minutes = (minutes >= 10)? '' + minutes : '0' + minutes;
+        console.log(hours + ' ' + minutes)
+        console.log(str_hours + ' ' + str_minutes)
         return str_hours + ':' + str_minutes
     }
 
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
     temperature: {
         textAlign: 'center',
         color: '#FFFFFF',
-        fontSize: 25
+        fontSize: 23
     },
 
     description: {
