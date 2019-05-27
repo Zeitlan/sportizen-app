@@ -8,7 +8,6 @@ import CustomPolyline from './custom-polyline'
 import ReportForm from './report/report-form'
 import MapMenu from './menu'
 import LoadingItinary from './loading-itinary'
-import * as turf from '@turf/turf'
 
 @withContext(['position', 'permissions', 'current_activity', 'reports'],['getReports'])
 class CustomMapView extends React.Component {
@@ -58,18 +57,14 @@ class CustomMapView extends React.Component {
         
         if (((focus_changed && !this.state.user_focus) || this.state.user_focus) && current_activity.default_path !== undefined)
         {
-            var point1 = turf.point([position.coords.longitude, position.coords.latitude])
-            var point2 = turf.point([current_activity.default_path[0].longitude, current_activity.default_path[0].latitude])
-            var bearing = turf.bearing(point1, point2)
             this.state.map_view.animateCamera({
                 center: position.coords,
                 pitch: 0,
-                heading: bearing,
+                heading: 0,
                 altitude: 1000,
                 zoom: 1000,
             }, 500)
         }
-        return bearing
     }
 
     zoomPath() {
