@@ -17,9 +17,6 @@ export default class UserInfoPart extends React.Component{
     render(){
         return(
             <ImageBackground source={require('../../../assets/userProfil/Running.png')} style={{height: 140, width: '100%'}}>
-                <View style={{flex: 1, alignItems: 'center'}}>
-                    <View style={{width : 80, height : 80, marginTop: 100 ,backgroundColor : '#FFFFFF', borderRadius: 40, borderWidth: 2, borderColor: '#D3D3D3'}}></View>
-                </View>
             </ImageBackground>
         )
     }
