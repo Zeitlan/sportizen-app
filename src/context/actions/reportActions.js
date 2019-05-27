@@ -22,7 +22,7 @@ export const reportActions = (object) => {
             // Call the API, and set the state of the weather forecast
         },
         addReport: async (severity, description, position) => {
-            const { user: { token } } =  object.state
+            const { user: { token }, current_activity } =  object.state
             const severities = ['slowing', 'annoying', 'blocking']
             const url = 'https://sportizen.ml/api/reports'
             fetch(url, {
@@ -36,7 +36,7 @@ export const reportActions = (object) => {
                     severity: severities[severity - 1],
                     description: description,
                     position: position,
-                    wayType: 'bike'
+                    way_type: 'bike',
                 })
             }).then((response) => response.json())
                 .then(json => {
