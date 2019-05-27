@@ -8,6 +8,7 @@ import CustomPolyline from './custom-polyline'
 import ReportForm from './report/report-form'
 import MapMenu from './menu'
 import LoadingItinary from './loading-itinary'
+import * as turf from '@turf/turf'
 
 @withContext(['position', 'permissions', 'current_activity', 'reports'],['getReports'])
 class CustomMapView extends React.Component {
@@ -18,6 +19,7 @@ class CustomMapView extends React.Component {
         this.onMapPress = this.onMapPress.bind(this)
         this.setUserFollow = this.setUserFollow.bind(this)
         this.zoomPath = this.zoomPath.bind(this)
+        this.userFollow = this.userFollow.bind(this)
     }
     state = {
         longPressPos: undefined,
@@ -47,13 +49,27 @@ class CustomMapView extends React.Component {
     }
 
     setUserFollow() {
-        const { state: { position } } = this.props
         this.setState({ user_focus: !this.state.user_focus })
+        this.userFollow(true)
+    }
 
-        if (this.state.map_view !== undefined && position.coords !== undefined)
+    userFollow(focus_changed = false){
+        const { state: { position, current_activity } } = this.props
+        
+        if (((focus_changed && !this.state.user_focus) || this.state.user_focus) && current_activity.default_path !== undefined)
         {
-            this.state.map_view.animateToCoordinate(position.coords, 500)
+            var point1 = turf.point([position.coords.longitude, position.coords.latitude])
+            var point2 = turf.point([current_activity.default_path[0].longitude, current_activity.default_path[0].latitude])
+            var bearing = turf.bearing(point1, point2)
+            this.state.map_view.animateCamera({
+                center: position.coords,
+                pitch: 0,
+                heading: bearing,
+                altitude: 1000,
+                zoom: 1000,
+            }, 500)
         }
+        return bearing
     }
 
     zoomPath() {
@@ -90,9 +106,10 @@ class CustomMapView extends React.Component {
                                     this.setState({map_view: ref})
                                 }
                             }}
-                            followsUserLocation={this.state.user_focus} 
+                            onUserLocationChange={this.state.userFollow}
                             onPress={this.onMapPress}
                             onPanDrag={this.onMapPress}
+                            onRegionChange={this.onMapPress}
                             initialRegion={{
                                 latitude: position.coords.latitude,
                                 longitude: position.coords.longitude,
