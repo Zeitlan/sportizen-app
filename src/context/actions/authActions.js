@@ -19,12 +19,9 @@ export const authActions = (object) => {
                         username: username
                     })
                 })
+                const json = await request.json()
                 const status = request.status
-                if (status === 200) {
-                    dispatch({logs: {info_notifier: 'User signed up'}})
-                } else if (status === 400) {
-                    return json.error
-                } else {
+                if (status !== 200) {
                     return json.error
                 }
             }
