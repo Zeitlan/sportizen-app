@@ -7,7 +7,8 @@ import CustomMarker from './custom-marker'
 import CustomPolyline from './custom-polyline'
 import ReportForm from './report/report-form'
 import MapMenu from './menu'
-import LoadingItinary from './loading-itinary'
+import bearing from '@turf/bearing'
+import { point } from '@turf/helpers'
 
 @withContext(['position', 'permissions', 'current_activity', 'reports'],['getReports'])
 class CustomMapView extends React.Component {
@@ -54,17 +55,21 @@ class CustomMapView extends React.Component {
 
     userFollow(focus_changed = false){
         const { state: { position, current_activity } } = this.props
-        
+        let angle = 0
         if (((focus_changed && !this.state.user_focus) || this.state.user_focus) && current_activity.default_path !== undefined)
         {
-            this.state.map_view.animateCamera({
-                center: position.coords,
-                pitch: 0,
-                heading: 0,
-                altitude: 1000,
-                zoom: 1000,
-            }, 500)
+            let point1 = point([position.coords.longitude, position.coords.latitude])
+            let point2 = point([current_activity.default_path[0].longitude, current_activity.default_path[0].latitude])
+            angle = bearing(point1, point2)    
         }
+
+        this.state.map_view.animateCamera({
+            center: position.coords,
+            pitch: 0,
+            heading: angle,
+            altitude: 1000,
+            zoom: 1000,
+        }, 500)
     }
 
     zoomPath() {
