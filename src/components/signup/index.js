@@ -7,7 +7,7 @@ import DefaultButton from '../connection/button'
 import { withContext } from '../../context'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { StackActions, NavigationActions } from 'react-navigation'
-
+import ErrorModal from '../error-modal'
 
 @withContext([],['signUpUser'])
 class SignUpView extends React.Component {
@@ -16,7 +16,8 @@ class SignUpView extends React.Component {
         username: '',
         password: '',
         validatepassword: '',
-        signedUp: false
+        signedUp: false,
+        error: undefined
     }
 
     navigateToNextPage = () => {
@@ -30,18 +31,30 @@ class SignUpView extends React.Component {
     signUpUser = () => {
         const { actions: { signUpUser } } = this.props
         const { email, username, password, validatepassword } = this.state
-        if (validatepassword !== password) {
-            Alert.alert('Les mots de passes ne sont pas identique.')
+        if (email.length < 1 || username.length < 1 || password.length < 1) {
+            this.setState({
+                error: {
+                    message: 'Vous devez remplir tous les champs.'
+                }
+            })
+        }else if (validatepassword !== password) {
+            this.setState({
+                error: {
+                    message: 'Les mots de passes ne sont pas identique.'
+                }
+            })
+        } else {
+            signUpUser(email, password, username).then((error) => {
+                if (error === undefined) {
+                    this.navigateToNextPage()
+                }
+                this.setState({error})
+            })
         }
-        signUpUser(email, password, username).then((signedUp) => {
-            if (signedUp) {
-                this.navigateToNextPage()
-            }
-        })
     }
     
     render() {
-        const {validatepassword, password, username, email} = this.state
+        const {validatepassword, password, username, email, error} = this.state
         return (
             <KeyboardAwareScrollView
                 innerRef={(ref) => { this.scroll = ref }}
@@ -50,6 +63,7 @@ class SignUpView extends React.Component {
                 contentContainerStyle={styles.container}
                 scrollEnabled={true} >
                 <View style={styles.container}>
+                    <ErrorModal modalVisible={error !== undefined} message={error !== undefined ? error.message : ''} closeModal={() => this.setState({error: undefined})}/>
                     <View style={styles.divider_img}>
                         <Image source={logo} style={styles.image}/>
                     </View>

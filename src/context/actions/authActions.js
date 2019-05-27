@@ -22,23 +22,23 @@ export const authActions = (object) => {
                 const status = request.status
                 if (status === 200) {
                     dispatch({logs: {info_notifier: 'User signed up'}})
-                    return true
                 } else if (status === 400) {
-                    dispatch({logs: {error_notifier: '[400] Signed up Error: ' + json.error.message}})
+                    return json.error
                 } else {
-                    dispatch({logs: {error_notifier: '[' + status + '] Other Error: ' + json.error}})
+                    return json.error
                 }
             }
             catch(error) {
-                dispatch({logs: {error_notifier: 'ERROR: ' + error.message}})
+                return {
+                    message: 'Erreur : ' + error.message
+                }
             }
-            return false
+            return undefined
         },
 
         loginUser: async (mail, pwd) => {
             // TODO: Handle errors with return value
             const { dispatch } = object.actions
-            let connected = false
             try {
                 const request = await fetch('https://sportizen.ml/auth/login', {
                     method: 'POST',
@@ -60,17 +60,16 @@ export const authActions = (object) => {
                     })
                     console.log(deviceStorage)
                     deviceStorage.saveItem('token', json.token)
-                    connected = true
                 } else if (status === 400 || status === 401) {
-                    dispatch({logs: {error_notifier: '[' + status + '] Login Error: ' + JSON.stringify(json.error)}})
+                    return json.error
                 } else {
-                    dispatch({logs: {error_notifier: '[' + status + '] Other Error: ' + json.error}})
+                    return json.error
                 }
             }
             catch(error) {
-                dispatch({logs: {error_notifier: 'ERROR: ' + error.message}})
+                return 'ERROR: ' + error.message
             }
-            return connected
+            return undefined
         },
 
         logoutUser: () => {
@@ -106,7 +105,9 @@ export const authActions = (object) => {
                 })
             }
             catch(error) {
-                dispatch({logs: {error_notifier: 'ERROR: ' + error.message}})
+                return {
+                    message: 'Erreur : ' + error.message
+                }
             }
         },
             
@@ -119,7 +120,9 @@ export const authActions = (object) => {
                     getUserInformation()
                     connected = token !== undefined
                 })
-            return connected
+            return {
+                message: 'Token invalide'
+            }
         },
     }
 }

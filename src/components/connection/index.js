@@ -5,6 +5,7 @@ import logo from '../../../assets/logo.png'
 import themeStyle from '../../styles/theme.style'
 import DefaultButton from './button'
 import { withContext } from '../../context'
+import ErrorModal from '../error-modal'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -15,7 +16,8 @@ class ConnectionView extends React.Component {
     state = {
         username: 'a@b.fr',
         password: 'Testtes4',
-        connected: false
+        connected: false,
+        error: undefined,
     }
 
     navigateToNextPage = () => {
@@ -34,8 +36,8 @@ class ConnectionView extends React.Component {
         requestPosPermission().then(() => {
             watchUserPosition()
         })
-        checkLoginUser().then((connected) => {
-            if (connected) {
+        checkLoginUser().then((error) => {
+            if (error === undefined) {
                 this.navigateToNextPage()
             }
         })
@@ -44,15 +46,16 @@ class ConnectionView extends React.Component {
     loginUser = () => {
         const { actions: { loginUser } } = this.props
         const { username, password } = this.state
-        loginUser(username, password).then((connected) => {
-            if (connected) {
+        loginUser(username, password).then((error) => {
+            if (error === undefined) {
                 this.navigateToNextPage()
             }
+            this.setState({error})
         })
     }
     
     render() {
-        const {password, username} = this.state
+        const {password, username, error} = this.state
         return (
             <KeyboardAwareScrollView
                 innerRef={(ref) => { this.scroll = ref }}
@@ -61,6 +64,7 @@ class ConnectionView extends React.Component {
                 contentContainerStyle={styles.container}
                 scrollEnabled={true} >
                 <View style={styles.container}>
+                    <ErrorModal modalVisible={error !== undefined} message={error !== undefined ? error.message : ''} closeModal={() => this.setState({error: undefined})}/>
                     <View style={styles.divider_img}>
                         <Image source={logo} style={styles.image}/>
                     </View>
@@ -97,7 +101,6 @@ class ConnectionView extends React.Component {
                     </View>
                 </View>
             </KeyboardAwareScrollView>
-
         )
     }
 }
