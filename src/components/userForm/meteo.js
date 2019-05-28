@@ -113,7 +113,7 @@ class Meteo extends React.Component{
         let hours = this.GetHoursMinute()
         var description = weather.list[0].weather[0].description
         return(
-            <View style={{backgroundColor: backgroundColor, paddingTop: 10}}>  
+            <View style={{backgroundColor: backgroundColor, paddingTop: 10, borderRadius: 30}}>  
                 <Text style={styles.cityName}>
                     {weather.city.name}
                 </Text>

@@ -8,6 +8,7 @@ import Meteo from '../userForm/meteo'
 import ConnectionView from '../connection'
 import SignUpView from '../signup'
 import ItinaryView from '../itinary/itinary'
+import UserProfilPage from '../userForm/userProfilPage'
 
 const Router = createStackNavigator({
     ConnectionView: {
@@ -48,6 +49,13 @@ const Router = createStackNavigator({
             header: null //this will hide the header
         },
     },
+    UserProfilPage: {
+        screen: UserProfilPage,
+        navigationOptions : {
+            title: 'User Profil Page',
+            header: null // this will hide the header
+        }
+    }
 })
 
 
