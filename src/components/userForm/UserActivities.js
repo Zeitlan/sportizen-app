@@ -2,10 +2,11 @@
 /* eslint-disable semi */
 
 import React from 'react'
-import {View, Image, StyleSheet} from 'react-native'
+import {View, Image, StyleSheet, Text} from 'react-native'
 import history from '../../../assets/userProfil/history.png'
 import star from '../../../assets/userProfil/star.png'
 import trophy from '../../../assets/userProfil/trophy.png'
+import themeStyle from '../../styles/theme.style';
 
 
 export default class UserActivity extends React.Component{
@@ -25,11 +26,28 @@ export default class UserActivity extends React.Component{
         return history        
     }
 
+    get_text(){
+        if (this.state.index == 0)
+            return 'Afficher mes succès'
+        else if (this.state.index == 1)
+            return 'Accéder à mes préferences itinéraires'
+        return 'Accéder à mon historique d\'activités'  
+    }
+
     render(){
         return (
             <View style={styles.global_container}>
-                <View style={{justifyContent: 'center', alignItems: 'center', marginLeft: 10}}>
+                <View style={styles.image_container}>
                     <Image style={{width: 50, height: 50}} source={this.get_Image()}></Image>
+                </View>
+                <View style={{borderLeftWidth: 2, borderLeftColor: '#1E90FF', }} />
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                    <View style={{justifyContent: 'center', alignItems: 'center', flex: 6}}>
+                        <Text style={styles.description}>{this.get_text()}</Text>      
+                    </View>          
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
+                        <Image style={{width: 16, height: 16, marginRight: 5}} source={require('../../../assets/userProfil/arrow-point-to-right.png')}></Image>
+                    </View>    
                 </View>
             </View>
         )
@@ -49,5 +67,22 @@ const styles = StyleSheet.create({
         shadowOpacity: 1.0,
         flexDirection: 'row',
         elevation: 10
+    },
+
+    image_container:{
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        borderTopLeftRadius: 15, 
+        borderBottomLeftRadius: 15, 
+        backgroundColor: '#00AEEF', 
+        paddingLeft: 5, 
+        width: 66
+    },
+
+    description:{
+        color: 'black',
+        fontSize: 15,
+        fontWeight: 'bold',
+        textAlign: 'center'
     }
 })

@@ -2,7 +2,7 @@
 /* eslint-disable semi */
 import React from 'react'
 import { withContext } from '../../context'
-import {View, Image, StyleSheet, Text} from 'react-native'
+import {View, Image, StyleSheet, Text, Animated, Easing} from 'react-native'
 import Background from './BackgroundProfil'
 import Meteo from './meteo'
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -12,13 +12,28 @@ import UserActivity from './UserActivities'
 export default class UserProfilPage extends React.Component{
     constructor(props){
         super(props)
+        this.state = {
+            xValue: new Animated.Value(-1000)
+        }
+    }
+
+    componentDidMount(){
+        this._moveAnimation()
+    }
+
+    _moveAnimation = () => {
+        Animated.timing(this.state.xValue, {
+            toValue: 0,
+            duration: 1000,
+            easing: Easing.linear
+        }).start()
     }
 
     render(){
         return(
             <View style={{flex : 1}}>
                 <Meteo/>
-                <View style={{marginTop: 5, flex: 1}}>
+                <View style={{marginTop: 5, flex: 4}}>
                     <Background/>
                     <View style={{backgroundColor: '#F1F1F3', flex: 1}}>
                         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
@@ -37,16 +52,21 @@ export default class UserProfilPage extends React.Component{
                             <Text style={styles.user_mail}> test@free.fr</Text>
                             <Text style={{color: '#bdbdbd', fontSize: 12}}> débutant </Text>
                         </View>
-                        <View style={{marginTop: 15}}>
-                            <UserActivity index={0}/>
-                        </View>
-                        <View style={{marginTop: 15}}>
-                            <UserActivity index={1}/>
-                        </View>
-                        <View style={{marginTop: 15}}>
-                            <UserActivity index={2}/>
-                        </View>
+                        <Animated.View style={[{marginTop: 15}, {left: this.state.xValue}]}>
+                            <View>
+                                <UserActivity index={0}/>
+                            </View>
+                            <View style={{marginTop: 15}}>
+                                <UserActivity index={1}/>
+                            </View>
+                            <View style={{marginTop: 15}}>
+                                <UserActivity index={2}/>
+                            </View>
+                        </Animated.View>
                     </View>
+                </View>
+                <View style={{flex : 1, justifyContent: 'center'}}>
+
                 </View>
             </View>
         )
