@@ -32,8 +32,7 @@ export default class UserProfilPage extends React.Component{
     render(){
         return(
             <View style={{flex : 1}}>
-                <Meteo/>
-                <View style={{marginTop: 5, flex: 4}}>
+                <View style={{marginTop: 5, flex: 1}}>
                     <Background/>
                     <View style={{backgroundColor: '#F1F1F3', flex: 1}}>
                         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
@@ -63,10 +62,13 @@ export default class UserProfilPage extends React.Component{
                                 <UserActivity index={2}/>
                             </View>
                         </Animated.View>
+                        <View style={{justifyContent: 'center', flex: 1, justifyContent: 'flex-end', paddingBottom: 30}}>
+                            <TouchableOpacity style={styles.button_start}>
+                                <Image style={{width: 32, height: 32}} source={require('../../../assets/userProfil/running_man.png')}></Image>
+                                <Text style={styles.button_text_color}> Generer un Itinéraire</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-                <View style={{flex : 1, justifyContent: 'center'}}>
-
                 </View>
             </View>
         )
@@ -95,5 +97,20 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 20,
         fontWeight: 'bold'
+    },
+    button_start: {
+        marginLeft: 20,
+        marginRight: 20,
+        backgroundColor: '#00AEEF',
+        borderRadius: 20,
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+
+    button_text_color: {
+        color: 'white',
+        fontSize: 15
     }
 })

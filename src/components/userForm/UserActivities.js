@@ -30,7 +30,7 @@ export default class UserActivity extends React.Component{
         if (this.state.index == 0)
             return 'Afficher mes succès'
         else if (this.state.index == 1)
-            return 'Accéder à mes préferences itinéraires'
+            return 'Accéder à mes itinéraires favoris'
         return 'Accéder à mon historique d\'activités'  
     }
 
