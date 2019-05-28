@@ -21,7 +21,7 @@ class ConnectionView extends React.Component {
     navigateToNextPage = () => {
         const resetAction = StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'SportSelector' })],
+            actions: [NavigationActions.navigate({ routeName: 'UserProfilPage' })],
         })
         this.props.navigation.dispatch(resetAction)
     }
