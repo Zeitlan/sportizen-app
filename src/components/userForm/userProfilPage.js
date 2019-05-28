@@ -7,6 +7,7 @@ import Background from './BackgroundProfil'
 import Meteo from './meteo'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import themeStyle from '../../styles/theme.style';
+import UserActivity from './UserActivities'
 
 export default class UserProfilPage extends React.Component{
     constructor(props){
@@ -35,6 +36,15 @@ export default class UserProfilPage extends React.Component{
                         <View style={{justifyContent: 'center', alignItems: 'center', height: 60}}>
                             <Text style={styles.user_mail}> test@free.fr</Text>
                             <Text style={{color: '#bdbdbd', fontSize: 12}}> débutant </Text>
+                        </View>
+                        <View style={{marginTop: 15}}>
+                            <UserActivity index={0}/>
+                        </View>
+                        <View style={{marginTop: 15}}>
+                            <UserActivity index={1}/>
+                        </View>
+                        <View style={{marginTop: 15}}>
+                            <UserActivity index={2}/>
                         </View>
                     </View>
                 </View>
