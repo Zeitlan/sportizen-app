@@ -44,7 +44,7 @@ class ConnectionView extends React.Component {
     }
 
     loginUser = () => {
-        const { actions: { loginUser } } = this.props
+        const { actions: { loginUser, getUserInformation } } = this.props
         const { username, password } = this.state
         loginUser(username, password).then((error) => {
             if (error === undefined) {

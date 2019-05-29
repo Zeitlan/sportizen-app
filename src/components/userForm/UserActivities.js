@@ -1,12 +1,8 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable semi */
-
 import React from 'react'
 import {View, Image, StyleSheet, Text} from 'react-native'
 import history from '../../../assets/userProfil/history.png'
 import star from '../../../assets/userProfil/star.png'
 import trophy from '../../../assets/userProfil/trophy.png'
-import themeStyle from '../../styles/theme.style';
 
 
 export default class UserActivity extends React.Component{

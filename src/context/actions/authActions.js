@@ -35,7 +35,7 @@ export const authActions = (object) => {
 
         loginUser: async (mail, pwd) => {
             // TODO: Handle errors with return value
-            const { dispatch } = object.actions
+            const { dispatch, getUserInformation } = object.actions
             try {
                 const request = await fetch('https://sportizen.ml/auth/login', {
                     method: 'POST',
@@ -93,19 +93,27 @@ export const authActions = (object) => {
 
                 const json = request.json()
 
-                dispatch({
-                    ...user,
-                    user : {
-                        email: json.email,
-                        username: json.username
-                    }
-                })
+                const status = request.status
+                if (status === 200) {
+                    dispatch({
+                        ...user,
+                        user : {
+                            email: json.email,
+                            username: json.username
+                        }
+                    })
+                } else if (status === 400 || status === 401) {
+                    return json.error
+                } else {
+                    return json.error
+                }
             }
             catch(error) {
                 return {
                     message: 'Erreur : ' + error.message
                 }
             }
+            return undefined
         },
             
         checkLoginUser: async () => {
