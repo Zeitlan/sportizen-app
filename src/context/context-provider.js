@@ -35,6 +35,7 @@ export class ContextProvider extends React.Component {
             info_notifier: undefined
         },
         reports: [],
+        historyActions: [],
         map: undefined
     }
 

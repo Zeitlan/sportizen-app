@@ -1,10 +1,9 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
-import {View, Animated, Text, Easing, StyleSheet} from 'react-native'
+import {View, Animated, Text, Easing, StyleSheet, TouchableOpacity, FlatList} from 'react-native'
 import { withContext } from '../../context'
-import { FlatList } from 'react-native-gesture-handler';
 
-@withContext([], ['getHistory'])
+@withContext(['historyActions'], ['getHistory'])
 export default class HistoryActivity extends React.Component{
 
     constructor(props){
@@ -16,6 +15,8 @@ export default class HistoryActivity extends React.Component{
 
     componentDidMount(){
         this._moveAnimation()
+        const {actions : {getHistory}} = this.props
+        getHistory()
     }
 
     _moveAnimation = () => {
@@ -26,15 +27,28 @@ export default class HistoryActivity extends React.Component{
         }).start()
     }
 
+    //_postaction = () => <TouchableOpacity style={{height: 50, width: '100%', backgroundColor: 'black'}} onPress={() => postHistory('bike')}></TouchableOpacity>
+
+
     render(){
+        const { actions: {postHistory} } = this.props
+        const {state : {historyActions}} = this.props // get all reports
+        console.log('history ', historyActions)
         return (
             <View style={{backgroundColor: '#F1F1F3', flex: 1}}>
                 <Animated.View style={[styles.header_title, {bottom: this.state.yValue}]}>
                     <Text style={{textAlign: 'center', fontSize: 18, color: 'white', fontWeight: '500'}}>Historique d'activité</Text>
                 </Animated.View>
-                <FlatList>
-                    
-                </FlatList>
+
+                <FlatList 
+                    keyboardShouldPersistTaps={'always'}
+                    data = {historyActions}
+                    renderItem={({item, index}) => {
+                        return (
+                            <Text> salut </Text>
+                        )
+                    }}
+                    keyExtractor={(item, index) => index.toString()}/>
             </View>
         )
     }
