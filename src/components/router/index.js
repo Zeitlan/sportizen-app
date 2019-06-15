@@ -9,6 +9,7 @@ import ConnectionView from '../connection'
 import SignUpView from '../signup'
 import ItinaryView from '../itinary/itinary'
 import UserProfilPage from '../userForm/userProfilPage'
+import HistoryActivity from '../historyActivity/historyActivity'
 
 const Router = createStackNavigator({
     ConnectionView: {
@@ -54,6 +55,14 @@ const Router = createStackNavigator({
         navigationOptions : {
             title: 'User Profil Page',
             header: null // this will hide the header
+        }
+    },
+
+    HistoryPage: {
+        screen: HistoryActivity,
+        navigationOptions : {
+            title: 'History Actions Page',
+            header: null
         }
     }
 })

@@ -1,9 +1,9 @@
 import React from 'react'
-import {View, Image, StyleSheet, Text} from 'react-native'
+import {View, Image, StyleSheet, Text, TouchableOpacity} from 'react-native'
+import { withContext } from '../../context'
 import history from '../../../assets/userProfil/history.png'
 import star from '../../../assets/userProfil/star.png'
 import trophy from '../../../assets/userProfil/trophy.png'
-
 
 export default class UserActivity extends React.Component{
     constructor(props){
@@ -30,9 +30,14 @@ export default class UserActivity extends React.Component{
         return 'Accéder à mon historique d\'activités'  
     }
 
+    _navigate_to_next_page(){
+        console.log(this.props)
+        this.props.navigation.navigate('HistoryPage')
+    }
+
     render(){
         return (
-            <View style={styles.global_container}>
+            <TouchableOpacity style={styles.global_container} onPress={() => this._navigate_to_next_page()}>
                 <View style={styles.image_container}>
                     <Image style={{width: 50, height: 50}} source={this.get_Image()}></Image>
                 </View>
@@ -45,7 +50,7 @@ export default class UserActivity extends React.Component{
                         <Image style={{width: 16, height: 16, marginRight: 5}} source={require('../../../assets/userProfil/arrow-point-to-right.png')}></Image>
                     </View>    
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 }

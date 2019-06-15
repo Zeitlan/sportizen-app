@@ -1,7 +1,10 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
 import {View, Animated, Text, Easing, StyleSheet} from 'react-native'
+import { withContext } from '../../context'
+import { FlatList } from 'react-native-gesture-handler';
 
+@withContext([], ['getHistory'])
 export default class HistoryActivity extends React.Component{
 
     constructor(props){
@@ -29,6 +32,9 @@ export default class HistoryActivity extends React.Component{
                 <Animated.View style={[styles.header_title, {bottom: this.state.yValue}]}>
                     <Text style={{textAlign: 'center', fontSize: 18, color: 'white', fontWeight: '500'}}>Historique d'activité</Text>
                 </Animated.View>
+                <FlatList>
+                    
+                </FlatList>
             </View>
         )
     }
