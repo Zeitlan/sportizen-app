@@ -53,7 +53,7 @@ class CustomPolyline extends React.Component {
             <Polyline
                 coordinates={[...this.state.coords]}
                 strokeWidth={4}
-                strokeColor={'#BF3B58'}
+                strokeColor={this.props.color}
             />)
     }
 }

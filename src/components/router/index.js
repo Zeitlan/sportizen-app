@@ -9,6 +9,7 @@ import ConnectionView from '../connection'
 import SignUpView from '../signup'
 import ItinaryView from '../itinary/itinary'
 import UserProfilPage from '../userForm/userProfilPage'
+import ActivitySumUp from '../activity'
 
 const Router = createStackNavigator({
     ConnectionView: {
@@ -54,6 +55,13 @@ const Router = createStackNavigator({
         navigationOptions : {
             title: 'User Profil Page',
             header: null // this will hide the header
+        }
+    },
+    ActivitySumUp: {
+        screen: ActivitySumUp,
+        navigationOptions : {
+            title: 'Activity SumUp',
+            header: null,
         }
     }
 })

@@ -2,15 +2,18 @@
 import React from 'react'
 import { View, StyleSheet, Text, Alert} from 'react-native'
 import MapView from 'react-native-maps'
+import { Polyline } from 'react-native-maps'
 import { withContext } from '../../context'
 import CustomMarker from './custom-marker'
 import CustomPolyline from './custom-polyline'
 import ReportForm from './report/report-form'
+import StopActivityButton from './action-buttons/stop-activity'
+import ReportButton from './action-buttons/report-button'
 import MapMenu from './menu'
 import bearing from '@turf/bearing'
 import { point } from '@turf/helpers'
 
-@withContext(['position', 'permissions', 'current_activity', 'reports'],['getReports'])
+@withContext(['position', 'permissions', 'current_activity', 'reports'],['getReports', 'stopFollowingUser'])
 class CustomMapView extends React.Component {
 
     constructor(props) {
@@ -118,9 +121,16 @@ class CustomMapView extends React.Component {
                             }}
                             onLongPress = {this.onMapLongPress}
                         >
-                            <CustomPolyline coordinates={current_activity.default_path ? current_activity.default_path : []}/>
+                            <CustomPolyline color={'#BF3B58'} coordinates={current_activity.default_path ? current_activity.default_path : []}/>
+                            <Polyline coordinates={current_activity.user_path} strokeWidth={4} strokeColor={'#0D0D0D'}/>
                             {reports.map(report => <CustomMarker report={report} />)}
                         </MapView>
+                        <StopActivityButton _onClick={() => {
+                            this.props.actions.stopFollowingUser()
+                            this.props.navigation.navigate('ActivitySumUp')
+                        }
+                        }/>
+                        <ReportButton _onClick={() => this.props.navigation.navigate('ActivitySumUp')}/>
                         <MapMenu setUserFollow={this.setUserFollow} zoomPath={this.zoomPath}/>
                     </View>}
             </View>

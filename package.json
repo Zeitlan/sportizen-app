@@ -8,15 +8,16 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@turf/bearing": "^6.0.1",
+    "@turf/distance": "^6.0.1",
+    "@turf/helpers": "^6.1.4",
     "react": "16.8.3",
     "react-native": "0.59.1",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-maps": "^0.24.2",
     "react-native-modal": "^10.0.0",
-    "react-navigation": "^3.5.1",
-    "@turf/bearing": "^6.0.1",
-    "@turf/helpers": "^6.1.4"
+    "react-navigation": "^3.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
