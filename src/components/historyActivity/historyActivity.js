@@ -26,7 +26,23 @@ class ListItem extends React.Component{
                     <Image style={{height: 64, width: 64}} source={require('../../../assets/sport/bike-selected.png')}></Image>
                     <Text style={{textAlign: 'center'}}> 300m </Text>
                 </View>
-                <View style={{flex: 3}}></View>
+                <View style={{flex: 3, alignItems: 'center'}}>
+                    <View style={{justifyContent: 'flex-start', paddingTop: 5}}>
+                        <View style={{flexDirection: 'row', height: 50, alignItems: 'center'}}>
+                            <Image style={{resizeMode: 'contain', width: 32, height: 32}} source={require('../../../assets/history/clock.png')}></Image>
+                            <Text style={{fontSize: 16, paddingLeft: 8}}>3h45m</Text>
+                        </View>
+                        <View style={{borderBottomColor: '#C0C0C0', borderBottomWidth: 1, width: 120}}/>
+                        <View style={{height: 50, alignItems: 'flex-end', justifyContent: 'flex-start', flexDirection: 'row'}}>
+                            <TouchableOpacity>
+                                <Image style={{width: 32, height: 32}} source={require('../../../assets/userProfil/star.png')}></Image>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{marginLeft: 20}}>
+                                <Image style={{width: 32, height: 32}} source={require('../../../assets/history/map.png')}></Image>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
             </View>
         )
     }    
@@ -63,13 +79,13 @@ export default class HistoryActivity extends React.Component{
         const { actions: {postHistory} } = this.props
         const {state : {historyActions}} = this.props // get all reports
         return (
-            <View style={{backgroundColor: '#F1F1F3', flex: 1}}>
+            <View style={{ flex: 1, backgroundColor: '#F1F1F3'}}>
                 <Animated.View style={[styles.header_title, {bottom: this.state.yValue}]}>
                     <Text style={{textAlign: 'center', fontSize: 18, color: 'white', fontWeight: '500'}}>Historique d'activité</Text>
                 </Animated.View>
 
                 <FlatList
-                    style={{flex: 1, backgroundColor: '#F1F1F3'}}
+                    style={{flex: 1}}
                     keyboardShouldPersistTaps={'always'}
                     data = {historyActions}
                     renderItem={({item, index}) => {
@@ -95,17 +111,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'center', 
         height: 60, 
-        marginTop: 5
     },
 
     item_list_container: {
         flexDirection: 'row',
+        borderRadius: 20,
         margin: 20,
-        marginRight: 20,
+        marginRight: 40,
+        marginLeft: 40,
         shadowOffset: {width: 1, height: 10},
         shadowColor: 'black',
         shadowRadius: 5,
-        elevation: 20,
+        elevation: 10,
         shadowOpacity: 1.0,
+        backgroundColor: 'white',
+        height: 125
     }
 })
