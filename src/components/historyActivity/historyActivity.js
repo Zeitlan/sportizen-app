@@ -2,6 +2,18 @@
 import React from 'react'
 import {View, Animated, Text, Easing, StyleSheet, TouchableOpacity, FlatList} from 'react-native'
 import { withContext } from '../../context'
+import Date from './date'
+
+class ListItem extends React.Component{
+    
+    constructor(props){
+        super(props)
+    }
+
+    render(){
+        null
+    }
+}
 
 @withContext(['historyActions'], ['getHistory'])
 export default class HistoryActivity extends React.Component{
@@ -45,7 +57,7 @@ export default class HistoryActivity extends React.Component{
                     data = {historyActions}
                     renderItem={({item, index}) => {
                         return (
-                            <Text> salut </Text>
+                            <Date date={item.created_at}/>
                         )
                     }}
                     keyExtractor={(item, index) => index.toString()}/>
