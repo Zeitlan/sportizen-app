@@ -1,7 +1,7 @@
 // Dependencies
 import React from 'react'
 import { View, StyleSheet, TouchableOpacity, Image} from 'react-native'
-import SpeedView from '../speed/speed-view'
+import InformationsView from '../information/information-view'
 
 class MapMenu extends React.Component {
     
@@ -16,7 +16,7 @@ class MapMenu extends React.Component {
         return (
             <View
                 style={styles.container}>
-                <SpeedView/>
+                <InformationsView/>
                 <View style={{flexDirection:'row'}}>
                     <TouchableOpacity onPress={this.props.setUserFollow} underlayColor="white" style={styles.buttonElm}>
                         <Image style={styles.buttonImg} source={this.state.buttons.user} />

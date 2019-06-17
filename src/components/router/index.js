@@ -9,7 +9,11 @@ import ConnectionView from '../connection'
 import SignUpView from '../signup'
 import ItinaryView from '../itinary/itinary'
 import UserProfilPage from '../userForm/userProfilPage'
+<<<<<<< HEAD
 import HistoryActivity from '../historyActivity/historyActivity'
+=======
+import ActivitySumUp from '../activity'
+>>>>>>> 9dd5aaad903b3efab1e79aaf06cf994ec6b51e80
 
 const Router = createStackNavigator({
     ConnectionView: {
@@ -57,12 +61,20 @@ const Router = createStackNavigator({
             header: null // this will hide the header
         }
     },
+<<<<<<< HEAD
 
     HistoryPage: {
         screen: HistoryActivity,
         navigationOptions : {
             title: 'History Actions Page',
             header: null
+=======
+    ActivitySumUp: {
+        screen: ActivitySumUp,
+        navigationOptions : {
+            title: 'Activity SumUp',
+            header: null,
+>>>>>>> 9dd5aaad903b3efab1e79aaf06cf994ec6b51e80
         }
     }
 })

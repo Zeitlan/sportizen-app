@@ -3,23 +3,25 @@ import React from 'react'
 import { View, StyleSheet, Text} from 'react-native'
 import { withContext } from '../../../context'
 
-@withContext(['position'],[])
-class SpeedView extends React.Component {
+@withContext(['position', 'current_activity'],[])
+class InformationsView extends React.Component {
     
     render() {
-        const { state: {position} } = this.props
+        const { state: {position, current_activity: { distance }} } = this.props
         speed = Math.round(position.coords.speed)
         speed = speed < 0 ? 0 : speed
+        let formattedDistance = distance
+        formattedDistance = formattedDistance.toFixed(2)
         return (
             <View
                 style={styles.container}>
-                <Text style={styles.speedText}>{speed}</Text>
-                <Text style={styles.annotText}>km/h</Text>
+                <Text style={styles.speedText}>{formattedDistance}</Text>
+                <Text style={styles.annotText}>km</Text>
             </View>)
     }
 }
 
-export default SpeedView
+export default InformationsView
     
 // CSS
 const styles = StyleSheet.create({
