@@ -18,8 +18,8 @@ class ListItem extends React.Component{
 
     _renderDate = (date, indice_array, dateDateLength) => {    // indice array is used for background color for DAte
         return (
-            <View>
-                <Date date={date} style={{marginTop: 10}} indice_array={indice_array} dateDateLength={dateDateLength}/>
+            <View style={{paddingTop: 10}}>
+                <Date date={date} indice_array={indice_array} dateDateLength={dateDateLength}/>
                 <View style={{...styles.item_list_container, marginTop: 10}}>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <Image style={{height: 32, width: 32}} source={require('../../../assets/sport/bike-selected.png')}></Image>
