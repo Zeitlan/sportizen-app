@@ -16,34 +16,48 @@ class ListItem extends React.Component{
         return '../../../assets/sport/running-selected.png'
     }
 
-    render(){
-        console.log(this.props)
-        const {distance, duration, way_type} = this.props
-        console.log(distance, duration, way_type)
+    _renderDate = (date, indice_array, dateDateLength) => {    // indice array is used for background color for DAte
         return (
-            <View style={styles.item_list_container}>
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Image style={{height: 64, width: 64}} source={require('../../../assets/sport/bike-selected.png')}></Image>
-                    <Text style={{textAlign: 'center'}}> 300m </Text>
-                </View>
-                <View style={{flex: 3, alignItems: 'center'}}>
-                    <View style={{justifyContent: 'flex-start', paddingTop: 5}}>
-                        <View style={{flexDirection: 'row', height: 50, alignItems: 'center'}}>
-                            <Image style={{resizeMode: 'contain', width: 32, height: 32}} source={require('../../../assets/history/clock.png')}></Image>
-                            <Text style={{fontSize: 16, paddingLeft: 8}}>3h45m</Text>
-                        </View>
-                        <View style={{borderBottomColor: '#C0C0C0', borderBottomWidth: 1, width: 120}}/>
-                        <View style={{height: 50, alignItems: 'flex-end', justifyContent: 'flex-start', flexDirection: 'row'}}>
-                            <TouchableOpacity>
-                                <Image style={{width: 32, height: 32}} source={require('../../../assets/userProfil/star.png')}></Image>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{marginLeft: 20}}>
-                                <Image style={{width: 32, height: 32}} source={require('../../../assets/history/map.png')}></Image>
-                            </TouchableOpacity>
-                        </View>
+            <View>
+                <Date date={date} style={{marginTop: 10}} indice_array={indice_array} dateDateLength={dateDateLength}/>
+                <View style={{...styles.item_list_container, marginTop: 10}}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Image style={{height: 32, width: 32}} source={require('../../../assets/sport/bike-selected.png')}></Image>
                     </View>
-                </View>
-            </View>
+                    <View style={{flex: 3, justifyContent: 'center'}}>
+                        <Text style={{color: 'black', fontSize: 14}}>11,10 km </Text>
+                        <Text style={{color: 'gray', fontSize: 10}}> 00:45:05 </Text>
+                    </View>
+                </View>    
+            </View>     
+        )   
+    }
+
+    _get_elem_in_dateArray = (dateData, index) => {
+       for (let i = 0; i < dateData.length; i++){
+            const elem = dateData[i]
+            if (elem.indice === index)
+                return i // return pos in array (used for background color for Date)
+       }
+       return undefined
+    }
+
+    render(){
+        const {distance, duration, way_type, dateData, index, created_at} = this.props
+        const should_display_date = this._get_elem_in_dateArray(dateData, index)
+        if (should_display_date != undefined)
+            return this._renderDate(created_at, should_display_date, dateData.length)
+
+        return (
+            <View style={{...styles.item_list_container, marginTop: 5}}>
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Image style={{height: 32, width: 32}} source={require('../../../assets/sport/bike-selected.png')}></Image>
+                    </View>
+                    <View style={{flex: 3, justifyContent: 'center'}}>
+                        <Text style={{color: 'black', fontSize: 14}}>11,09 km </Text>
+                        <Text style={{color: 'gray', fontSize: 10}}> 00:45:05 </Text>
+                    </View>
+            </View>    
         )
     }    
 }
@@ -54,14 +68,18 @@ export default class HistoryActivity extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            yValue: new Animated.Value(-1000)
+            yValue: new Animated.Value(-1000),
+            valDate: [] // tableau pour affilier une date au dernier report le plus récent
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this._moveAnimation()
         const {actions : {getHistory}} = this.props
-        getHistory()
+        getHistory().then(() => {
+            const {state : {historyActions}} = this.props // get all reports
+            this._fillIndexData(historyActions)
+        })
     }
 
     _moveAnimation = () => {
@@ -74,6 +92,18 @@ export default class HistoryActivity extends React.Component{
 
     //_postaction = () => <TouchableOpacity style={{height: 50, width: '100%', backgroundColor: 'black'}} onPress={() => postHistory('bike')}></TouchableOpacity>
 
+    _fillIndexData = (data) => { // pour affilier une date au dernier report le plus récent
+        let val = []
+        Array.prototype.forEach.call(data, (element, index) => {
+            if (val.find((elem) => {
+                return elem.date === element.created_at
+            }) == undefined) // no items
+            {
+                val.push({indice : index, date : element.created_at})
+            }
+        })
+        this.setState({valDate: val})
+    }
 
     render(){
         const { actions: {postHistory} } = this.props
@@ -90,10 +120,7 @@ export default class HistoryActivity extends React.Component{
                     data = {historyActions}
                     renderItem={({item, index}) => {
                         return (
-                            <View style={{paddingTop: 5, paddingBottom: 5}}>
-                                <Date date={item.created_at}/>
-                                <ListItem {...item}/>
-                            </View>
+                            <ListItem {...item} dateData={this.state.valDate} index={index}/>
                         )
                     }}
                     keyExtractor={(item, index) => index.toString()}/>
@@ -110,21 +137,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#1E90FF', 
         justifyContent: 'center', 
         alignItems: 'center', 
-        height: 60, 
+        height: 60,
+        marginBottom: 20
     },
 
     item_list_container: {
         flexDirection: 'row',
-        borderRadius: 20,
-        margin: 20,
-        marginRight: 40,
-        marginLeft: 40,
         shadowOffset: {width: 1, height: 10},
         shadowColor: 'black',
         shadowRadius: 5,
         elevation: 10,
         shadowOpacity: 1.0,
         backgroundColor: 'white',
-        height: 125
+        height: 50
     }
 })

@@ -15,7 +15,7 @@ export const historyActions = (object) =>{
             const { dispatch } = object.actions
             const { user: { token }} =  object.state
             const url = 'https://sportizen.ml/api/activities'
-            fetch(url, {
+            return fetch(url, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export const historyActions = (object) =>{
                 }
             }).then((response) => response.json())
                 .then(json => {
-                    console.log(json)
+                    console.log('json is ', json)
                     dispatch({historyActions: json})
                 })
                 .catch((error) => {
