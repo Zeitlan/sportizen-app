@@ -82,9 +82,8 @@ class Meteo extends React.Component{
 
     async mountWeather() {
         const { actions: { getWeather } } = this.props
-        this.setState({api_called: true})
         await getWeather()
-        this.getStyleMeteo()
+        this.setState({api_called: true}, () => this.getStyleMeteo())
     }
 
     componentDidMount() {
@@ -113,7 +112,7 @@ class Meteo extends React.Component{
         let hours = this.GetHoursMinute()
         var description = weather.list[0].weather[0].description
         return(
-            <View style={{backgroundColor: backgroundColor, paddingTop: 10, borderRadius: 30}}>  
+            <View style={{backgroundColor: backgroundColor, paddingTop: 10}}>  
                 <Text style={styles.cityName}>
                     {weather.city.name}
                 </Text>

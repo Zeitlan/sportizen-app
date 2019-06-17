@@ -1,10 +1,15 @@
 import React from 'react'
-import {View, Image, StyleSheet, Text, Animated, Easing, Platform} from 'react-native'
+import {View, Image, StyleSheet, Text, Animated, Easing, Platform, Dimensions} from 'react-native'
 import Background from './BackgroundProfil'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import UserActivity from './UserActivities'
 import ProfileOptions from './profile-options'
 import { withContext } from '../../context'
+import Meteo from './meteo'
+import Modal from 'react-native-modal'
+
+
+var screen = Dimensions.get('window')
 
 @withContext(['user'],[])
 class UserProfilPage extends React.Component{
@@ -34,7 +39,7 @@ class UserProfilPage extends React.Component{
                     <Background/>
                     <ProfileOptions/>
                     <View style={{backgroundColor: '#F1F1F3', flex: 1}}>
-
+                    
                         <View style={{marginTop: Platform.OS === 'ios' ? -15 : 0,justifyContent: 'center', alignItems: 'center', height: 60}}>
                             <Text style={styles.user_mail}> test@free.fr</Text>
                             <Text style={{color: '#bdbdbd', fontSize: 12}}> Débutant </Text>
@@ -58,6 +63,9 @@ class UserProfilPage extends React.Component{
                         </View>
                     </View>
                 </View>
+                <Modal style={{width: screen.width, marginLeft: 0}} visible={true} animationType="slide"  onBackdropPress={() => console.log('close')} onBackButtonPress={() => console.log('close')}>
+                    <Meteo/>
+                </Modal>
             </View>
         )
     }
