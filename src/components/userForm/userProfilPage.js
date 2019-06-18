@@ -1,16 +1,22 @@
 import React from 'react'
-import {View, Image, StyleSheet, Text, Animated, Easing, Platform, TouchableOpacity} from 'react-native'
+import {View, Image, StyleSheet, Text, Animated, Easing, Platform, Dimensions, TouchableOpacity} from 'react-native'
 import Background from './BackgroundProfil'
 import UserActivity from './UserActivities'
 import ProfileOptions from './profile-options'
 import { withContext } from '../../context'
+import Meteo from './meteo'
+import Modal from 'react-native-modal'
+
+
+var screen = Dimensions.get('window')
 
 @withContext(['user'],[])
 class UserProfilPage extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            xValue: new Animated.Value(-1000)
+            xValue: new Animated.Value(-1000),
+            meteo_visible: false
         }
     }
 
@@ -26,14 +32,23 @@ class UserProfilPage extends React.Component{
         }).start()
     }
 
+    _openModal = () => {
+        this.setState({meteo_visible : true})
+    }
+
+    _closeModal = () => {
+        this.setState({meteo_visible : false})
+    }
+
     render(){
+        console.log(this._openModal)
         return(
             <View style={{flex : 1}}>
                 <View style={{marginTop: 5, flex: 1}}>
                     <Background/>
-                    <ProfileOptions/>
+                    <ProfileOptions openModal={() => this._openModal()}/>
                     <View style={{backgroundColor: '#F1F1F3', flex: 1}}>
-
+                    
                         <View style={{marginTop: Platform.OS === 'ios' ? -15 : 0,justifyContent: 'center', alignItems: 'center', height: 60}}>
                             <Text style={styles.user_mail}> test@free.fr</Text>
                             <Text style={{color: '#bdbdbd', fontSize: 12}}> Débutant </Text>
@@ -57,6 +72,11 @@ class UserProfilPage extends React.Component{
                         </View>
                     </View>
                 </View>
+                <Modal style={{marginLeft: 0}} visible={this.state.meteo_visible} animationType="slide"  onBackdropPress={() => this._closeModal()} onBackButtonPress={() => this._closeModal()}>
+                    <TouchableOpacity style={{backgroundColor:'rgba(255,255,255,0.5)', width: screen.width, height: screen.height}} onPress={() => this._closeModal()}>
+                        <Meteo/>
+                    </TouchableOpacity>
+                </Modal>
             </View>
         )
     }
