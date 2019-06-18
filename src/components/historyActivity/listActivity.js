@@ -15,6 +15,7 @@ export default class ListItem extends React.Component{
     }
 
     _removeActivity(index){
+        console.log('index is ', index)
         const {setDateAfterRemove} = this.props // set the date
         const {actions: {refresh_data}} = this.props // refresh the flatList in context
         const {state: {historyActions}} = this.props // get the state of All Activity to update it
