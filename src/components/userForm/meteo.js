@@ -105,7 +105,7 @@ class Meteo extends React.Component{
         else if (weather === undefined)
             return (
                 <View style={{alignItems: 'center', justifyContent: 'center', height: 50}}>
-                    <ActivityIndicator size='large' color = {themeStyle.PRIMARY_COLOR}/>
+                    <ActivityIndicator size='large' color='black' />
                 </View>
             )
         
