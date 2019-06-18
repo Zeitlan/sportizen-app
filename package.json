@@ -17,6 +17,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-maps": "^0.24.2",
     "react-native-modal": "^10.0.0",
+    "react-native-swipeout": "^2.3.6",
     "react-navigation": "^3.5.1"
   },
   "devDependencies": {
