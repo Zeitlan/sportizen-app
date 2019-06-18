@@ -4,12 +4,24 @@ import React from 'react'
 import {View, Text, Image, TouchableOpacity} from 'react-native'
 import Date from './date'
 import Swipeout from 'react-native-swipeout'
+import { withContext } from '../../context'
 
 
+@withContext(['historyActions'], ['refresh_data'])
 export default class ListItem extends React.Component{
     
     constructor(props){
         super(props)
+    }
+
+    _removeActivity(index){
+        const {setDateAfterRemove} = this.props // set the date
+        const {actions: {refresh_data}} = this.props // refresh the flatList in context
+        const {state: {historyActions}} = this.props // get the state of All Activity to update it
+        let new_array = [...historyActions]
+        new_array.splice(index, 1)
+        refresh_data(new_array)
+        setDateAfterRemove(new_array)
     }
 
     _getWayTypeImage(waytype){
@@ -52,12 +64,15 @@ export default class ListItem extends React.Component{
     }
 
     render(){
-        const {distance, duration, way_type, dateData, index, created_at} = this.props
+        const {distance, duration, way_type, dateData, index, created_at, refreshData} = this.props
         const should_display_date = this._get_elem_in_dateArray(dateData, index)
         const ios_swipe_settings = {
             autoClose: true,
             right: [
                 {
+                    onPress: () => {
+                        this._removeActivity(index)
+                    },
                     text: 'Supprimer',
                     type: 'delete'
                 },

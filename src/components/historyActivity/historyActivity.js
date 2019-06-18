@@ -50,7 +50,7 @@ export default class HistoryActivity extends React.Component{
     }
 
     render(){
-        const { actions: {postHistory} } = this.props
+        const { actions: {postHistory, refreshData} } = this.props
         const {state : {historyActions}} = this.props // get all reports
         return (
             <View style={{ flex: 1, backgroundColor: '#F1F1F3'}}>
@@ -64,9 +64,10 @@ export default class HistoryActivity extends React.Component{
                     data = {historyActions}
                     renderItem={({item, index}) => {
                         return (
-                            <ListItem {...item} dateData={this.state.valDate} index={index}/>
+                            <ListItem {...item} dateData={this.state.valDate} index={index} setDateAfterRemove={(data) => this._fillIndexData(data)}/>
                         )
                     }}
+                    extraData = {this.props.state.historyActions}
                     keyExtractor={(item, index) => index.toString()}/>
             </View>
         )

@@ -27,7 +27,6 @@ export default class Date extends React.Component{
 
     _getBackground = () => {
         const {indice_array, dateDateLength} = this.props
-        console.log(indice_array, dateDateLength)
         if (indice_array % dateDateLength == 0){
             return {backgroundColor : '#1E90FF'}
         } // red
@@ -43,7 +42,6 @@ export default class Date extends React.Component{
 
     render(){
         const backgroundColor = this._getBackground()
-        console.log('backcolor is', backgroundColor)
         return (
             <View style={{...styles.container, ...backgroundColor}}>
                 <Text style={styles.date_title}> {_getDateFromDDFormat(this.props.date)} </Text>

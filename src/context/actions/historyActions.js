@@ -63,6 +63,12 @@ export const historyActions = (object) =>{
                 .catch((error) => {
                     console.log(error)
                 })
+        },
+
+        refresh_data: (new_data_array) => {
+            const { dispatch } = object.actions
+            console.log('new data array', new_data_array)
+            dispatch({historyActions : new_data_array})
         }
     }
 }
