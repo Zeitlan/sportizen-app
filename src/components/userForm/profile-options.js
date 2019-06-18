@@ -1,17 +1,14 @@
-
-
-
 import React from 'react'
-import {View, Image, StyleSheet, Platform} from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import {View, Image, StyleSheet, Platform, TouchableOpacity} from 'react-native'
 
 //TODO: Refactor copy/paste
 
 export default ProfileOptions = (props) => {
+    const {openModal} = props
     if (Platform.OS === 'ios'){
         return (
             <View style={{flexDirection: 'row', justifyContent: 'center', backgroundColor: '#F2F2F2'}}>
-                <TouchableOpacity style={styles.container_img}>
+                <TouchableOpacity style={styles.container_img} onPress={() => console.log('yes')}>
                     <Image style={{width: 40, height: 40}} source={require('../../../assets/userProfil/sunny.png')}></Image>
                 </TouchableOpacity>
 
@@ -25,7 +22,7 @@ export default ProfileOptions = (props) => {
     }
     return (
         <View style={{flexDirection: 'row', justifyContent: 'center', backgroundColor: '#F2F2F2'}}>
-            <TouchableOpacity style={{...styles.container_img, marginTop: -20,}}>
+            <TouchableOpacity style={{...styles.container_img, marginTop: -20}} onPress={() => openModal()}>
                 <Image style={{width: 40, height: 40}} source={require('../../../assets/userProfil/sunny.png')}></Image>
             </TouchableOpacity>
 
@@ -45,6 +42,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderRadius: 20,
+        width: 40,
+        height: 40,
         margin: 10,
         marginBottom: 0
     }
