@@ -8,7 +8,7 @@ import { withContext } from '../../context'
 
 
 @withContext(['historyActions'], ['refresh_data'])
-export default class ListItem extends React.Component{
+class ListItem extends React.Component{
     
     constructor(props){
         super(props)
@@ -103,6 +103,8 @@ export default class ListItem extends React.Component{
         )
     }    
 }
+
+export default ListItem
 
 const styles = {
     item_list_container: {

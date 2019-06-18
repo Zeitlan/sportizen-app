@@ -6,7 +6,7 @@ import { withContext } from '../../context'
 import Date from './date'
 
 @withContext(['historyActions'], ['getHistory'])
-export default class HistoryActivity extends React.Component{
+class HistoryActivity extends React.Component{
 
     constructor(props){
         super(props)
@@ -72,10 +72,9 @@ export default class HistoryActivity extends React.Component{
             </View>
         )
     }
-
-
-
 }
+
+export default HistoryActivity
 
 const styles = StyleSheet.create({
     header_title : {
