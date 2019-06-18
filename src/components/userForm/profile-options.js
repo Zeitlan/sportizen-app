@@ -8,7 +8,7 @@ export default ProfileOptions = (props) => {
     if (Platform.OS === 'ios'){
         return (
             <View style={{flexDirection: 'row', justifyContent: 'center', backgroundColor: '#F2F2F2'}}>
-                <TouchableOpacity style={styles.container_img} onPress={() => console.log('yes')}>
+                <TouchableOpacity style={styles.container_img} onPress={() => openModal()}>
                     <Image style={{width: 40, height: 40}} source={require('../../../assets/userProfil/sunny.png')}></Image>
                 </TouchableOpacity>
 

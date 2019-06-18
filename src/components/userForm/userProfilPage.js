@@ -1,7 +1,6 @@
 import React from 'react'
-import {View, Image, StyleSheet, Text, Animated, Easing, Platform, Dimensions} from 'react-native'
+import {View, Image, StyleSheet, Text, Animated, Easing, Platform, Dimensions, TouchableOpacity} from 'react-native'
 import Background from './BackgroundProfil'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import UserActivity from './UserActivities'
 import ProfileOptions from './profile-options'
 import { withContext } from '../../context'
