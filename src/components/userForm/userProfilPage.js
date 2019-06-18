@@ -55,13 +55,13 @@ class UserProfilPage extends React.Component{
                         </View>
                         <Animated.View style={[{marginTop: 15}, {left: this.state.xValue}]}>
                             <View>
-                                <UserActivity index={0}/>
+                                <UserActivity index={0} navigation={this.props.navigation}/>
                             </View>
                             <View style={{marginTop: 15}}>
-                                <UserActivity index={1}/>
+                                <UserActivity index={1} navigation={this.props.navigation}/>
                             </View>
                             <View style={{marginTop: 15}}>
-                                <UserActivity index={2}/>
+                                <UserActivity index={2} navigation={this.props.navigation}/>
                             </View>
                         </Animated.View>
                         <View style={{justifyContent: 'center', flex: 1, justifyContent: 'flex-end', paddingBottom: 30}}>

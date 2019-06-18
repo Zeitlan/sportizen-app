@@ -6,6 +6,7 @@ import { geoActions } from './actions/geoActions'
 import { activityActions } from './actions/activityActions'
 import { weatherActions } from './actions/weatherActions'
 import { reportActions } from './actions/reportActions'
+import { historyActions } from './actions/historyActions'
 
 export class ContextProvider extends React.Component {
     state = {
@@ -35,6 +36,7 @@ export class ContextProvider extends React.Component {
             info_notifier: undefined
         },
         reports: [],
+        historyActions: [],
         map: undefined
     }
 
@@ -66,6 +68,7 @@ export class ContextProvider extends React.Component {
         ...activityActions(this),
         ...weatherActions(this),
         ...reportActions(this),
+        ...historyActions(this)
     }
 
     render () {
