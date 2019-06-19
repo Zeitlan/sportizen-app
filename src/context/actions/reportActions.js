@@ -36,7 +36,7 @@ export const reportActions = (object) => {
                     severity: severities[severity - 1],
                     description: description,
                     position: position,
-                    way_type: 'bike',
+                    way_type: current_activity.sport_choice,
                 })
             }).then((response) => response.json())
                 .then(json => {
