@@ -7,7 +7,26 @@ const get_date = () => {
     var yyyy = today.getFullYear()
     
     return dd + '/' + mm + '/' + yyyy
-} 
+}
+
+_fillData = (data) => { // readjust data depending of the date: data = [[{}]], each data of the same data are in the same array 
+    let dateval = []
+    let new_data = []
+
+    Array.prototype.forEach.call(data, (element, index) => {
+        if (dateval.find((date) => {
+            return date === element.created_at // meaning no date was found in the array, so we have to create a new array containing all activty from this date
+        }) == undefined)
+        {
+            dateval.push(element.created_at)
+            new_data = [...new_data, [element]]
+        }
+        else {
+            new_data[new_data.length - 1].push(element)
+        }
+    })
+    return new_data
+}
 
 export const historyActions = (object) =>{ 
     return {
@@ -24,7 +43,7 @@ export const historyActions = (object) =>{
             }).then((response) => response.json())
                 .then(json => {
                     console.log('json is ', json)
-                    dispatch({historyActions: json})
+                    dispatch({historyActions: _fillData(json)})
                 })
                 .catch((error) => {
                     console.log(error)

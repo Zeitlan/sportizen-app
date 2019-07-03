@@ -12,7 +12,6 @@ class HistoryActivity extends React.Component{
         super(props)
         this.state={
             yValue: new Animated.Value(-1000),
-            valDate: [] // tableau pour affilier une date au dernier report le plus récent
         }
     }
 
@@ -29,29 +28,15 @@ class HistoryActivity extends React.Component{
         }).start(() => {
             getHistory().then(() => {
                 const {state : {historyActions}} = this.props // get all reports
-                this._fillIndexData(historyActions)
+                console.log('history action is ', historyActions)
             })
         })
-    }
-
-    //_postaction = () => <TouchableOpacity style={{height: 50, width: '100%', backgroundColor: 'black'}} onPress={() => postHistory('bike')}></TouchableOpacity>
-
-    _fillIndexData = (data) => { // pour affilier une date au dernier report le plus récent
-        let val = []
-        Array.prototype.forEach.call(data, (element, index) => {
-            if (val.find((elem) => {
-                return elem.date === element.created_at
-            }) == undefined) // no items
-            {
-                val.push({indice : index, date : element.created_at})
-            }
-        })
-        this.setState({valDate: val})
     }
 
     render(){
         const { actions: {postHistory, refreshData} } = this.props
         const {state : {historyActions}} = this.props // get all reports
+
         return (
             <View style={{ flex: 1, backgroundColor: '#F1F1F3'}}>
                 <Animated.View style={[styles.header_title, {bottom: this.state.yValue}]}>
@@ -64,7 +49,7 @@ class HistoryActivity extends React.Component{
                     data = {historyActions}
                     renderItem={({item, index}) => {
                         return (
-                            <ListItem {...item} dateData={this.state.valDate} index={index} setDateAfterRemove={(data) => this._fillIndexData(data)}/>
+                            <ListItem data={item} index={index} dateDateLength={historyActions.length}/>
                         )
                     }}
                     extraData = {this.props.state.historyActions}
