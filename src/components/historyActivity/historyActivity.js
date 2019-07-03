@@ -11,25 +11,24 @@ class HistoryActivity extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            yValue: new Animated.Value(-1000),
+            fadeAnim: new Animated.Value(0)        
         }
     }
 
     async componentDidMount(){
-        this._moveAnimation().start()
+        this._moveAnimation()
     }
 
     _moveAnimation = () => {
         const {actions : {getHistory}} = this.props
-        Animated.timing(this.state.yValue, {
-            toValue: 0,
-            duration: 800,
-            easing: Easing.linear
-        }).start(() => {
-            getHistory().then(() => {
-                const {state : {historyActions}} = this.props // get all reports
-                console.log('history action is ', historyActions)
-            })
+        getHistory().then(() => {
+            Animated.timing(this.state.fadeAnim,           
+                {
+                    toValue: 1,                   
+                    duration: 400,
+                }).start()
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -38,11 +37,7 @@ class HistoryActivity extends React.Component{
         const {state : {historyActions}} = this.props // get all reports
 
         return (
-            <View style={{ flex: 1, backgroundColor: '#F1F1F3'}}>
-                <Animated.View style={[styles.header_title, {bottom: this.state.yValue}]}>
-                    <Text style={{textAlign: 'center', fontSize: 18, color: 'white', fontWeight: '500'}}>Historique d'activité</Text>
-                </Animated.View>
-
+            <Animated.View style={{ flex: 1, backgroundColor: '#F1F1F3', opacity: this.state.fadeAnim, paddingBottom: 5}}>
                 <FlatList
                     style={{flex: 1}}
                     keyboardShouldPersistTaps={'always'}
@@ -52,9 +47,9 @@ class HistoryActivity extends React.Component{
                             <ListItem data={item} index={index} dateDateLength={historyActions.length}/>
                         )
                     }}
-                    extraData = {this.props.state.historyActions}
-                    keyExtractor={(item, index) => index.toString()}/>
-            </View>
+                    extraData = {historyActions}
+                    keyExtractor={(item, index) => item.toString()}/>
+            </Animated.View>
         )
     }
 }

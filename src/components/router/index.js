@@ -62,8 +62,14 @@ const Router = createStackNavigator({
     HistoryPage: {
         screen: HistoryActivity,
         navigationOptions : {
-            title: 'History Actions Page',
-            header: null
+            title: 'Historique d\'activité',
+            headerStyle: {
+                backgroundColor:'#1E90FF',
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white'
+            },
         }
     },
     ActivitySumUp: {

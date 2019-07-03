@@ -47,7 +47,7 @@ class ListItem extends React.Component{
         }
 
         return (
-            <Swipeout {...ios_swipe_settings} style={(index == 0)? {height: 50, marginTop: 10} : {height : 50}}>            
+            <Swipeout key={data.toString() + index.toString()} {...ios_swipe_settings} style={(index == 0)? {height: 50, marginTop: 10} : {height : 50}}>            
                 <View style={{...styles.item_list_container}}>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <Image style={{height: 32, width: 32}} source={require('../../../assets/sport/bike-selected.png')}></Image>
