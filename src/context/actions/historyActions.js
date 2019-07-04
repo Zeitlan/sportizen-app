@@ -9,7 +9,15 @@ const get_date = () => {
     return dd + '/' + mm + '/' + yyyy
 }
 
-_fillData = (data) => { // readjust data depending of the date: data = [[{}]], each data of the same data are in the same array 
+const get_all_activity_format = (old_data) => { // transform an array of [[{}]] into [{}]
+    let new_data = []
+    old_data.forEach.call(old_data, (element) => {
+        new_data = [...new_data, ...element]
+    })
+    return new_data
+}
+
+_fillDataDays = (data) => { // readjust data depending of the date: data = [[{}]], each data of the same data are in the same array 
     let dateval = []
     let new_data = []
 
@@ -28,6 +36,35 @@ _fillData = (data) => { // readjust data depending of the date: data = [[{}]], e
     return new_data
 }
 
+_fillDataMonth = (data) => {
+    let dateval = []
+    let new_data = []
+
+    Array.prototype.forEach.call(data, (element, index) => {
+        month = element.created_at.substring(3)
+        if (dateval.find((date) => {
+            return date === month // meaning no date was found in the array, so we have to create a new array containing all activty from this date
+        }) == undefined)
+        {
+            dateval.push(month)
+            new_data = [...new_data, [element]]
+        }
+        else {
+            new_data[new_data.length - 1].push(element)
+        }
+    })
+    return new_data
+}
+
+_filterData = (data, filterType) => { // filter by days or month, depending of its type (week/month) create a new array
+    if (filterType == 'days') // filter by days
+        return _fillDataDays(get_all_activity_format(data))
+    return _fillDataMonth(get_all_activity_format(data)) // filter by month
+}
+
+////////////////////////////////////// API CALLS //////////////////////////////////////////////
+
+
 export const historyActions = (object) =>{ 
     return {
         getHistory: async () => {
@@ -43,7 +80,7 @@ export const historyActions = (object) =>{
             }).then((response) => response.json())
                 .then(json => {
                     console.log('json is ', json)
-                    dispatch({historyActions: _fillData(json)})
+                    dispatch({historyActions: _fillDataDays(json)})
                 })
                 .catch((error) => {
                     console.log(error)
@@ -86,7 +123,6 @@ export const historyActions = (object) =>{
 
         refresh_data: (new_data_array) => {
             const { dispatch } = object.actions
-            console.log('new data array', new_data_array)
             dispatch({historyActions : new_data_array})
         }
     }

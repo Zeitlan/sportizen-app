@@ -14,15 +14,15 @@ class ListItem extends React.Component{
         super(props)
     }
 
-    _removeActivity(index){
-        console.log('index is ', index)
-        const {setDateAfterRemove} = this.props // set the date
+    _removeActivity(index_item){ // index of the activty in the array we want to delete
+        const {index} = this.props // index of the array in the main array
         const {actions: {refresh_data}} = this.props // refresh the flatList in context
         const {state: {historyActions}} = this.props // get the state of All Activity to update it
         let new_array = [...historyActions]
-        new_array.splice(index, 1)
+        new_array[index].splice(index_item, 1)
+        if (new_array[index].length == 0)
+            new_array.splice(index, 1)
         refresh_data(new_array)
-        setDateAfterRemove(new_array)
     }
 
     _getWayTypeImage(waytype){
@@ -64,13 +64,14 @@ class ListItem extends React.Component{
                 </View> 
             </Swipeout>)
     }
+    
     render(){
         const {data, index, dateDateLength}= this.props
 
         return (
             <View style={{paddingTop: 10}}>
                 <Date date={data[0].created_at} indice_array={index} dateDateLength={dateDateLength}/>
-                {data.map((item, index) => this._renderItem(item, index))} 
+                {data.map((item, index_item) => this._renderItem(item, index_item))} 
             </View>     
         )
     }

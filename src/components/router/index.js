@@ -1,6 +1,6 @@
 import React from 'react'
 import { createBottomTabNavigator, createAppContainer, createStackNavigator} from 'react-navigation'
-
+import {HistoryActivityOptions} from './navigationOption'
 
 import CustomMapView from '../map'
 import SportSelector from '../sport-selector'
@@ -61,16 +61,7 @@ const Router = createStackNavigator({
 
     HistoryPage: {
         screen: HistoryActivity,
-        navigationOptions : {
-            title: 'Historique d\'activité',
-            headerStyle: {
-                backgroundColor:'#1E90FF',
-            },
-            headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white'
-            },
-        }
+        
     },
     ActivitySumUp: {
         screen: ActivitySumUp,

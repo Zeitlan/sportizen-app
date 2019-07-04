@@ -1,18 +1,23 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
-import {View, Animated, Text, Easing, StyleSheet, TouchableOpacity, FlatList, Image} from 'react-native'
+import {Image, Animated, StyleSheet, TouchableHighlight, FlatList} from 'react-native'
 import ListItem from './listActivity'
 import { withContext } from '../../context'
-import Date from './date'
 
 @withContext(['historyActions'], ['getHistory'])
 class HistoryActivity extends React.Component{
+
 
     constructor(props){
         super(props)
         this.state={
             fadeAnim: new Animated.Value(0)        
         }
+    }
+
+    static navigationOptions = {
+        title: 'Historique d\'activité',
+        
     }
 
     async componentDidMount(){
