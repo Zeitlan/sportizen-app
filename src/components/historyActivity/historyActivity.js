@@ -137,11 +137,11 @@ class HistoryActivity extends React.Component{
                         data = {historyActions}
                         renderItem={({item, index}) => {
                             return (
-                                <ListItem data={item} index={index} dateDateLength={historyActions.length}/>
+                                <ListItem data={item} index={index} dateDateLength={historyActions.length} dateFilter = {this.state.dateFilter}/>
                             )
                         }}
                         extraData = {historyActions}
-                        keyExtractor={(item, index) => item.toString()}/>
+                        keyExtractor={(item, index) => item.toString() + index.toString()}/>
                 </Animated.View>
             </View>
         )

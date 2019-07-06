@@ -108,13 +108,34 @@ export const historyActions = (object) =>{
                     points: [],
                     way_type: way_type
                 })
-            }).then((response) => {console.log('response is: ', response); return response.json()})
+            }).then((response) => {console.log('delete response is: ', response); return response.json()})
                 .then(json => {
                     console.log('json is: ', json)
                 })
                 .catch((error) => {
                     console.log(error)
                 })
+        },
+
+        deleteHistory : async (activityId) => {
+            const {dispatch} = object.actions
+            const { user: { token }} =  object.state
+            const url = 'https://sportizen.ml/api/activities/' + activityId
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'x-access-token': token
+                }
+            }).then((response) => {return response.json()})
+                .then(json => {
+                    console.log('json is: ', json)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+
         },
 
         refresh_data: (new_data_array) => {

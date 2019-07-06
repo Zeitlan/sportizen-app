@@ -7,22 +7,25 @@ import Swipeout from 'react-native-swipeout'
 import { withContext } from '../../context'
 
 
-@withContext(['historyActions'], ['refresh_data'])
+@withContext(['historyActions'], ['refresh_data', 'deleteHistory'])
 class ListItem extends React.Component{
     
     constructor(props){
         super(props)
     }
 
-    _removeActivity(index_item){ // index of the activty in the array we want to delete
+    _removeActivity(index_item, data){ // index of the activty in the array we want to delete, data is the element data
         const {index} = this.props // index of the array in the main array
-        const {actions: {refresh_data}} = this.props // refresh the flatList in context
+        const {actions: {refresh_data, deleteHistory}} = this.props // refresh the flatList in context
         const {state: {historyActions}} = this.props // get the state of All Activity to update it
+        const activity_id = data.id
+        console.log(activity_id)
         let new_array = [...historyActions]
         new_array[index].splice(index_item, 1)
         if (new_array[index].length == 0)
             new_array.splice(index, 1)
         refresh_data(new_array)
+        //deleteHistory(activity_id) // remove from db
     }
 
     _getWayTypeImage(waytype){
@@ -37,7 +40,7 @@ class ListItem extends React.Component{
             right: [
                 {
                     onPress: () => {
-                        this._removeActivity(index)
+                        this._removeActivity(index, data)
                     },
                     text: 'Supprimer',
                     type: 'delete'
@@ -70,7 +73,7 @@ class ListItem extends React.Component{
 
         return (
             <View style={{paddingTop: 10}}>
-                <Date date={data[0].created_at} indice_array={index} dateDateLength={dateDateLength}/>
+                <Date date={data[0].created_at} indice_array={index} dateDateLength={dateDateLength} dateFilter={this.props.dateFilter}/>
                 {data.map((item, index_item) => this._renderItem(item, index_item))} 
             </View>     
         )
