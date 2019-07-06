@@ -1,7 +1,5 @@
 import React from 'react'
 import { createBottomTabNavigator, createAppContainer, createStackNavigator} from 'react-navigation'
-import {HistoryActivityOptions} from './navigationOption'
-
 import CustomMapView from '../map'
 import SportSelector from '../sport-selector'
 import Meteo from '../userForm/meteo'
@@ -59,9 +57,12 @@ const Router = createStackNavigator({
         }
     },
 
-    HistoryPage: {
+    HistoryActivity: {
         screen: HistoryActivity,
-        
+        navigationOptions : {
+            header: null
+        }
+ 
     },
     ActivitySumUp: {
         screen: ActivitySumUp,
