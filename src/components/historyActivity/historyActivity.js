@@ -16,7 +16,7 @@ const radio_props = [
 ]
 
 
-@withContext(['historyActions'], ['getHistory'])
+@withContext(['historyActions'], ['getHistory', 'filterData'])
 class HistoryActivity extends React.Component{
 
     constructor(props){
@@ -85,7 +85,7 @@ class HistoryActivity extends React.Component{
                             />
                         </View>
                         <View style={{flex: 1, justifyContent: 'flex-end'}}>
-                            <TouchableOpacity style={{width: '100%', backgroundColor: '#1E90FF', height: 50, justifyContent: 'center', alignItems: 'center'}}>
+                            <TouchableOpacity style={{width: '100%', backgroundColor: '#1E90FF', height: 50, justifyContent: 'center', alignItems: 'center'}} onPress={() => this._changeDateFilter()}>
                                 <Text style={{color: 'white', fontWeight: 'bold'}}> Enregistrer </Text>
                             </TouchableOpacity>
                         </View>
@@ -99,11 +99,20 @@ class HistoryActivity extends React.Component{
      * change data filter, value is 0 if we want to filter by date or 1 if we want to filter by month
      */
 
-    _changeDateFilter = (value) => {
+    _changeDateFilter = () => {
         const actual_state_filter = this.state.dateFilter
-        if (value === 0 && actual_state_filter === 'days' || value === 1 && actual_state_filter === 'month')
-            return
-        this.setState({dateFilter: (value === 0)? 'days' : 'month'})    
+        const new_filter = this.state.radioInputValue
+
+        this._closeModal() // close the modal since data were saved
+        if (new_filter === 0 && actual_state_filter === 'days' || new_filter === 1 && actual_state_filter === 'month')
+            return // means nothing changed so just leave this functions
+        
+        const new_filter_as_string = (new_filter === 0)? 'days' : 'month' // convert 0 and 1 value to days or month
+
+        this.setState({dateFilter: new_filter_as_string})    // set the state of the new date filter
+        const {actions : {filterData}, state : {historyActions}} = this.props
+        filterData(historyActions, new_filter_as_string) // filter the date which will dispatch the new array
+
     }
     _closeModal = () => {
         this.setState({openModal : false})

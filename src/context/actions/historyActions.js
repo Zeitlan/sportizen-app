@@ -56,13 +56,9 @@ _fillDataMonth = (data) => {
     return new_data
 }
 
-_filterData = (data, filterType) => { // filter by days or month, depending of its type (week/month) create a new array
-    if (filterType == 'days') // filter by days
-        return _fillDataDays(get_all_activity_format(data))
-    return _fillDataMonth(get_all_activity_format(data)) // filter by month
-}
 
-////////////////////////////////////// API CALLS //////////////////////////////////////////////
+
+////////////////////////////////////// CONTEXT METHODS //////////////////////////////////////////////
 
 
 export const historyActions = (object) =>{ 
@@ -124,6 +120,14 @@ export const historyActions = (object) =>{
         refresh_data: (new_data_array) => {
             const { dispatch } = object.actions
             dispatch({historyActions : new_data_array})
+        },
+
+        filterData : (data, filterType) => { // filter by days or month, depending of its type (week/month) create a new array
+            const { dispatch } = object.actions
+            if (filterType == 'days') // filter by days
+                dispatch({historyActions: _fillDataDays(get_all_activity_format(data))})
+            else    
+                dispatch({historyActions: _fillDataMonth(get_all_activity_format(data))}) // filter by month
         }
     }
 }
