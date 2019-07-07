@@ -1,6 +1,8 @@
 /* eslint-disable linebreak-style */
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Image, Animated, Easing} from 'react-native'
+import ActivitySummary from './summaryActivity'
+import {getBackground} from './utilities'
 
 let months = [
     'Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai',
@@ -8,7 +10,8 @@ let months = [
     'Octobre', 'Novembre', 'Decembre'
 ]
 
-const _getDateFromDDFormat = (date, dateFilter) => {
+const _getDateFromDDFormat = (data, dateFilter) => {
+    const date = data[0].created_at
     let date_split = date.split('/')
     let date_to_display = ''
     date_split.forEach((element, index) => {
@@ -47,37 +50,32 @@ export default class Date extends React.Component{
         })
     }
 
-    _getBackground = () => {
-        const {indice_array, dateDateLength} = this.props
-        if (indice_array % dateDateLength == 0){
-            return {backgroundColor : '#1E90FF'}
-        } // red
-        else if (indice_array % dateDateLength == 1)
-            return {backgroundColor: 'purple'}
-        else if (indice_array % dateDateLength == 2)
-            return {backgroundColor: 'red'} // yellow
-        else if (indice_array % dateDateLength == 3)
-            return {backgroundColor: 'green'}
-        else if (indice_array % dateDateLength == 4)
-            return {backgroundColor: '#D3D366'}
+    _summary_render = () => {
+        return (!this.state.expanded)? null : (
+            <ActivitySummary {...this.props}/>
+        ) 
     }
+
 
     render(){
         const spin = this.state.spinValue.interpolate({
             inputRange: [0, 1],
             outputRange: (!this.state.expanded)? ['0deg', '90deg'] : ['90deg', '0deg']
         })
-
-        const backgroundColor = this._getBackground()
+        const {indice_array, dateDateLength} = this.props
+        const backgroundColor = getBackground(indice_array, dateDateLength)
         return (
-            <TouchableOpacity style={{...styles.container, ...backgroundColor}} onPress={() => {console.log(this.state.expanded); this._showSummary()}}> 
-                <View style={{flexDirection: 'row', height: 40, justifyContent:'center', alignItems: 'center', flex: 1, paddingLeft: 12}}>
-                    <Text style={styles.date_title}> {_getDateFromDDFormat(this.props.date, this.props.dateFilter)} </Text>
-                </View>
-                <View style={{alignItems: 'flex-end', width: 12, height: 12}}>
-                    <Animated.Image style={{marginRight: 10, height: 12, width: 12, transform: [{rotate: spin}]}} source={require('../../../assets/history/arrow.png')}></Animated.Image>
-                </View>
-            </TouchableOpacity>
+            <View>
+                <TouchableOpacity style={{...styles.container, ...backgroundColor}} onPress={() => {console.log(this.state.expanded); this._showSummary()}}> 
+                    <View style={{flexDirection: 'row', height: 40, justifyContent:'center', alignItems: 'center', flex: 1, paddingLeft: 12}}>
+                        <Text style={styles.date_title}> {_getDateFromDDFormat(this.props.data, this.props.dateFilter)} </Text>
+                    </View>
+                    <View style={{alignItems: 'flex-end', width: 12, height: 12}}>
+                        <Animated.Image style={{marginRight: 10, height: 12, width: 12, transform: [{rotate: spin}]}} source={require('../../../assets/history/arrow.png')}></Animated.Image>
+                    </View>
+                </TouchableOpacity>
+                {this._summary_render()}
+            </View>
         )
     }
 }
