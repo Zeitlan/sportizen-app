@@ -1,13 +1,41 @@
 /* eslint-disable linebreak-style */
 
 import React from 'react'
-import {View, StyleSheet, Image, Text, Dimensions} from 'react-native'
+import {View, StyleSheet, Image, Text, Dimensions, Animated} from 'react-native'
 import {_distance_converter_to_format, _time_converter_to_sec, _convert_second_to_format, _convert_m_sec_to_km_h_format} from './utilities'
 import {getBackground} from './utilities'
 
 var screen = Dimensions.get('window')
 
 export default class ActivitySummary extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            heightAnimated : new Animated.Value(0)
+        }
+    }
+
+    _expandAnimation = () => {
+        Animated.timing(this.state.heightAnimated,           
+            {
+                toValue: 100,                   
+                duration: 300,
+            }).start(() => {
+            this.setState({heightAnimated : new Animated.Value(0)})
+        })
+    }
+
+    _collapseAnimation = () => {
+        Animated.timing(this.state.heightAnimated,           
+            {
+                toValue: 0,                   
+                duration: 300,
+            }).start()
+    }
+
+    componentDidMount(){
+        this._expandAnimation()
+    }
 
     _get_main_container_style = (border_Color) => {
         return {       
@@ -68,7 +96,7 @@ export default class ActivitySummary extends React.Component{
         const border_color = getBackground(indice_array, dateDateLength).backgroundColor
 
         return (
-            <View style={{...styles.main_container, borderColor: border_color}}>
+            <Animated.View style={{...styles.main_container, borderColor: border_color, height : this.state.heightAnimated}}>
                 <View style={styles.activity_container}>
                     <View style={{flex : 1, justifyContent : 'center', alignItems: 'center'}}>
                         <Image style={styles.image_style} source={require('../../../assets/sport/running-selected.png')}></Image>
@@ -110,7 +138,7 @@ export default class ActivitySummary extends React.Component{
                         <Text style={styles.value_field}> {_convert_m_sec_to_km_h_format(result[1].speed)} Km/h</Text>
                     </View>
                 </View>
-            </View>
+            </Animated.View>
         )
     }
 
@@ -120,7 +148,6 @@ export default class ActivitySummary extends React.Component{
 const styles = StyleSheet.create({
     
     main_container : {
-        height: 100, 
         backgroundColor: 'white',
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,

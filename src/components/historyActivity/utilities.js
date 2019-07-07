@@ -51,7 +51,6 @@ export const _convert_second_to_format = (seconds) => {
  * @param {speed in m/s} time 
  */
 export const _convert_m_sec_to_km_h_format = (speed) => {
-    console.log('speed is ', speed)
     const speed_in_km_h = (speed * 3.6).toString()
     let separator_array = speed_in_km_h.split('.')
     if (separator_array.length === 2)

@@ -51,6 +51,7 @@ export default class Date extends React.Component{
     }
 
     _summary_render = () => {
+        
         return (!this.state.expanded)? null : (
             <ActivitySummary {...this.props}/>
         ) 

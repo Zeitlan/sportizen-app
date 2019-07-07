@@ -21,7 +21,6 @@ class ListItem extends React.Component{
         const {actions: {refresh_data, deleteHistory}} = this.props // refresh the flatList in context
         const {state: {historyActions}} = this.props // get the state of All Activity to update it
         const activity_id = data.id
-        console.log(activity_id)
         let new_array = [...historyActions]
         new_array[index].splice(index_item, 1)
         if (new_array[index].length == 0)
