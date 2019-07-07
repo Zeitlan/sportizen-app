@@ -25,14 +25,6 @@ export default class ActivitySummary extends React.Component{
         })
     }
 
-    _collapseAnimation = () => {
-        Animated.timing(this.state.heightAnimated,           
-            {
-                toValue: 0,                   
-                duration: 300,
-            }).start()
-    }
-
     componentDidMount(){
         this._expandAnimation()
     }
