@@ -41,7 +41,7 @@ class UserProfilPage extends React.Component{
     }
 
     render(){
-        console.log(this._openModal)
+        const {state : {user}} = this.props
         return(
             <View style={{flex : 1}}>
                 <View style={{marginTop: 5, flex: 1}}>
@@ -50,7 +50,7 @@ class UserProfilPage extends React.Component{
                     <View style={{backgroundColor: '#F1F1F3', flex: 1}}>
                     
                         <View style={{marginTop: Platform.OS === 'ios' ? -15 : 0,justifyContent: 'center', alignItems: 'center', height: 60}}>
-                            <Text style={styles.user_mail}> test@free.fr</Text>
+                            <Text style={styles.user_mail}> {user.mail}</Text>
                             <Text style={{color: '#bdbdbd', fontSize: 12}}> Débutant </Text>
                         </View>
                         <Animated.View style={[{marginTop: 15}, {left: this.state.xValue}]}>
