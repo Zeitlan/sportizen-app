@@ -53,7 +53,7 @@ export const authActions = (object) => {
                 if (status === 200) {
                     dispatch({
                         info_notifier: 'User signed up',
-                        user: { token: json.token }
+                        user: { token: json.token, mail : mail }
                     })
                     console.log(deviceStorage)
                     deviceStorage.saveItem('token', json.token)
