@@ -32,7 +32,7 @@ export default class UserActivity extends React.Component{
 
     _navigate_to_next_page(){
         console.log(this.props)
-        this.props.navigation.navigate('HistoryPage')
+        this.props.navigation.navigate('HistoryActivity')
     }
 
     render(){

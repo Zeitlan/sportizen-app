@@ -17,8 +17,10 @@
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-maps": "^0.24.2",
     "react-native-modal": "^10.0.0",
+    "react-native-simple-radio-button": "^2.7.3",
     "react-native-swipeout": "^2.3.6",
-    "react-navigation": "^3.5.1"
+    "react-navigation": "^3.11.0",
+    "save": "^2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
