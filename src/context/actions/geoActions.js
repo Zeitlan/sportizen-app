@@ -15,7 +15,6 @@ export const geoActions = (object) => {
                     error => Alert.alert(error.message),
                     {timeout: 20000, maximumAge: 0, distanceFilter: 1}
                 )
-
                 console.log(watchId)
                 dispatch({currentWatchId: watchId})
             }
@@ -28,17 +27,21 @@ export const geoActions = (object) => {
             new_user_path.push({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
+                created_at: new Date().getTime(),
             })
-            current_activity.user_path = new_user_path
             position.coords.speed = position.coords.speed * 2.23694
+            let new_activity = {
+                ...current_activity,
+                user_path: new_user_path
+            }
             if (new_user_path.length > 1) {
                 let point1 = point([position.coords.longitude, position.coords.latitude])
                 let point2 = point([new_user_path[new_user_path.length - 2].longitude, new_user_path[new_user_path.length - 2].latitude])
-                current_activity.distance += distance(point1, point2)
+                new_activity.distance += distance(point1, point2)
             }
             dispatch({
                 position: position, 
-                current_activity,
+                current_activity: new_activity,
             })
         },
         stopFollowingUser: () => {
