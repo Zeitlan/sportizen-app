@@ -44,7 +44,6 @@ export const reportActions = (object) => {
                 .catch((error) => {
                     console.log(error)
                 })
-
         }
     }
 }

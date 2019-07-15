@@ -13,7 +13,7 @@ import MapMenu from './menu'
 import bearing from '@turf/bearing'
 import { point } from '@turf/helpers'
 
-@withContext(['position', 'permissions', 'current_activity', 'reports'],['getReports', 'stopFollowingUser'])
+@withContext(['position', 'permissions', 'current_activity', 'reports'],['getReports', 'stopFollowingUser', 'createActivity'])
 class CustomMapView extends React.Component {
 
     constructor(props) {

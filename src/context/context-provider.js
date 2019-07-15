@@ -26,6 +26,7 @@ export class ContextProvider extends React.Component {
             sport_choice: undefined,
             distance: 0,
         },
+        server_activity: undefined,
         language: 'Francais',
         permissions: {
             location: undefined,

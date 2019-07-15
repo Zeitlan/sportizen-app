@@ -3,7 +3,7 @@ import React from 'react'
 import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native'
 import { withContext } from '../../context'
 
-@withContext([],['getLoopPath'])
+@withContext([],['getLoopPath', 'createActivity'])
 class DistanceInput extends React.Component{
 
     constructor(props)
@@ -16,8 +16,8 @@ class DistanceInput extends React.Component{
     }
 
     _onValidateSelected = () => {
-        const { actions: { getLoopPath } } = this.props
-        getLoopPath(this.state.km * 1000)
+        const { actions: { getLoopPath, createActivity } } = this.props
+        getLoopPath(this.state.km * 1000).then(() => createActivity())
         this.props.navigation.navigate('CustomMapView')
     }
 
