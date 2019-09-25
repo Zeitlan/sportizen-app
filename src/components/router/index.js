@@ -38,29 +38,27 @@ const Router = createStackNavigator({
     ItinaryView: {
         screen: ItinaryView,
         navigationOptions: {
-            title: 'Itinary View',
-            header: null //this will hide the header
+            title: 'Itinary',
         },
     },
     SportSelector: {
         screen: SportSelector,
         navigationOptions: {
-            title: 'Sport Selector',
-            header: null //this will hide the header
+            title: 'Sport Selection',
         },
     },
     UserProfilPage: {
         screen: UserProfilPage,
         navigationOptions : {
             title: 'User Profil Page',
-            header: null // this will hide the header
+            header: null //this will hide the header
         }
     },
 
     HistoryActivity: {
         screen: HistoryActivity,
         navigationOptions : {
-            header: null
+            title: 'Historique',
         }
  
     },
