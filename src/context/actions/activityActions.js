@@ -50,8 +50,6 @@ export const activityActions = (object) => {
             }).then((response) => response.json())
                 .then(json => {
                     current_activity.default_path = json.path
-                    console.log('CURRENT ACTIVITY')
-                    console.log(current_activity)
                     dispatch({current_activity})
                 })
                 .catch((error) => {
